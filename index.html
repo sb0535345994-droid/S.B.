@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>שידוכים באמונה</title>
+<meta name="description" content="ערוץ שידוכים מכובד ודיסקרטי לגברים ונשים עם זיקה ליהדות"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Heebo:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --gold:#b8975a;--gold-l:#d4b87e;--gold-p:#f0e8d6;--gold-d:#8a6e3a;
+  --cream:#faf8f3;--cm:#f3ede0;--cd:#e8dfc8;
+  --ink:#1c1810;--im:#3a3020;--is:#6b5e48;--il:#9a8a72;
+  --white:#fff;--green:#25d366;--red:#c0392b;
+  --border:rgba(184,151,90,.2);
+  --sh1:0 2px 12px rgba(28,24,16,.06);
+  --sh2:0 6px 28px rgba(28,24,16,.10);
+  --sh3:0 16px 56px rgba(28,24,16,.13);
+  --r:14px;--rl:20px;
+  --fd:'Frank Ruhl Libre',serif;--fb:'Heebo',sans-serif;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--cream);color:var(--ink);direction:rtl;text-align:right;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:var(--fb)}
+input,textarea,select{font-family:var(--fb);direction:rtl;text-align:right}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--cm)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+
+/* PAGES */
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+
+/* ANNOUNCEMENT BAR */
+#announcement-bar{display:none;background:var(--gold);color:#fff;text-align:center;padding:10px 20px;font-size:14px;font-weight:600;position:fixed;top:0;right:0;left:0;z-index:150}
+body.has-announcement nav{top:40px}
+body.has-announcement .pt{padding-top:102px}
+
+/* NAV */
+nav{position:fixed;top:0;right:0;left:0;z-index:100;background:rgba(250,248,243,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);box-shadow:var(--sh1)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-logo{font-family:var(--fd);font-size:19px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px;cursor:pointer;flex-shrink:0}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:2px;flex:1;justify-content:center}
+.nl{font-size:13px;font-weight:500;color:var(--is);padding:7px 11px;border-radius:8px;border:none;background:none;cursor:pointer;white-space:nowrap;transition:all .2s}
+.nl:hover{color:var(--ink);background:var(--cm)}
+.nl.active{color:var(--gold-d);background:var(--gold-p);font-weight:600}
+.nav-auth{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.btn-login{font-size:13px;font-weight:600;color:var(--im);border:1.5px solid var(--cd);background:none;padding:7px 14px;border-radius:30px;transition:all .2s}
+.btn-login:hover{border-color:var(--gold);color:var(--gold-d)}
+.btn-register{font-size:13px;font-weight:600;color:#fff;background:var(--gold);border:none;padding:7px 14px;border-radius:30px;box-shadow:0 3px 12px rgba(184,151,90,.3);transition:all .2s}
+.btn-register:hover{background:var(--gold-d)}
+.nav-user{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--im)}
+.nav-av{width:32px;height:32px;background:var(--gold-p);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--gold-d)}
+.btn-out{font-size:12px;color:var(--il);background:none;border:none;cursor:pointer;transition:color .2s}
+.btn-out:hover{color:var(--red)}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:6px;cursor:pointer;background:none;border:none}
+.hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px}
+.mob-drawer{display:none;flex-direction:column;background:var(--white);border-top:1px solid var(--border);padding:16px 20px 20px;gap:4px}
+.mob-drawer.open{display:flex}
+.mob-drawer button{text-align:right;font-size:15px;font-weight:500;color:var(--im);background:none;border:none;padding:11px 0;border-bottom:1px solid var(--cd);cursor:pointer;transition:color .2s}
+.mob-drawer button:hover{color:var(--gold)}
+.mob-auth{display:flex;gap:10px;margin-top:14px}
+.mob-auth button{flex:1;text-align:center;border-radius:30px;padding:11px}
+@media(max-width:760px){.nav-links,.nav-auth{display:none}.hamburger{display:flex}}
+
+/* LAYOUT */
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.pt{padding-top:62px}
+.sec{padding:72px 0 56px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--fb);font-weight:600;font-size:15px;padding:13px 28px;border-radius:50px;border:none;cursor:pointer;transition:all .25s var(--ease);white-space:nowrap}
+.btn-gold{background:var(--gold);color:#fff;box-shadow:0 4px 18px rgba(184,151,90,.3)}
+.btn-gold:hover{background:var(--gold-d);transform:translateY(-2px)}
+.btn-dark{background:var(--ink);color:#fff;box-shadow:0 4px 18px rgba(28,24,16,.2)}
+.btn-dark:hover{background:var(--im);transform:translateY(-2px)}
+.btn-out2{background:transparent;color:var(--ink);border:1.5px solid var(--cd)}
+.btn-out2:hover{border-color:var(--gold);color:var(--gold-d)}
+.btn-green{background:var(--green);color:#fff;box-shadow:0 4px 18px rgba(37,211,102,.3)}
+.btn-green:hover{background:#1da851;transform:translateY(-2px)}
+.btn-sm{font-size:13px;padding:9px 18px}
+.btn-full{width:100%}
+.btn[disabled]{opacity:.65;pointer-events:none}
+
+/* EYEBROW */
+.ey{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);border-radius:30px;padding:4px 14px;margin-bottom:14px}
+
+/* SECTION TITLE */
+.st{font-family:var(--fd);font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:14px}
+.ss{font-size:16px;color:var(--is);font-weight:300;max-width:560px;margin-bottom:44px;line-height:1.8}
+.div{width:48px;height:2px;background:var(--gold);margin-bottom:28px}
+.center{text-align:center}
+.center .ss,.center .div{margin-left:auto;margin-right:auto}
+
+/* CARD */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px 24px;box-shadow:var(--sh1)}
+
+/* ALERTS */
+.al{border-radius:var(--r);padding:14px 18px;font-size:14px;line-height:1.65;margin-bottom:12px}
+.al-gold{background:var(--gold-p);border:1px solid rgba(184,151,90,.3);color:var(--im)}
+.al-red{background:#fdf2f2;border:1px solid rgba(192,57,43,.25);color:#922b21}
+.al-green{background:#f0fdf4;border:1px solid rgba(37,211,102,.3);color:#166534}
+
+/* FORM */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fi{display:flex;flex-direction:column;gap:6px}
+.fi.full{grid-column:1/-1}
+.fi label{font-size:13px;font-weight:600;color:var(--im)}
+.fi label .r{color:var(--gold-d)}
+.fi input,.fi textarea,.fi select{padding:11px 14px;border:1.5px solid var(--cd);border-radius:var(--r);font-size:14px;color:var(--ink);background:var(--cream);outline:none;transition:border-color .2s,box-shadow .2s}
+.fi input:focus,.fi textarea:focus,.fi select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,151,90,.12);background:var(--white)}
+.fi textarea{resize:vertical;min-height:90px}
+.ferr{font-size:12px;color:var(--red);margin-top:4px;display:none}
+.ferr.show{display:block}
+.cc{font-size:11px;color:var(--il);text-align:left}
+.cc.warn{color:var(--red)}
+.pill-g{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.pill{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:var(--im);padding:8px 16px;border-radius:30px;border:1.5px solid var(--cd);cursor:pointer;transition:all .2s;user-select:none;min-height:44px}
+@media(max-width:760px){.pill{font-size:15px;padding:10px 16px}}
+.pill.sel{border-color:var(--gold);background:var(--gold-p);color:var(--gold-d);font-weight:600}
+.pill input{display:none}
+.upz{border:2px dashed var(--cd);border-radius:var(--r);padding:24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.upz:hover{border-color:var(--gold);background:var(--gold-p)}
+.upz p{font-size:14px;color:var(--is);margin-top:8px}
+.upz small{font-size:12px;color:var(--il)}
+#imgP{max-width:110px;max-height:110px;border-radius:var(--r);margin:10px auto 0;display:none;object-fit:cover}
+@media(max-width:560px){.fg{grid-template-columns:1fr}}
+
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(28,24,16,.72);z-index:200;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.ov.open{display:flex}
+.modal{background:var(--white);border-radius:var(--rl);width:100%;max-width:460px;padding:36px 28px;position:relative;animation:pi .26s var(--ease);margin:auto}
+@keyframes pi{from{opacity:0;transform:scale(.95) translateY(14px)}to{opacity:1;transform:none}}
+.mc{position:absolute;top:14px;left:16px;width:30px;height:30px;background:var(--cm);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--is);cursor:pointer}
+.mc:hover{background:var(--cd)}
+.modal h3{font-family:var(--fd);font-size:22px;margin-bottom:6px}
+.modal .ms{font-size:14px;color:var(--is);margin-bottom:22px}
+
+/* AUTH */
+.aw{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 20px 40px}
+.abox{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:38px 30px;width:100%;max-width:430px;box-shadow:var(--sh2)}
+.alogo{text-align:center;margin-bottom:24px;font-family:var(--fd);font-size:22px;font-weight:700}
+.alogo .g{color:var(--gold)}
+.abox h2{font-family:var(--fd);font-size:23px;font-weight:700;margin-bottom:6px}
+.asub{font-size:14px;color:var(--is);margin-bottom:24px}
+.asw{text-align:center;margin-top:18px;font-size:14px;color:var(--is)}
+.asw a{color:var(--gold-d);font-weight:600;cursor:pointer;text-decoration:underline}
+.pw-wrap{position:relative}
+.pw-wrap input{padding-left:40px!important}
+.pw-eye{position:absolute;left:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--il);cursor:pointer;font-size:15px;padding:0;line-height:1}
+@media(max-width:480px){.abox{padding:28px 16px}.fg{grid-template-columns:1fr!important}}
+
+/* PROGRESS BAR */
+.prog-bar{width:100%;height:5px;background:var(--cd);border-radius:3px;margin-bottom:22px;overflow:hidden}
+.prog-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .4s var(--ease)}
+
+/* HOME */
+.hero{padding:96px 0 64px;text-align:center}
+.hero-ring{font-size:52px;display:block;margin-bottom:18px}
+.ht{font-family:var(--fd);font-size:clamp(32px,5vw,54px);font-weight:900;color:var(--ink);line-height:1.15;margin-bottom:16px}
+.ht em{font-style:normal;color:var(--gold)}
+.hs{font-size:17px;color:var(--is);font-weight:300;max-width:500px;margin:0 auto 40px;line-height:1.85}
+.ncs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:620px;margin:0 auto 44px}
+.nc{background:var(--white);border:1.5px solid var(--border);border-radius:var(--rl);padding:28px 18px;text-align:center;cursor:pointer;transition:all .25s var(--ease);box-shadow:var(--sh1)}
+.nc:hover{border-color:var(--gold);box-shadow:var(--sh2);transform:translateY(-3px)}
+.nc-icon{font-size:36px;margin-bottom:12px;display:block}
+.nc-title{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.nc-desc{font-size:13px;color:var(--is);line-height:1.55}
+@media(max-width:480px){.ncs{grid-template-columns:1fr;max-width:320px}}
+.tr{display:flex;gap:22px;justify-content:center;flex-wrap:wrap}
+.ti{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--is)}
+.td{color:var(--gold);font-size:16px}
+.astrip{background:var(--ink);color:var(--cream);padding:52px 0}
+.asi{max-width:680px;margin:0 auto;text-align:center}
+.asi h2{font-family:var(--fd);font-size:24px;font-weight:700;color:var(--cream);margin-bottom:18px}
+.asi p{font-size:15px;color:rgba(250,248,243,.68);line-height:1.9;margin-bottom:12px;font-weight:300}
+.asi strong{color:var(--gold-l);font-weight:600}
+
+/* RULES */
+.rb{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px 22px 18px;margin-bottom:14px}
+.rbt{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.rn{width:28px;height:28px;border-radius:50%;background:var(--gold-p);color:var(--gold-d);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rb p{font-size:14px;color:var(--is);line-height:1.8;font-weight:300}
+.pvb{background:var(--ink);border-radius:var(--r);padding:26px 22px;margin-top:6px}
+.pvb h3{font-family:var(--fd);font-size:18px;color:var(--cream);margin-bottom:12px}
+.pvb p{font-size:14px;color:rgba(250,248,243,.62);line-height:1.8;font-weight:300;margin-bottom:8px}
+.pvb li{font-size:14px;color:rgba(250,248,243,.62);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.07);display:flex;gap:8px}
+.pvb li:last-child{border-bottom:none}
+
+/* BUILDER */
+.bl{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+.bs{position:sticky;top:78px}
+@media(max-width:860px){.bl{grid-template-columns:1fr}.bs{position:static}}
+.pt-tip{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:20px}
+.pt-tip h3{font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:14px}
+.ptg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.ptc{background:var(--cm);border-radius:10px;padding:13px 14px}
+.ptc .ptt{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.ptc p{font-size:12px;color:var(--is);line-height:1.6}
+.nogo{background:#fdf2f2;border-radius:10px;padding:12px 14px}
+.nogo p{font-size:13px;color:#922b21;line-height:1.65}
+.mcs{margin-bottom:22px}
+.mcg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:18px}
+.mci{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:18px;transition:box-shadow .2s}
+.mci:hover{box-shadow:var(--sh1)}
+.cb-pills{display:flex;gap:8px;margin-bottom:24px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.cb-pills::-webkit-scrollbar{display:none}
+.cpp{font-size:12px;font-weight:600;padding:6px 11px;border-radius:30px;background:var(--cm);color:var(--il);white-space:nowrap;border:1.5px solid var(--cd);transition:all .2s;flex-shrink:0}
+.cpp.active{background:var(--gold-p);color:var(--gold-d);border-color:var(--gold)}
+.cpp.done{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.cbp{display:none}.cbp.active{display:block}
+.cbl{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:2px solid var(--gold-p)}
+.cbf{display:flex;align-items:center;justify-content:space-between;margin-top:24px;padding-top:18px;border-top:1px solid var(--cd);gap:10px}
+.bb{background:var(--cm);color:var(--im);border:none;padding:10px 18px;border-radius:30px;font-size:13px;font-weight:600;cursor:pointer}
+.bb:hover{background:var(--cd)}
+.cp2{font-size:12px;color:var(--il)}
+.prev-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden}
+.pch{background:var(--ink);color:var(--cream);padding:13px 16px;font-size:13px;font-weight:600}
+.pcb{padding:16px;font-size:13px;line-height:1.9;color:var(--im);white-space:pre-wrap;direction:rtl;max-height:400px;overflow-y:auto}
+.pca{padding:12px 16px;border-top:1px solid var(--cd);display:flex;gap:8px}
+
+/* PUBLISH */
+.psg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px}
+.ps{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px 16px;text-align:center}
+.psn{width:44px;height:44px;background:var(--ink);color:var(--gold-l);font-family:var(--fd);font-size:20px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.ps h4{font-family:var(--fd);font-size:15px;font-weight:700;margin-bottom:7px}
+.ps p{font-size:13px;color:var(--is);line-height:1.65}
+@media(max-width:700px){.psg{grid-template-columns:1fr 1fr}}
+@media(max-width:400px){.psg{grid-template-columns:1fr}}
+.prc{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:560px;margin:0 auto}
+@media(max-width:480px){.prc{grid-template-columns:1fr}}
+.pcard{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:26px 20px;text-align:center;position:relative;transition:box-shadow .25s;cursor:pointer}
+.pcard:hover{box-shadow:var(--sh2)}
+.pcard.feat{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.pbadge{position:absolute;top:-11px;right:50%;transform:translateX(50%);background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:4px 13px;border-radius:20px}
+.pname{font-family:var(--fd);font-size:17px;font-weight:700;margin-bottom:6px}
+.pdesc{font-size:13px;color:var(--is);margin-bottom:16px}
+.pamt{font-family:var(--fd);font-size:36px;font-weight:900;color:var(--ink)}
+.pcur{font-size:18px;vertical-align:super;color:var(--is)}
+.pnote{font-size:12px;color:var(--il);margin-top:4px;margin-bottom:16px}
+.pfeat{text-align:right;margin:14px 0;list-style:none}
+.pfeat li{font-size:13px;color:var(--im);padding:5px 0;border-bottom:1px solid var(--cd);display:flex;align-items:center;gap:7px}
+.pfeat li:last-child{border-bottom:none}
+.pfeat li::before{content:'✓';color:var(--gold-d);font-weight:700;flex-shrink:0}
+.mgr-btn{display:flex;align-items:center;gap:12px;background:var(--green);color:#fff;border:none;border-radius:var(--r);padding:14px 18px;cursor:pointer;width:100%;text-align:right;transition:background .2s;font-family:var(--fb);margin-bottom:10px}
+.mgr-btn:hover{background:#1da851}
+.mgr-btn-av{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+.mgr-btn-name{font-size:15px;font-weight:700}
+.mgr-btn-role{font-size:12px;opacity:.8}
+
+/* DASHBOARD */
+.dash-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+.dash-stat{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px;text-align:center;box-shadow:var(--sh1)}
+.dash-stat-num{font-family:var(--fd);font-size:36px;font-weight:900;color:var(--gold-d)}
+.dash-stat-lbl{font-size:13px;color:var(--is);margin-top:4px}
+.dash-card-row{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh1);transition:box-shadow .2s;margin-bottom:10px}
+.dash-card-row:hover{box-shadow:var(--sh2)}
+.dash-card-name{font-family:var(--fd);font-size:15px;font-weight:700;flex:1;color:var(--ink)}
+.dash-card-actions{display:flex;gap:6px;flex-shrink:0}
+.dash-action-btn{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--cd);background:none;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .2s}
+.dash-action-btn:hover{border-color:var(--gold);background:var(--gold-p)}
+.dash-action-btn.fav-active{border-color:#f59e0b;background:#fef3c7}
+.empty-state{text-align:center;padding:40px 20px;color:var(--is);font-size:15px}
+.reminder-bar{background:var(--gold-p);border:1px solid rgba(184,151,90,.3);border-radius:var(--r);padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;color:var(--im)}
+.pick-card-btn{display:block;width:100%;text-align:right;background:var(--cm);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;margin-bottom:8px;transition:background .2s}
+.pick-card-btn:hover{background:var(--gold-p);border-color:var(--gold)}
+
+/* ADMIN */
+.admin-section{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:20px}
+.admin-section h3{font-family:var(--fd);font-size:17px;font-weight:700;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--gold-p);display:flex;align-items:center;gap:8px}
+.admin-pkg-row{background:var(--cm);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.admin-pkg-row input{flex:1;min-width:80px;padding:8px 10px;border:1.5px solid var(--cd);border-radius:8px;font-size:13px;background:var(--white)}
+.admin-pkg-toggle{width:40px;height:22px;border-radius:11px;border:none;cursor:pointer;transition:background .2s;flex-shrink:0}
+.admin-pkg-toggle.on{background:var(--green)}
+.admin-pkg-toggle.off{background:var(--cd)}
+.admin-mgr-row{background:var(--cm);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.admin-mgr-row input{flex:1;min-width:80px;padding:8px 10px;border:1.5px solid var(--cd);border-radius:8px;font-size:13px;background:var(--white)}
+.admin-blocked-row{background:#fdf2f2;border:1px solid rgba(192,57,43,.2);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:8px}
+.btn-del{background:#fee2e2;color:#991b1b;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer}
+.btn-del:hover{background:#fecaca}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);font-size:14px;font-weight:600;padding:11px 22px;border-radius:30px;box-shadow:var(--sh3);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap}
+.toast.show{opacity:1}
+
+/* WA FLOAT BUTTON */
+.waf{position:fixed;bottom:28px;left:24px;z-index:90}
+.waf-btn{width:56px;height:56px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 20px rgba(37,211,102,.45);cursor:pointer;border:none;transition:transform .25s}
+.waf-btn:hover{transform:scale(1.1)}
+@media(max-width:760px){.waf{bottom:20px;left:16px}.waf-btn{width:50px;height:50px;font-size:22px}}
+.waf-panel{display:none;position:absolute;bottom:68px;left:0;background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh3);min-width:220px;overflow:hidden;animation:pi .2s var(--ease)}
+.waf-panel.open{display:block}
+.waf-panel-hdr{background:var(--ink);color:var(--cream);padding:11px 16px;font-size:13px;font-weight:600}
+.waf-mgr-btn{display:flex;align-items:center;gap:12px;width:100%;background:none;border:none;padding:13px 16px;cursor:pointer;border-bottom:1px solid var(--cd);text-align:right;transition:background .18s;font-family:var(--fb)}
+.waf-mgr-btn:last-child{border-bottom:none}
+.waf-mgr-btn:hover{background:var(--cm)}
+.waf-mgr-av{width:36px;height:36px;border-radius:50%;background:var(--gold-p);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--gold-d);flex-shrink:0}
+.waf-mgr-name{font-size:14px;font-weight:700;color:var(--ink);display:block}
+.waf-mgr-role{font-size:12px;color:var(--il)}
+
+/* FOOTER */
+footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
+.fi2{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.flog{font-family:var(--fd);font-size:18px;font-weight:700}
+.flog span{color:var(--gold-l)}
+.flinks{display:flex;gap:18px;flex-wrap:wrap}
+.flinks button{font-size:13px;color:rgba(250,248,243,.45);background:none;border:none;cursor:pointer;transition:color .2s}
+.flinks button:hover{color:var(--cream)}
+.fcp{font-size:12px;color:rgba(250,248,243,.3);width:100%;text-align:center;margin-top:14px}
+</style>
+</head>
+<body>
+
+<!-- Announcement Bar -->
+<div id="announcement-bar"></div>
+
+<!-- NAV -->
+<nav id="mn">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="go('home')">💍 שידוכים <span>באמונה</span></div>
+    <div class="nav-links">
+      <button class="nl" onclick="go('about')">📜 על הערוץ</button>
+      <button class="nl" onclick="go('rules')">📋 כללים</button>
+      <button class="nl" onclick="go('builder')">📝 יצירת כרטיס</button>
+      <button class="nl" onclick="go('publish')">💰 פרסום</button>
+    </div>
+    <div class="nav-auth" id="na">
+      <button class="btn-login" onclick="go('login')">כניסה</button>
+      <button class="btn-register" onclick="go('register')">הרשמה</button>
+    </div>
+    <div class="nav-user" id="nu" style="display:none">
+      <div class="nav-av" id="navi">א</div>
+      <span id="nname"></span>
+      <button class="btn btn-gold btn-sm" onclick="go('dashboard')" style="font-size:12px;padding:6px 12px">אזור אישי</button>
+      <button id="admin-nav-btn" class="btn btn-dark btn-sm" onclick="go('admin')" style="font-size:12px;padding:6px 12px;display:none">⚙️ ניהול</button>
+      <button class="btn-out" onclick="doLogout()">יציאה</button>
+    </div>
+    <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mob-drawer" id="md">
+    <button onclick="go('about')">📜 על הערוץ</button>
+    <button onclick="go('rules')">📋 כללים</button>
+    <button onclick="go('builder')">📝 יצירת כרטיס</button>
+    <button onclick="go('publish')">💰 פרסום ותשלום</button>
+    <button onclick="go('dashboard')" id="mob-dash-btn" style="display:none">👤 אזור אישי</button>
+    <button onclick="go('admin')" id="mob-admin-btn" style="display:none">⚙️ ניהול</button>
+    <div class="mob-auth" id="ma">
+      <button class="btn-login" style="border:1.5px solid var(--cd)" onclick="go('login')">כניסה</button>
+      <button class="btn-register" onclick="go('register')">הרשמה</button>
+    </div>
+    <div id="mur" style="display:none;padding:10px 0;font-size:14px;color:var(--im)">
+      מחובר: <span id="mun"></span>
+      <button onclick="doLogout()" style="color:var(--red);float:left;font-size:13px;background:none;border:none;cursor:pointer">יציאה</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================== HOME ============================== -->
+<div id="page-home" class="page active pt">
+  <div class="hero">
+    <div class="wrap">
+      <span class="hero-ring">💍</span>
+      <h1 class="ht">שידוכים <em>באמונה</em></h1>
+      <p class="hs">ערוץ שידוכים מכובד ודיסקרטי לגברים ונשים עם זיקה ליהדות.<br/>מכאן מתחיל הדרך למציאת הזיווג הנכון.</p>
+      <div class="ncs">
+        <div class="nc" onclick="go('about')"><span class="nc-icon">📜</span><div class="nc-title">על הערוץ</div><div class="nc-desc">מי אנחנו, מה המטרה ולמי זה מיועד</div></div>
+        <div class="nc" onclick="go('rules')"><span class="nc-icon">📋</span><div class="nc-title">כללי הערוץ</div><div class="nc-desc">חוקי ההתנהלות ושמירת הדיסקרטיות</div></div>
+        <div class="nc" onclick="go('builder')"><span class="nc-icon">📝</span><div class="nc-title">יצירת כרטיס שידוך</div><div class="nc-desc">בנו כרטיס מקצועי תוך דקה — חינם לחלוטין</div></div>
+        <div class="nc" onclick="go('publish')"><span class="nc-icon">💰</span><div class="nc-title">פרסום ותשלום</div><div class="nc-desc">איך מפרסמים ומהם מסלולי התשלום</div></div>
+      </div>
+      <div class="tr">
+        <div class="ti"><span class="td">✓</span>דיסקרטיות מלאה</div>
+        <div class="ti"><span class="td">✓</span>יצירת כרטיס חינמית</div>
+        <div class="ti"><span class="td">✓</span>תהליך פשוט וברור</div>
+        <div class="ti"><span class="td">✓</span>מכובד ורציני</div>
+      </div>
+    </div>
+  </div>
+  <div class="astrip">
+    <div class="wrap">
+      <div class="asi">
+        <h2>ברוכים הבאים לערוץ השידוכים ❤️</h2>
+        <p>ערוץ זה נועד לפרסום הצעות שידוך בלבד, במטרה לעזור לגברים ונשים למצוא את הזיווג המתאים להם בעזרת ה'.</p>
+        <p>הערוץ מיועד לציבור רחב עם זיקה ליהדות: <strong>דתיים, מסורתיים, מתחזקים, חוזרים בתשובה, חרדים, חרדים מודרניים, ברסלב, חב"ד</strong>, וכל מי שמחפש קשר רציני שמוביל לנישואין כדת משה וישראל.</p>
+        <p style="color:var(--gold-l);font-weight:600;margin-top:6px">בשם ה' נעשה ונצליח 🙏</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== ABOUT ============================== -->
+<div id="page-about" class="page pt">
+  <div class="sec"><div class="wrap">
+    <div class="ey">על הערוץ</div>
+    <h1 class="st">ברוכים הבאים לערוץ השידוכים ❤️</h1>
+    <div class="div"></div>
+    <div style="max-width:680px">
+      <div class="card" style="margin-bottom:16px"><p style="font-size:16px;line-height:1.9;color:var(--is);font-weight:300">ערוץ זה נועד לפרסום הצעות שידוך בלבד, במטרה לעזור לגברים ונשים למצוא את הזיווג המתאים להם בעזרת ה'.</p></div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:10px">למי מיועד הערוץ?</div>
+        <p style="font-size:15px;color:var(--is);line-height:1.9;font-weight:300">הערוץ מיועד לציבור רחב עם זיקה ליהדות: <strong style="color:var(--ink);font-weight:600">דתיים, מסורתיים, מתחזקים, חוזרים בתשובה, חרדים, חרדים מודרניים, ברסלב, חב"ד</strong>, וכל מי שמחפש קשר רציני שמוביל לנישואין כדת משה וישראל.</p>
+      </div>
+      <div class="card" style="background:var(--gold-p);border-color:rgba(184,151,90,.3)">
+        <div style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:10px">💛 ללא עלות</div>
+        <p style="font-size:15px;color:var(--im);line-height:1.85;font-weight:300">השימוש בערוץ הוא ללא עלות. גם אם בעזרת ה' תכירו כאן ותתחתנו – אין חובה לשלם דבר.</p>
+        <p style="margin-top:10px;font-size:15px;font-weight:700;color:var(--gold-d)">בשם ה' נעשה ונצליח 🙏</p>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- ============================== RULES ============================== -->
+<div id="page-rules" class="page pt">
+  <div class="sec"><div class="wrap">
+    <div class="ey">כללי הערוץ</div>
+    <h1 class="st">כללי הערוץ</h1>
+    <div class="div"></div>
+    <p style="font-size:15px;color:var(--is);max-width:620px;margin-bottom:28px;font-weight:300;line-height:1.8">כדי לשמור על איכות המשתתפים, כבוד הדדי וסביבה נעימה – חובה לכבד את הכללים הבאים.</p>
+    <div style="max-width:700px">
+      <div class="rb"><div class="rbt"><div class="rn">1</div>מטרת הערוץ</div><p>הערוץ מיועד לפרסום הצעות שידוך בלבד. רק הנהלת הערוץ רשאית לפרסם הודעות.</p></div>
+      <div class="rb"><div class="rbt"><div class="rn">2</div>שליחת כרטיס שידוך</div><p>שליחת פרטים לפרסום נעשית בהודעה פרטית בלבד למנהל הערוץ. יש לשלוח פרטים בצורה מכובדת, ברורה ואמיתית.</p></div>
+      <div class="rb"><div class="rbt"><div class="rn">3</div>פנייה למועמדים</div><p>לפני פנייה – יש לקרוא היטב את כרטיס השידוך ולבדוק התאמה בסיסית. אין לפנות כאשר ברור מראש שאין התאמה.</p></div>
+      <div class="rb"><div class="rbt"><div class="rn">4</div>צורת הפנייה</div><p>הפנייה חייבת להיות מכובדת, מנומסת וצנועה. הפנייה הראשונית נעשית בהודעת וואטסאפ בלבד.</p></div>
+      <div class="rb"><div class="rbt"><div class="rn">5</div>אם קיבלתם סירוב</div><p>אם קיבלתם תשובה שהשידוך פחות מתאים – יש לכבד זאת.</p></div>
+      <div class="rb"><div class="rbt"><div class="rn">6</div>גיל המשתתפים</div><p>הערוץ מיועד לגברים ונשים בגילאי <strong>18 עד 45 בלבד</strong>.</p></div>
+      <div class="pvb">
+        <h3>🔒 פרטיות ודיסקרטיות</h3>
+        <p><strong style="color:var(--cream)">חל איסור מוחלט על:</strong></p>
+        <ul style="list-style:none;margin:10px 0">
+          <li><span style="color:#e74c3c">✗</span> צילום מסך של כרטיסים</li>
+          <li><span style="color:#e74c3c">✗</span> הפצת כרטיסים מחוץ לערוץ</li>
+          <li><span style="color:#e74c3c">✗</span> העברת פרטים לאחרים ללא רשות</li>
+        </ul>
+        <p style="margin-top:10px;color:var(--gold-l);font-weight:600">שמירה על הכללים היא תנאי להשתתפות בערוץ.</p>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- ============================== BUILDER ============================== -->
+<div id="page-builder" class="page pt">
+  <div class="sec"><div class="wrap">
+    <div class="ey">יצירת כרטיס</div>
+    <h1 class="st">בנו את הכרטיס שלכם 📝</h1>
+    <div class="div"></div>
+    <p style="font-size:15px;color:var(--is);max-width:560px;margin-bottom:28px;font-weight:300;line-height:1.8">יצירת כרטיס היא <strong style="color:var(--ink)">חינמית לחלוטין</strong>. הכרטיס נבנה אוטומטית ומוכן לשיתוף. התשלום הוא רק על פרסום בערוץ.</p>
+    <div id="blp" class="al al-gold" style="max-width:640px;margin-bottom:20px;display:none">💡 <strong>רוצים לשמור את הכרטיס?</strong> <a href="#" onclick="go('login')" style="color:var(--gold-d);font-weight:700">התחברו</a> או <a href="#" onclick="go('register')" style="color:var(--gold-d);font-weight:700">הירשמו</a></div>
+    <div class="bl">
+      <div>
+        <div class="pt-tip">
+          <h3>📷 דגשים לתמונה</h3>
+          <div class="ptg">
+            <div class="ptc"><div class="ptt">👩 נשים</div><p>לבוש צנוע ומכובד.</p></div>
+            <div class="ptc"><div class="ptt">👨 גברים</div><p>לבוש מסודר ומכובד.</p></div>
+          </div>
+          <div class="nogo"><p>❌ <strong>אין לשלוח תמונות עם:</strong> הוצאת לשון, פרצופים לא רציניים.</p></div>
+        </div>
+
+        <!-- My cards (for logged in users) -->
+        <div class="mcs" id="mcs" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <h3 style="font-family:var(--fd);font-size:17px;font-weight:700">הכרטיסים שלי</h3>
+            <button class="btn btn-dark btn-sm" onclick="newCard()">+ כרטיס חדש</button>
+          </div>
+          <div class="mcg" id="mcg"></div>
+        </div>
+
+        <!-- FORM -->
+        <div class="card" style="padding:26px 22px" id="bform">
+          <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:25%"></div></div>
+          <div class="cb-pills">
+            <div class="cpp active" id="pp1">👤 פרטים</div>
+            <div class="cpp" id="pp2">🏡 רקע</div>
+            <div class="cpp" id="pp3">👪 משפחה</div>
+            <div class="cpp" id="pp4">💬 תוכן</div>
+            <div class="cpp" id="pp5">✅ סיום</div>
+          </div>
+
+          <!-- שלב 1 -->
+          <div class="cbp active" id="p1">
+            <div class="cbl">👤 פרטים אישיים</div>
+            <div class="fg">
+              <div class="fi"><label>שם פרטי <span class="r">*</span></label><input id="fn" placeholder="שם פרטי" maxlength="30" oninput="updatePreview()"/><div class="ferr" id="en">אנא הכנס/י שם</div></div>
+              <div class="fi"><label>שם משפחה</label><input id="fln" placeholder="שם משפחה" maxlength="30" oninput="updatePreview()"/></div>
+              <div class="fi"><label>גיל <span class="r">*</span></label><input type="text" inputmode="numeric" id="fa" placeholder="גיל" maxlength="3" oninput="updatePreview()"/><div class="ferr" id="ea">גיל תקין 18–80</div></div>
+              <div class="fi"><label>גובה</label><input id="fh" placeholder="170 ס״מ" maxlength="20" oninput="updatePreview()"/></div>
+              <div class="fi full"><label>מבנה גוף</label>
+                <select id="fb" onchange="chkBuild(this.value)"><option value="">בחר...</option><option>רזה</option><option>ממוצע</option><option>בינוני</option><option>ספורטיבי</option><option>מלא</option><option>אחר</option></select>
+                <input id="fb-other" placeholder="פרט מבנה גוף..." maxlength="40" style="margin-top:8px;display:none" oninput="updatePreview()"/>
+              </div>
+              <div class="fi full"><label>עדה</label><input id="fe" placeholder="אשכנזי, ספרדי, תימני..." maxlength="40" oninput="updatePreview()"/></div>
+              <div class="fi full"><label>סטטוס <span class="r">*</span></label><div class="pill-g" id="pg-st"></div><input type="hidden" id="fst"/></div>
+            </div>
+          </div>
+
+          <!-- שלב 2 -->
+          <div class="cbp" id="p2">
+            <div class="cbl">🏡 רקע ואורח חיים</div>
+            <div class="fg">
+              <div class="fi full"><label>עיר מגורים</label><input id="fc" placeholder="תל אביב, ירושלים..." maxlength="50" oninput="updatePreview()"/></div>
+              <div class="fi full"><label>מגזר / סגנון דתי</label>
+                <select id="fs" onchange="chkSector(this.value)"><option value="">בחר...</option><option>חרדי</option><option>חרדי מודרני</option><option>דתי לאומי</option><option>מסורתי</option><option>חוזר בתשובה</option><option>ברסלב</option><option>חב"ד</option><option>אחר</option></select>
+                <input id="fs-other" placeholder="פרט..." maxlength="40" style="margin-top:8px;display:none" oninput="updatePreview()"/>
+              </div>
+              <div class="fi full"><label>השכלה</label>
+                <select id="fed" onchange="chkEdu(this.value)"><option value="">בחר...</option><option>תיכונית</option><option>על תיכונית</option><option>תואר ראשון</option><option>תואר שני ומעלה</option><option>ישיבה</option><option>סמינר</option><option>אחר</option></select>
+                <input id="fed-other" placeholder="פרט..." maxlength="40" style="margin-top:8px;display:none" oninput="updatePreview()"/>
+              </div>
+              <div class="fi full"><label>שירות</label>
+                <div class="pill-g" id="pg-se"></div>
+                <input type="hidden" id="fse"/>
+                <input id="fse-other" placeholder="פרט את השירות..." maxlength="40" style="margin-top:8px;display:none" oninput="updatePreview()"/>
+              </div>
+              <div class="fi full"><label>עיסוק</label><input id="fj" placeholder="תחום עבודה / לימודים" maxlength="60" oninput="updatePreview()"/></div>
+            </div>
+          </div>
+
+          <!-- שלב 3 -->
+          <div class="cbp" id="p3">
+            <div class="cbl">👪 משפחה ואורח חיים</div>
+            <div class="fg">
+              <div class="fi full"><label>ילדים</label><div class="pill-g" id="pg-k"></div><input type="hidden" id="fk"/><input id="fkd" placeholder="פרטי ילדים..." maxlength="60" style="margin-top:8px;display:none" oninput="updatePreview()"/></div>
+              <div class="fi full"><label>רקע משפחתי בקצרה</label><input id="ff" placeholder="משפחה ירושלמית, הורים נשואים..." maxlength="120" oninput="updatePreview()"/></div>
+              <div class="fi full"><label>סוג כיסוי ראש</label>
+                <div class="pill-g" id="pg-cv"></div>
+                <input type="hidden" id="fcv"/>
+                <input id="fcv-other" placeholder="פרט סוג כיסוי ראש..." maxlength="40" style="margin-top:8px;display:none" oninput="updatePreview()"/>
+              </div>
+              <div class="fi"><label>שומר/ת נגיעה</label><div class="pill-g" id="pg-t"></div><input type="hidden" id="ft"/></div>
+              <div class="fi"><label>מעשן/ת</label><div class="pill-g" id="pg-sm"></div><input type="hidden" id="fsm"/></div>
+              <div class="fi full"><label>סוג טלפון</label><div class="pill-g" id="pg-ph"></div><input type="hidden" id="fph"/></div>
+            </div>
+          </div>
+
+          <!-- שלב 4 -->
+          <div class="cbp" id="p4">
+            <div class="cbl">💬 תוכן אישי</div>
+            <div class="fg">
+              <div class="fi full"><label>קצת עליי <span class="r">*</span> <small style="font-weight:400;color:var(--il)">(עד 500 תווים)</small></label><textarea id="fab" placeholder="ספרו על עצמכם – אופי, תחביבים, ערכים..." maxlength="500" oninput="cc(this,'cab',500)"></textarea><div class="cc" id="cab">0/500</div><div class="ferr" id="eab">אנא מלא/י שדה זה</div></div>
+              <div class="fi full"><label>מה אני מחפש/ת <span class="r">*</span> <small style="font-weight:400;color:var(--il)">(עד 500 תווים)</small></label><textarea id="flk" placeholder="גילאים, סגנון דתי, אזור, תכונות חשובות..." maxlength="500" oninput="cc(this,'clk',500)"></textarea><div class="cc" id="clk">0/500</div></div>
+              <div class="fi full" style="border-top:2px solid var(--gold-p);padding-top:16px">
+                <label style="font-size:14px;font-weight:700;color:var(--ink)">📩 פרטי יצירת קשר לפניות</label>
+                <p style="font-size:12px;color:var(--il);margin-bottom:10px;font-weight:300">השם והמספר שיופיעו בכרטיס</p>
+                <div class="fg" style="margin-top:0">
+                  <div class="fi"><label>שם לפניות <span class="r">*</span></label><input id="fcn" placeholder="שם + שם משפחה / כינוי" maxlength="50" oninput="updatePreview()"/><div class="ferr" id="ecn">אנא הכנס/י שם לפניות</div></div>
+                  <div class="fi"><label>מספר טלפון <span class="r">*</span></label><input type="tel" id="fct2" placeholder="05X-XXXXXXX" maxlength="20" oninput="updatePreview()"/><div class="ferr" id="ect">אנא הכנס/י מספר</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- שלב 5 -->
+          <div class="cbp" id="p5">
+            <div class="cbl">✅ הכרטיס מוכן!</div>
+            <div class="al al-green" style="margin-bottom:16px">🎉 הכרטיס שלכם נבנה בהצלחה ומוכן לשיתוף!</div>
+            <div id="fct" style="background:var(--cream);border:1px solid var(--border);border-radius:var(--r);padding:18px;font-size:13px;line-height:1.95;white-space:pre-wrap;direction:rtl;max-height:340px;overflow-y:auto;margin-bottom:14px"></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-dark btn-sm" id="cfb" onclick="cpFinal()">📋 העתק</button>
+              <button class="btn btn-out2 btn-sm" onclick="newCard()">+ כרטיס חדש</button>
+            </div>
+            <div id="scn" class="al al-gold" style="margin-top:14px;display:none">💾 הכרטיס נשמר לחשבון שלך.</div>
+          </div>
+
+          <div class="cbf" id="cbf">
+            <button class="bb" id="cbb" onclick="cprev()" style="visibility:hidden">→ חזרה</button>
+            <span class="cp2" id="cpp2">שלב 1 מתוך 4</span>
+            <button class="btn btn-gold btn-sm" id="cnext-btn" onclick="cnext()">הבא ←</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar preview -->
+      <div class="bs">
+        <div class="prev-card">
+          <div class="pch">👁 תצוגה מקדימה חיה</div>
+          <div class="pcb" id="lp">הכרטיס יופיע כאן תוך כדי מילוי...</div>
+          <div class="pca">
+            <button class="btn btn-out2 btn-sm" style="flex:1" onclick="cpPrev()">📋 העתק</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- ============================== PUBLISH ============================== -->
+<div id="page-publish" class="page pt">
+  <div class="sec"><div class="wrap">
+    <div class="ey">פרסום ותשלום</div>
+    <h1 class="st">פרסום כרטיס שידוך 💍</h1>
+    <div class="div"></div>
+    <div class="al al-gold" style="max-width:700px;margin-bottom:32px;display:flex;gap:12px;align-items:flex-start">
+      <span style="font-size:22px;flex-shrink:0">🔒</span>
+      <div><strong>תשלום מאובטח לחלוטין</strong><br/><span style="font-weight:300">התשלום מתבצע דרך אפליקציות מוכרות בלבד. האתר אינו שומר פרטי תשלום.</span></div>
+    </div>
+    <div class="psg" style="margin-bottom:44px">
+      <div class="ps"><div class="psn">1</div><h4>בחרו חבילה</h4><p>בחרו מסלול פרסום</p></div>
+      <div class="ps"><div class="psn">2</div><h4>שלמו חיצונית</h4><p>ביט, פייפאל וכד'</p></div>
+      <div class="ps"><div class="psn">3</div><h4>בחרו מנהל</h4><p>בחרו את המנהל לפנייה</p></div>
+      <div class="ps"><div class="psn">4</div><h4>שלחו כרטיס</h4><p>שלחו כרטיס + אישור תשלום</p></div>
+    </div>
+
+    <!-- שלב 1: בחירת חבילה -->
+    <div id="pay-step1">
+      <h2 class="st" style="margin-bottom:20px;font-size:22px">שלב 1 — בחרו חבילת פרסום</h2>
+      <div class="prc" id="pkg-list" style="max-width:600px"></div>
+    </div>
+
+    <!-- שלב 2: תשלום -->
+    <div id="pay-step2" style="display:none">
+      <h2 class="st" style="margin-bottom:8px;font-size:22px">שלב 2 — תשלום חיצוני</h2>
+      <p style="font-size:14px;color:var(--is);margin-bottom:20px">חבילה שנבחרה: <strong id="selected-pkg-name"></strong></p>
+      <div class="al al-gold" style="max-width:580px;margin-bottom:24px;font-size:15px;line-height:2">
+        <strong>כיצד לשלם:</strong><br/>
+        שלחו את הסכום דרך <strong>ביט / פייפאל / העברה בנקאית</strong><br/>
+        ושמרו את צילום המסך / הקבלה — תצטרכו לשלוח אותה למנהל.
+      </div>
+      <div class="al al-red" style="max-width:580px;margin-bottom:28px;font-size:15px;line-height:2">
+        ⚠️ <strong>ללא שליחת הודעה למנהל — הפרסום לא יבוצע!</strong><br/>
+        בשלב הבא תבחרו מנהל ותשלחו לו בוואטסאפ:<br/>
+        ✅ צילום מסך של התשלום או הקבלה<br/>
+        ✅ פרטי כרטיס השידוכים שלכם<br/>
+        ✅ תמונה (אם יש)
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px">
+        <button class="btn btn-gold" onclick="goPayStep(3)">שילמתי — המשך ←</button>
+        <button class="btn btn-out2" onclick="goPayStep(1)">← חזרה</button>
+      </div>
+    </div>
+
+    <!-- שלב 3: בחירת מנהל -->
+    <div id="pay-step3" style="display:none">
+      <h2 class="st" style="margin-bottom:8px;font-size:22px">שלב 3 — בחרו מנהל לפנייה</h2>
+      <p style="font-size:14px;color:var(--is);margin-bottom:16px">לחצו על המנהל — יפתח וואטסאפ עם תוכן הכרטיס שלכם</p>
+      <div class="al al-red" style="max-width:560px;margin-bottom:20px;font-size:14px;line-height:1.85">
+        ⚠️ <strong>ללא שליחת הודעה למנהל — הפרסום לא יבוצע!</strong><br/>
+        יש לשלוח בהודעת וואטסאפ:<br/>
+        ✅ צילום מסך של התשלום / הקבלה<br/>
+        ✅ פרטי כרטיס השידוכים<br/>
+        ✅ תמונה (אם יש)
+      </div>
+      <div id="managers-list" style="max-width:400px"></div>
+      <button class="btn btn-out2" style="margin-top:20px" onclick="goPayStep(2)">← חזרה</button>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- ============================== LOGIN ============================== -->
+<div id="page-login" class="page">
+  <div class="aw"><div class="abox">
+    <div class="alogo">💍 שידוכים <span class="g">באמונה</span></div>
+    <h2>כניסה לחשבון</h2>
+    <p class="asub">ברוכים השבים! נעים לראות אתכם שוב.</p>
+    <div id="l-alert" class="al" style="display:none"></div>
+    <div class="fg" style="grid-template-columns:1fr">
+      <div class="fi"><label>אימייל <span class="r">*</span></label><input type="email" id="lem" placeholder="your@email.com" autocomplete="email"/><div class="ferr" id="e-lem"></div></div>
+      <div class="fi"><label>סיסמה <span class="r">*</span></label>
+        <div class="pw-wrap"><input type="password" id="lpw" placeholder="סיסמה" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+        <button class="pw-eye" type="button" onclick="togglePw('lpw',this)">👁</button></div>
+        <div class="ferr" id="e-lpw"></div>
+      </div>
+      <button id="btn-login" class="btn btn-gold btn-full" onclick="doLogin()">כניסה</button>
+    </div>
+    <div class="asw">עדיין אין לך חשבון? <a onclick="go('register')">הירשם כאן</a></div>
+  </div></div>
+</div>
+
+<!-- ============================== REGISTER ============================== -->
+<div id="page-register" class="page">
+  <div class="aw"><div class="abox">
+    <div class="alogo">💍 שידוכים <span class="g">באמונה</span></div>
+    <h2>הרשמה</h2>
+    <p class="asub">צרו חשבון ושמרו את הכרטיסים שלכם</p>
+    <div id="r-alert" class="al" style="display:none"></div>
+    <div class="fg">
+      <div class="fi"><label>שם פרטי <span class="r">*</span></label><input id="rfn" placeholder="שם פרטי"/><div class="ferr" id="e-rfn"></div></div>
+      <div class="fi"><label>שם משפחה <span class="r">*</span></label><input id="rln" placeholder="שם משפחה"/><div class="ferr" id="e-rln"></div></div>
+      <div class="fi full"><label>טלפון <span class="r">*</span></label><input type="tel" id="rph" placeholder="05X-XXXXXXX"/><div class="ferr" id="e-rph"></div></div>
+      <div class="fi full"><label>אימייל <span class="r">*</span></label><input type="email" id="rem" placeholder="your@email.com"/><div class="ferr" id="e-rem"></div></div>
+      <div class="fi full"><label>סיסמה <span class="r">*</span></label>
+        <div class="pw-wrap"><input type="password" id="rpw" placeholder="לפחות 8 תווים"/>
+        <button class="pw-eye" type="button" onclick="togglePw('rpw',this)">👁</button></div>
+        <div class="ferr" id="e-rpw"></div>
+      </div>
+      <button id="btn-register" class="btn btn-gold btn-full fi full" onclick="doRegister()">הרשמה</button>
+    </div>
+    <div class="asw">כבר רשום? <a onclick="go('login')">כניסה כאן</a></div>
+  </div></div>
+</div>
+
+<!-- ============================== DASHBOARD ============================== -->
+<div id="page-dashboard" class="page pt">
+  <div class="sec"><div class="wrap" style="max-width:720px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+      <div>
+        <h1 class="st" style="margin-bottom:4px">שלום, <span id="dash-name"></span> 👋</h1>
+        <p style="font-size:14px;color:var(--is)">ברוכים הבאים לאזור האישי שלכם</p>
+      </div>
+      <button class="btn btn-gold" onclick="go('publish')">🚀 פרסם כרטיס עכשיו</button>
+    </div>
+
+    <!-- תזכורת -->
+    <div id="dash-reminder" class="reminder-bar" style="display:none">
+      <span>⏰ לא פרסמת לאחרונה — רוצה לפרסם שוב?</span>
+      <button class="btn btn-gold btn-sm" onclick="go('publish')">פרסם עכשיו</button>
+    </div>
+
+    <!-- סטטיסטיקות -->
+    <div class="dash-stats">
+      <div class="dash-stat"><div class="dash-stat-num" id="dash-balance">0</div><div class="dash-stat-lbl">פרסומים זמינים</div></div>
+      <div class="dash-stat"><div class="dash-stat-num" id="dash-card-count">0</div><div class="dash-stat-lbl">כרטיסים שיצרת</div></div>
+    </div>
+
+    <!-- מועדפים -->
+    <div id="dash-favs" style="display:none;margin-bottom:24px">
+      <h3 style="font-family:var(--fd);font-size:17px;font-weight:700;margin-bottom:12px">⭐ מועדפים</h3>
+      <div class="dash-cards-inner"></div>
+    </div>
+
+    <!-- כרטיסים -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <h3 style="font-family:var(--fd);font-size:17px;font-weight:700">הכרטיסים שלי</h3>
+      <button class="btn btn-dark btn-sm" onclick="go('builder')">+ כרטיס חדש</button>
+    </div>
+    <div id="dash-cards-list"></div>
+  </div></div>
+</div>
+
+<!-- ============================== ADMIN ============================== -->
+<div id="page-admin" class="page pt">
+  <div class="sec"><div class="wrap">
+    <div class="ey">ניהול</div>
+    <h1 class="st">מערכת ניהול ⚙️</h1>
+    <div class="div"></div>
+
+    <!-- סטטוס אתר -->
+    <div class="admin-section">
+      <h3>🌐 סטטוס האתר</h3>
+      <p id="admin-site-status-txt" style="font-size:14px;margin-bottom:14px"></p>
+      <button id="admin-site-btn" class="btn btn-sm" onclick="adminToggleSite()">טוען...</button>
+    </div>
+
+    <!-- הודעה כללית -->
+    <div class="admin-section">
+      <h3>📢 הודעה כללית</h3>
+      <textarea id="admin-announce-txt" class="fi" style="width:100%;min-height:80px;padding:10px;border:1.5px solid var(--cd);border-radius:var(--r);font-size:14px;margin-bottom:12px" placeholder="הודעה שתוצג לכל המשתמשים..."></textarea>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-gold btn-sm" onclick="adminSaveAnnounce()">שמור הודעה</button>
+        <button class="btn btn-out2 btn-sm" onclick="adminClearAnnounce()">בטל הודעה</button>
+      </div>
+    </div>
+
+    <!-- מסלולים -->
+    <div class="admin-section">
+      <h3>💰 מסלולי רכישה</h3>
+      <div id="admin-pkgs-list" style="margin-bottom:14px"></div>
+      <button class="btn btn-dark btn-sm" onclick="adminAddPkg()">+ מסלול חדש</button>
+    </div>
+
+    <!-- מנהלים -->
+    <div class="admin-section">
+      <h3>👥 מנהלים</h3>
+      <p style="font-size:12px;color:var(--il);margin-bottom:14px">שם · טלפון (972...) · תפקיד · ראשי תיבות</p>
+      <div id="admin-mgr-list" style="margin-bottom:14px"></div>
+      <button class="btn btn-dark btn-sm" onclick="adminAddMgr()">+ מנהל חדש</button>
+    </div>
+
+    <!-- VIP -->
+    <div class="admin-section">
+      <h3>⭐ הגדרות VIP</h3>
+      <div class="fg" style="max-width:500px">
+        <div class="fi"><label>מופעל</label><label style="display:flex;align-items:center;gap:8px;font-size:15px"><input type="checkbox" id="admin-vip-enabled" style="width:18px;height:18px"/> פעיל</label></div>
+        <div class="fi"><label>מחיר ₪</label><input type="number" id="admin-vip-price" placeholder="0"/></div>
+        <div class="fi full"><label>תיאור</label><input id="admin-vip-desc" placeholder="תיאור שירות VIP..."/></div>
+      </div>
+      <button class="btn btn-gold btn-sm" style="margin-top:14px" onclick="adminSaveVipForm()">שמור VIP</button>
+    </div>
+
+    <!-- כללים -->
+    <div class="admin-section">
+      <h3>📋 כללי האתר</h3>
+      <textarea id="admin-rules-txt" style="width:100%;min-height:160px;padding:10px;border:1.5px solid var(--cd);border-radius:var(--r);font-size:14px;margin-bottom:12px" placeholder="כתוב את כללי האתר..."></textarea>
+      <button class="btn btn-gold btn-sm" onclick="adminSaveRules()">שמור כללים</button>
+    </div>
+
+    <!-- חסימות -->
+    <div class="admin-section">
+      <h3>🚫 חסימת משתמשים</h3>
+      <div class="fg" style="max-width:600px;margin-bottom:16px">
+        <div class="fi"><label>טלפון</label><input id="admin-block-phone" placeholder="05X-XXXXXXX"/></div>
+        <div class="fi"><label>אימייל (אופציונלי)</label><input id="admin-block-email" placeholder="email@..."/></div>
+        <div class="fi full"><label>סיבה (למנהל בלבד)</label><input id="admin-block-reason" placeholder="סיבת החסימה..."/></div>
+      </div>
+      <button class="btn btn-sm" style="background:#c0392b;color:#fff;margin-bottom:20px" onclick="adminBlockUserForm()">חסום משתמש</button>
+      <h4 style="font-size:14px;font-weight:700;margin-bottom:10px">רשימת חסומים</h4>
+      <div id="admin-blocked-list"></div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- WA FLOAT BUTTON -->
+<div class="waf" id="waf">
+  <div class="waf-panel" id="waf-panel">
+    <div class="waf-panel-hdr">💬 פנו אלינו</div>
+    <button class="waf-mgr-btn" onclick="openWA('972535345994')">
+      <div class="waf-mgr-av">א</div>
+      <div><span class="waf-mgr-name">אלישע</span><span class="waf-mgr-role">מנהל ראשי · וואטסאפ</span></div>
+    </button>
+    <button class="waf-mgr-btn" onclick="openWA('972535346046')">
+      <div class="waf-mgr-av">ח</div>
+      <div><span class="waf-mgr-name">חנה</span><span class="waf-mgr-role">מנהלת · וואטסאפ</span></div>
+    </button>
+    <a href="mailto:s.b.0535345994@gmail.com" class="waf-mgr-btn" style="text-decoration:none">
+      <div class="waf-mgr-av" style="background:#fef3c7;border-color:#f59e0b;color:#d97706">✉️</div>
+      <div><span class="waf-mgr-name">מייל</span><span class="waf-mgr-role">s.b.0535345994@gmail.com</span></div>
+    </a>
+  </div>
+  <button class="waf-btn" onclick="toggleWAFloat()" title="צרו קשר בוואטסאפ">💬</button>
+</div>
+
+<!-- Modal: בחירת כרטיס לפרסום -->
+<div id="pick-card-modal" class="ov">
+  <div class="modal">
+    <button class="mc" onclick="closeModal('pick-card-modal')">✕</button>
+    <h3>בחר כרטיס לשליחה</h3>
+    <p class="ms">הכרטיס יישלח למנהל שבחרת דרך וואטסאפ</p>
+    <div id="pick-card-list"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<footer>
+  <div class="wrap">
+    <div class="fi2">
+      <div class="flog">💍 שידוכים <span>באמונה</span></div>
+      <div class="flinks">
+        <button onclick="go('about')">על הערוץ</button>
+        <button onclick="go('rules')">כללים</button>
+        <button onclick="go('builder')">יצירת כרטיס</button>
+      </div>
+    </div>
+    <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:13px;color:rgba(250,248,243,.5)">📞 יצירת קשר:</span>
+      <a onclick="openWA('972535345994')" style="cursor:pointer;display:flex;align-items:center;gap:7px;font-size:13px;color:var(--green);font-weight:600">
+        <span style="font-size:16px">💬</span> אלישע (מנהל ראשי)
+      </a>
+      <a onclick="openWA('972535346046')" style="cursor:pointer;display:flex;align-items:center;gap:7px;font-size:13px;color:var(--green);font-weight:600">
+        <span style="font-size:16px">💬</span> חנה (מנהלת)
+      </a>
+      <a href="mailto:s.b.0535345994@gmail.com" style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--gold-l);font-weight:600">
+        <span style="font-size:16px">✉️</span> מייל
+      </a>
+    </div>
+    <div class="fcp">© 2025 שידוכים באמונה · כל הזכויות שמורות</div>
+    <div class="fcp" style="margin-top:6px">Built by <a href="mailto:trqmsh3@gmail.com" style="color:var(--gold-l);font-weight:600;text-decoration:none" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">MG Studio</a></div>
+  </div>
+</footer>
+
+<script src="supabase.js"></script>
+<script src="app.js"></script>
+<script src="auth.js"></script>
+<script src="admin.js"></script>
+
+<script>
+function togglePw(id, btn) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const show = el.type === 'password';
+  el.type = show ? 'text' : 'password';
+  btn.textContent = show ? '🙈' : '👁';
+}
+</script>
+</body>
+</html>
