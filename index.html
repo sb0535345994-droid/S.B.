@@ -82,6 +82,14 @@ nav{position:fixed;top:0;right:0;left:0;z-index:100;background:rgba(250,248,243,
 }
 /* מניעת overflow אופקי */
 html,body{max-width:100%;overflow-x:hidden}
+@media(max-width:760px){
+  #page-builder .bl{display:block}
+  #page-builder .bl>*{width:100%;max-width:100%;min-width:0}
+  #page-builder .cb-pills{flex-wrap:nowrap;overflow-x:auto}
+  #page-builder .pill-g{flex-wrap:wrap}
+  #page-builder .fg{display:grid;grid-template-columns:1fr}
+  #page-builder .fi{min-width:0;max-width:100%}
+}
 
 /* LAYOUT */
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
@@ -606,7 +614,7 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
               <div class="fi"><label>גיל <span class="r">*</span></label><input type="text" inputmode="numeric" id="fa" placeholder="גיל" maxlength="3" oninput="updatePreview()"/><div class="ferr" id="ea">גיל תקין 18–80</div></div>
               <div class="fi"><label>גובה</label><input id="fh" placeholder="170 ס״מ" maxlength="20" oninput="updatePreview()"/></div>
               <div class="fi full"><label>מבנה גוף</label>
-                <select id="fb" onchange="chkBuild(this.value)"><option value="">בחר...</option><option>רזה</option><option>ממוצע</option><option>בינוני</option><option>ספורטיבי</option><option>מלא</option><option>אחר</option></select>
+                <select id="fb" onchange="chkBuild(this.value)"><option value="">בחר...</option><option>רזה</option><option>ממוצע</option><option>ספורטיבי</option><option>מלא</option><option>אחר</option></select>
                 <input id="fb-other" placeholder="פרט מבנה גוף..." maxlength="40" style="margin-top:8px;display:none" oninput="updatePreview()"/>
               </div>
               <div class="fi full"><label>עדה</label><input id="fe" placeholder="אשכנזי, ספרדי, תימני..." maxlength="40" oninput="updatePreview()"/></div>
@@ -743,6 +751,7 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
         ✅ פרטי כרטיס השידוכים שלכם<br/>
         ✅ תמונה (אם יש)
       </div>
+      <p style="font-size:13px;color:var(--il);margin-bottom:20px">ביצוע תשלום מהווה אישור לתקנון האתר</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px">
         <button class="btn btn-gold" onclick="goPayStep(3)">שילמתי — המשך ←</button>
         <button class="btn btn-out2" onclick="goPayStep(1)">← חזרה</button>
@@ -781,6 +790,12 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
         <button class="pw-eye" type="button" onclick="togglePw('lpw',this)">👁</button></div>
         <div class="ferr" id="e-lpw"></div>
       </div>
+      <div id="terms-wrap-login" class="fi full">
+        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:13px;color:var(--im)">
+          <input type="checkbox" id="terms-check-login" style="width:16px;height:16px;margin-top:2px;flex-shrink:0"/>
+          <span>קראתי ואני מאשר/ת את <a onclick="go('rules')" style="color:var(--gold-d);font-weight:600;cursor:pointer;text-decoration:underline">תקנון האתר</a></span>
+        </label>
+      </div>
       <button id="btn-login" class="btn btn-gold btn-full" onclick="doLogin()">כניסה</button>
     </div>
     <div class="asw">עדיין אין לך חשבון? <a onclick="go('register')">הירשם כאן</a></div>
@@ -803,6 +818,12 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
         <div class="pw-wrap"><input type="password" id="rpw" placeholder="לפחות 8 תווים" onkeydown="if(event.key==='Enter')doRegister()"/>
         <button class="pw-eye" type="button" onclick="togglePw('rpw',this)">👁</button></div>
         <div class="ferr" id="e-rpw"></div>
+      </div>
+      <div id="terms-wrap-register" class="fi full">
+        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:13px;color:var(--im)">
+          <input type="checkbox" id="terms-check-register" style="width:16px;height:16px;margin-top:2px;flex-shrink:0"/>
+          <span>קראתי ואני מאשר/ת את <a onclick="go('rules')" style="color:var(--gold-d);font-weight:600;cursor:pointer;text-decoration:underline">תקנון האתר</a></span>
+        </label>
       </div>
       <button id="btn-register" class="btn btn-gold btn-full fi full" onclick="doRegister()">הרשמה</button>
     </div>
@@ -900,9 +921,9 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
 
     <!-- כללים -->
     <div class="admin-section">
-      <h3>📋 כללי האתר</h3>
-      <textarea id="admin-rules-txt" style="width:100%;min-height:160px;padding:10px;border:1.5px solid var(--cd);border-radius:var(--r);font-size:14px;margin-bottom:12px" placeholder="כתוב את כללי האתר..."></textarea>
-      <button class="btn btn-gold btn-sm" onclick="adminSaveRules()">שמור כללים</button>
+      <h3>📋 תקנון הערוץ</h3>
+      <textarea id="admin-rules-txt" style="width:100%;min-height:160px;padding:10px;border:1.5px solid var(--cd);border-radius:var(--r);font-size:14px;margin-bottom:12px" placeholder="כתוב את תקנון הערוץ..."></textarea>
+      <button class="btn btn-gold btn-sm" onclick="adminSaveRules()">שמור תקנון</button>
     </div>
 
     <!-- הוספת פרסומים -->
@@ -920,7 +941,6 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
       <h3>🚫 חסימת משתמשים</h3>
       <div class="fg" style="max-width:600px;margin-bottom:16px">
         <div class="fi"><label>טלפון</label><input id="admin-block-phone" placeholder="05X-XXXXXXX"/></div>
-        <div class="fi"><label>אימייל (אופציונלי)</label><input id="admin-block-email" placeholder="email@..."/></div>
         <div class="fi full"><label>סיבה (למנהל בלבד)</label><input id="admin-block-reason" placeholder="סיבת החסימה..."/></div>
       </div>
       <button class="btn btn-sm" style="background:#c0392b;color:#fff;margin-bottom:20px" onclick="adminBlockUserForm()">חסום משתמש</button>
@@ -988,6 +1008,7 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
     </div>
     <div class="fcp">© 2025 שידוכים באמונה · כל הזכויות שמורות</div>
     <div class="fcp" style="margin-top:6px">Built by <a href="mailto:trqmsh3@gmail.com" style="color:var(--gold-l);font-weight:600;text-decoration:none" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">MG Studio</a></div>
+    <div class="fcp" style="margin-top:10px;font-size:12px;color:rgba(250,248,243,.35);line-height:1.6">האתר משמש כפלטפורמה בלבד וכל ההתקשרויות מתבצעות מחוץ לאתר ובאחריות המשתמשים</div>
   </div>
 </footer>
 

@@ -135,6 +135,9 @@ function go(name, pushState = true) {
 
   if (name === 'dashboard') loadDashboard();
   if (name === 'publish')   initPublish();
+  if (name === 'login' || name === 'register') {
+    if (typeof applyTermsUI === 'function') applyTermsUI();
+  }
 
   document.getElementById('md')?.classList.remove('open');
 }
@@ -572,7 +575,7 @@ function buildText(d) {
     '💼 עיסוק: '  + (d.job||'–'),
     '',
     '👨‍👩‍👧 רקע משפחתי: '  + (d.family_bg||'–'),
-    '🧕 כיסוי ראש: '   + (d.cover||'–'),
+    '👑 כיסוי ראש: '   + (d.cover||'–'),
     '🤝 שומר/ת נגיעה: '+ (d.touch||'–'),
     '🚬 מעשן/ת: '       + (d.smoke||'–'),
     '📱 סוג טלפון: '   + (d.phone_type||'–'),

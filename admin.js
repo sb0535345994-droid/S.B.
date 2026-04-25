@@ -79,7 +79,7 @@ async function adminSaveRules() {
   const rules = document.getElementById('admin-rules-txt')?.value || '';
   const { error } = await adminSaveSiteSettings({ general_rules: rules });
   if (error) { toast('שגיאה: ' + error.message); return; }
-  toast('כללים נשמרו ✓');
+  toast('תקנון נשמר ✓');
 }
 
 // ============================================================
@@ -187,7 +187,6 @@ function renderBlockedList(blocked) {
     <div class="admin-blocked-row">
       <div>
         <strong>${esc(b.phone||'–')}</strong>
-        ${b.email?' · '+esc(b.email):''}
         ${b.reason?' · '+esc(b.reason):''}
       </div>
       <button class="btn-del" onclick="adminUnblockUser('${b.id}')">בטל חסימה</button>
@@ -195,12 +194,11 @@ function renderBlockedList(blocked) {
 }
 async function adminBlockUserForm() {
   const phone  = document.getElementById('admin-block-phone')?.value?.trim();
-  const email  = document.getElementById('admin-block-email')?.value?.trim().toLowerCase();
   const reason = document.getElementById('admin-block-reason')?.value?.trim();
-  if (!phone && !email) { toast('הכנס טלפון או אימייל'); return; }
-  const { error } = await adminBlockUser({ phone, email, reason });
+  if (!phone) { toast('הכנס מספר טלפון'); return; }
+  const { error } = await adminBlockUser({ phone, reason });
   if (error) { toast('שגיאה: ' + error.message); return; }
-  ['admin-block-phone','admin-block-email','admin-block-reason'].forEach(id=>{
+  ['admin-block-phone','admin-block-reason'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.value='';
   });
   renderBlockedList(await adminGetBlocked());

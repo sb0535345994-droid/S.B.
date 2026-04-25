@@ -9,6 +9,17 @@ function v(id) {
 }
 
 // ============================================================
+// תקנון — הסתרת תיבת הסימון אם כבר אושר
+// ============================================================
+function applyTermsUI() {
+  const accepted = localStorage.getItem('sb_terms_accepted') === '1';
+  ['login','register'].forEach(page => {
+    const wrap = document.getElementById('terms-wrap-' + page);
+    if (wrap) wrap.style.display = accepted ? 'none' : 'block';
+  });
+}
+
+// ============================================================
 // הרשמה
 // ============================================================
 async function doRegister() {
@@ -29,10 +40,20 @@ async function doRegister() {
   if (!password || password.length < 8) { showFieldErr('e-rpw','סיסמה חייבת להיות לפחות 8 תווים'); ok=false; }
   if (!ok) return;
 
+  // בדיקת תקנון
+  const termsWrap = document.getElementById('terms-wrap-register');
+  if (termsWrap && termsWrap.style.display !== 'none') {
+    const termsCheck = document.getElementById('terms-check-register');
+    if (!termsCheck?.checked) {
+      showAlert('r-alert', 'עליך לאשר את תקנון האתר כדי להירשם', 'red');
+      return;
+    }
+  }
+
   setBtnLoading('btn-register', true);
 
-  // בדיקת חסימה לפי טלפון ואימייל לפני הרשמה
-  const blocked = await isBlocked(phone, email);
+  // בדיקת חסימה לפי טלפון לפני הרשמה
+  const blocked = await isBlocked(phone);
   if (blocked) {
     showAlert('r-alert', 'משתמש זה חסום. לפרטים פנה למנהל.', 'red');
     setBtnLoading('btn-register', false);
@@ -48,10 +69,10 @@ async function doRegister() {
   }
 
   setBtnLoading('btn-register', false);
+  localStorage.setItem('sb_terms_accepted', '1');
 
   if (data?.session && data?.user) {
     // מחובר מיידית (Email Confirm = OFF)
-    // יוצר profile + balance
     await ensureProfileAndBalance(data.user, { first_name: firstName, last_name: lastName, phone });
     currentUser = data.user;
     const { data: profile } = await getProfile(data.user.id);
@@ -97,15 +118,17 @@ async function doLogin() {
   if (!email)    { showFieldErr('e-lem','אנא הכנס אימייל'); return; }
   if (!password) { showFieldErr('e-lpw','אנא הכנס סיסמה'); return; }
 
-  setBtnLoading('btn-login', true);
-
-  // בדיקת חסימה לפי אימייל לפני כניסה
-  const blockedEmail = await isBlocked(null, email);
-  if (blockedEmail) {
-    showAlert('l-alert', 'משתמש זה חסום. לפרטים פנה למנהל.', 'red');
-    setBtnLoading('btn-login', false);
-    return;
+  // בדיקת תקנון
+  const termsWrap = document.getElementById('terms-wrap-login');
+  if (termsWrap && termsWrap.style.display !== 'none') {
+    const termsCheck = document.getElementById('terms-check-login');
+    if (!termsCheck?.checked) {
+      showAlert('l-alert', 'עליך לאשר את תקנון האתר כדי להתחבר', 'red');
+      return;
+    }
   }
+
+  setBtnLoading('btn-login', true);
 
   const { data, error } = await sbSignIn(email, password);
 
@@ -120,7 +143,7 @@ async function doLogin() {
 
   // בדיקת חסימה לפי טלפון (מהפרופיל)
   if (profile?.phone) {
-    const blockedPhone = await isBlocked(profile.phone, null);
+    const blockedPhone = await isBlocked(profile.phone);
     if (blockedPhone) {
       await sbSignOut();
       currentUser = null; currentProfile = null;
@@ -130,6 +153,7 @@ async function doLogin() {
     }
   }
 
+  localStorage.setItem('sb_terms_accepted', '1');
   currentUser    = data.user;
   currentProfile = profile;
 

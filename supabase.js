@@ -46,13 +46,18 @@ async function createProfile(uid, { first_name, last_name, phone }) {
 // ============================================================
 // BLOCKED
 // ============================================================
-async function isBlocked(phone, email) {
+function normalizePhone(phone) {
+  if (!phone) return '';
+  const digits = String(phone).replace(/\D/g, '');
+  if (digits.startsWith('972') && digits.length === 12) return '0' + digits.slice(3);
+  return digits;
+}
+
+async function isBlocked(phone) {
   try {
-    const conditions = [];
-    if (phone?.trim()) conditions.push(`phone.eq.${phone.trim()}`);
-    if (email?.trim()) conditions.push(`email.eq.${email.trim().toLowerCase()}`);
-    if (!conditions.length) return false;
-    const { data } = await sb.from('blocked_users').select('id').or(conditions.join(',')).limit(1);
+    const normalized = normalizePhone(phone);
+    if (!normalized) return false;
+    const { data } = await sb.from('blocked_users').select('id').eq('phone', normalized).limit(1);
     return !!(data && data.length > 0);
   } catch { return false; }
 }
@@ -171,10 +176,9 @@ async function adminGetBlocked() {
   return data || [];
 }
 
-async function adminBlockUser({ phone, email, reason }) {
+async function adminBlockUser({ phone, reason }) {
   return await sb.from('blocked_users').insert({
-    phone: phone || null,
-    email: email?.toLowerCase() || null,
+    phone: normalizePhone(phone) || null,
     reason: reason || ''
   });
 }
