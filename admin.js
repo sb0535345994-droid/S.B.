@@ -160,6 +160,23 @@ async function adminDeleteMgrItem(id) {
 }
 
 // ============================================================
+// הוספת פרסומים
+// ============================================================
+async function adminAddPublicationsForm() {
+  const phone = document.getElementById('admin-pub-phone')?.value?.trim();
+  const count = +(document.getElementById('admin-pub-count')?.value) || 0;
+  if (!phone) { toast('הכנס מספר טלפון'); return; }
+  if (!count || count < 1) { toast('הכנס כמות תקינה'); return; }
+  const { data: profile, error: profileErr } = await getProfileByPhone(phone);
+  if (profileErr || !profile) { toast('משתמש לא נמצא'); return; }
+  const { error } = await adminAddPublications(profile.id, count);
+  if (error) { toast('שגיאה: ' + error.message); return; }
+  const el = document.getElementById('admin-pub-phone');
+  if (el) el.value = '';
+  toast(`✓ נוספו ${count} פרסומים ל-${profile.first_name}`);
+}
+
+// ============================================================
 // חסימות
 // ============================================================
 function renderBlockedList(blocked) {
@@ -216,5 +233,3 @@ async function adminSaveVipForm() {
   toast('VIP נשמר ✓');
 }
 
-// helper
-function esc(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }

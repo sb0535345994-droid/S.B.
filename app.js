@@ -16,6 +16,7 @@ let siteSettings   = {};
 document.addEventListener('DOMContentLoaded', async () => {
 
   await loadPublicData();
+  renderWAFloat();
 
   if (siteSettings.site_enabled === false) {
     showSiteClosed();
@@ -122,7 +123,7 @@ function go(name, pushState = true) {
   else { go('home'); return; }
 
   document.querySelectorAll('.nl').forEach(l => l.classList.remove('active'));
-  const nlMap = { about: 'על הערוץ', rules: 'כללים', builder: 'יצירת', publish: 'פרסום' };
+  const nlMap = { about: 'על הערוץ', rules: 'תקנון', builder: 'יצירת', publish: 'פרסום' };
   if (nlMap[name]) {
     document.querySelectorAll('.nl').forEach(l => {
       if (l.textContent.includes(nlMap[name])) l.classList.add('active');
@@ -393,9 +394,10 @@ function validateStep1() {
 
 function validateStep4() {
   let ok = true;
-  if (!v('fab').trim()) { se('eab'); ok=false; } else { he('eab'); }
-  if (!v('fcn').trim()) { se('ecn'); ok=false; } else { he('ecn'); }
-  if (!v('fct2').trim()){ se('ect'); ok=false; } else { he('ect'); }
+  if (!v('fab').trim())  { se('eab'); ok=false; } else { he('eab'); }
+  if (!v('flk').trim())  { se('elk'); ok=false; } else { he('elk'); }
+  if (!v('fcn').trim())  { se('ecn'); ok=false; } else { he('ecn'); }
+  if (!v('fct2').trim()) { se('ect'); ok=false; } else { he('ect'); }
   return ok;
 }
 
@@ -457,6 +459,50 @@ function collectCard() {
   };
 }
 
+// טוען select — אם הערך לא ברשימה, בוחר "אחר" ומציג שדה חופשי
+function loadSelectOrOther(selId, otherInputId, val, onchangeFn) {
+  if (!val) return;
+  const el = document.getElementById(selId);
+  if (!el) return;
+  const stdVals = Array.from(el.options).map(o => o.value || o.text).filter(Boolean);
+  if (stdVals.includes(val)) {
+    selOpt(selId, val);
+    onchangeFn(val);
+  } else {
+    selOpt(selId, 'אחר');
+    sv(otherInputId, val);
+    onchangeFn('אחר');
+  }
+}
+
+// טוען pill group — אם הערך לא ברשימה, בוחר "אחר" ומציג שדה חופשי
+function loadPillOrOther(grpId, hidId, otherInputId, val, stdOpts) {
+  if (!val) return;
+  const h = document.getElementById(hidId);
+  if (h) h.value = val;
+  if (stdOpts.includes(val)) {
+    const grp = document.getElementById(grpId);
+    if (grp) grp.querySelectorAll('.pill').forEach(p => {
+      const inp = p.querySelector('input');
+      if (inp && inp.value === val) {
+        p.classList.add('sel');
+        const entry = Object.entries(PGS).find(([id]) => id === grpId);
+        if (entry && entry[1].cb) entry[1].cb(val);
+      }
+    });
+  } else {
+    // ערך מותאם אישית — בחר "אחר" וצג שדה
+    const grp = document.getElementById(grpId);
+    if (grp) grp.querySelectorAll('.pill').forEach(p => {
+      const inp = p.querySelector('input');
+      if (inp && inp.value === 'אחר') p.classList.add('sel');
+    });
+    const other = document.getElementById(otherInputId);
+    if (other) { other.value = val; other.style.display = 'block'; }
+    if (h) h.value = val;
+  }
+}
+
 function loadCardToForm(c) {
   sv('fn',c.first_name); sv('fln',c.last_name);
   sv('fa',c.age); sv('fh',c.height);
@@ -466,26 +512,20 @@ function loadCardToForm(c) {
   sv('fcn',c.contact_name); sv('fct2',c.contact_phone);
   sv('fkd',c.kids_detail||'');
 
-  selOpt('fb',c.build); chkBuild(c.build||'');
-  selOpt('fs',c.sector); chkSector(c.sector||'');
-  selOpt('fed',c.edu); chkEdu(c.edu||'');
+  loadSelectOrOther('fb',  'fb-other',  c.build||'',  chkBuild);
+  loadSelectOrOther('fs',  'fs-other',  c.sector||'', chkSector);
+  loadSelectOrOther('fed', 'fed-other', c.edu||'',    chkEdu);
 
   sp2('fst',c.marital_status);
   sp2('fk',c.kids);
-  sp2('fcv',c.cover);
+  loadPillOrOther('pg-cv','fcv','fcv-other', c.cover||'',   ['מטפחת','פאה','אחר']);
+  loadPillOrOther('pg-se','fse','fse-other', c.service||'', ['צבאי','לאומי','ישיבה','כולל','פטור','לא רלוונטי','אחר']);
   sp2('ft',c.touch);
   sp2('fsm',c.smoke);
   sp2('fph',c.phone_type);
-  sp2('fse',c.service);
 
-  const fkd  = document.getElementById('fkd');
+  const fkd = document.getElementById('fkd');
   if (fkd) fkd.style.display = c.kids==='כן' ? 'block' : 'none';
-  const fcvO = document.getElementById('fcv-other');
-  if (fcvO) { fcvO.style.display = c.cover==='אחר' ? 'block' : 'none'; }
-  const fseO = document.getElementById('fse-other');
-  if (fseO) fseO.style.display = c.service==='אחר' ? 'block' : 'none';
-  const fbO  = document.getElementById('fb-other');
-  if (fbO)  fbO.style.display  = c.build==='אחר'  ? 'block' : 'none';
 
   showBuilderStep(1);
   updatePreview();
@@ -624,9 +664,9 @@ function chkSector(val) { const el=document.getElementById('fs-other');  if(el) 
 function chkEdu(val)    { const el=document.getElementById('fed-other'); if(el) el.style.display=val==='אחר'?'block':'none'; updatePreview(); }
 
 function updateProgressBar() {
-  const fills=[0,25,50,75,100];
+  const fills=[25,50,75,100,100];
   const pf=document.getElementById('prog-fill');
-  if(pf) pf.style.width=(fills[Math.min(cbStep-1,4)]||0)+'%';
+  if(pf) pf.style.width=(fills[Math.min(cbStep-1,4)]||25)+'%';
 }
 
 function copyToClipboard(txt,cb) {
@@ -667,6 +707,23 @@ function closeModal(id) {
 // ============================================================
 // WA FLOAT BUTTON
 // ============================================================
+function renderWAFloat() {
+  const panel = document.getElementById('waf-panel');
+  if (!panel) return;
+  const mgrBtns = siteManagers.map(m => `
+    <button class="waf-mgr-btn" onclick="openWA('${m.phone.replace(/\D/g,'')}')">
+      <div class="waf-mgr-av">${esc(m.initials || m.name?.[0] || 'מ')}</div>
+      <div><span class="waf-mgr-name">${esc(m.name)}</span><span class="waf-mgr-role">${esc(m.role_title||'מנהל')} · וואטסאפ</span></div>
+    </button>`).join('');
+  panel.innerHTML = `
+    <div class="waf-panel-hdr">💬 פנו אלינו</div>
+    ${mgrBtns}
+    <a href="mailto:s.b.0535345994@gmail.com" class="waf-mgr-btn" style="text-decoration:none">
+      <div class="waf-mgr-av" style="background:#fef3c7;border-color:#f59e0b;color:#d97706">✉️</div>
+      <div><span class="waf-mgr-name">מייל</span><span class="waf-mgr-role">s.b.0535345994@gmail.com</span></div>
+    </a>`;
+}
+
 function openWA(phone) {
   const clean = String(phone).replace(/\D/g,'');
   window.open('https://wa.me/' + clean, '_blank');

@@ -244,6 +244,15 @@ async function adminSaveVip(fields) {
   return { error };
 }
 
+async function getProfileByPhone(phone) {
+  const { data, error } = await sb
+    .from('profiles')
+    .select('id, first_name, last_name')
+    .eq('phone', phone.trim())
+    .single();
+  return { data, error };
+}
+
 async function adminAddPublications(userId, count) {
   const current = await getBalance(userId);
   const { error } = await sb
