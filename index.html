@@ -611,7 +611,7 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
             <div class="fg">
               <div class="fi"><label>שם פרטי <span class="r">*</span></label><input id="fn" placeholder="שם פרטי" maxlength="30" oninput="updatePreview()"/><div class="ferr" id="en">אנא הכנס/י שם</div></div>
               <div class="fi"><label>שם משפחה</label><input id="fln" placeholder="שם משפחה" maxlength="30" oninput="updatePreview()"/></div>
-              <div class="fi"><label>גיל <span class="r">*</span></label><input type="text" inputmode="numeric" id="fa" placeholder="גיל" maxlength="3" oninput="updatePreview()"/><div class="ferr" id="ea">גיל תקין 18–80</div></div>
+              <div class="fi"><label>גיל <span class="r">*</span></label><input type="number" inputmode="numeric" id="fa" placeholder="גיל" min="18" oninput="updatePreview()"/><div class="ferr" id="ea">גיל מינימלי 18</div></div>
               <div class="fi"><label>גובה</label><input id="fh" placeholder="170 ס״מ" maxlength="20" oninput="updatePreview()"/></div>
               <div class="fi full"><label>מבנה גוף</label>
                 <select id="fb" onchange="chkBuild(this.value)"><option value="">בחר...</option><option>רזה</option><option>ממוצע</option><option>ספורטיבי</option><option>מלא</option><option>אחר</option></select>

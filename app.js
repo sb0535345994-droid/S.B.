@@ -391,7 +391,7 @@ function validateStep1() {
   let ok = true;
   if (!v('fn').trim()) { se('en'); ok=false; } else { he('en'); }
   const age = parseInt(v('fa'));
-  if (!age || age < 18 || age > 80) { se('ea'); ok=false; } else { he('ea'); }
+  if (!age || age < 18) { se('ea'); ok=false; } else { he('ea'); }
   return ok;
 }
 
