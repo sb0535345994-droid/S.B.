@@ -107,22 +107,36 @@ function renderAdminPkgs(pkgs) {
   list.innerHTML = pkgs.map(p => `
     <div class="admin-pkg-row" data-id="${p.id}">
       <button class="admin-pkg-toggle ${p.is_active?'on':'off'}" onclick="adminTogglePkg('${p.id}',${!p.is_active})" title="${p.is_active?'כבה':'הפעל'}"></button>
-      <input value="${esc(p.name)}"  placeholder="שם" onchange="adminEditPkgField('${p.id}','name',this.value)" style="max-width:110px"/>
-      <input value="${esc(p.price)}" placeholder="₪" type="number" onchange="adminEditPkgField('${p.id}','price',+this.value)" style="max-width:70px"/>
-      <input value="${esc(p.publications_count)}" placeholder="כמות" type="number" onchange="adminEditPkgField('${p.id}','publications_count',+this.value)" style="max-width:70px"/>
-      <input value="${esc(p.marketing_label||'')}" placeholder="תווית" onchange="adminEditPkgField('${p.id}','marketing_label',this.value)" style="max-width:130px"/>
-      <input value="${esc(p.payment_link||'')}" placeholder="קישור תשלום (PayPal...)" onchange="adminEditPkgField('${p.id}','payment_link',this.value)" style="max-width:220px"/>
+      <input value="${esc(p.name)}"  placeholder="שם" data-field="name" style="max-width:110px"/>
+      <input value="${esc(p.price)}" placeholder="₪" type="number" data-field="price" style="max-width:70px"/>
+      <input value="${esc(p.publications_count)}" placeholder="כמות" type="number" data-field="publications_count" style="max-width:70px"/>
+      <input value="${esc(p.marketing_label||'')}" placeholder="תווית" data-field="marketing_label" style="max-width:130px"/>
+      <input value="${esc(p.payment_link||'')}" placeholder="קישור תשלום (PayPal...)" data-field="payment_link" style="max-width:220px"/>
       <label style="font-size:12px;display:flex;align-items:center;gap:4px;white-space:nowrap">
-        <input type="checkbox" ${p.is_popular?'checked':''} onchange="adminEditPkgField('${p.id}','is_popular',this.checked)"/> פופולרי
+        <input type="checkbox" ${p.is_popular?'checked':''} data-field="is_popular"/> פופולרי
       </label>
       <button class="btn-del" onclick="adminDeletePkgItem('${p.id}')">🗑️</button>
     </div>`).join('');
 }
 
-async function adminEditPkgField(id, field, val) {
-  const { error } = await adminSavePackage({ id, [field]: val });
-  if (error) toast('שגיאה: ' + error.message);
+async function adminSaveAllPkgs() {
+  const rows = document.querySelectorAll('.admin-pkg-row');
+  let errors = 0;
+  for (const row of rows) {
+    const id = row.dataset.id;
+    const fields = { id };
+    row.querySelectorAll('[data-field]').forEach(el => {
+      const f = el.dataset.field;
+      if (el.type === 'checkbox') fields[f] = el.checked;
+      else if (el.type === 'number') fields[f] = +el.value;
+      else fields[f] = el.value;
+    });
+    const { error } = await adminSavePackage(fields);
+    if (error) errors++;
+  }
+  toast(errors ? 'שגיאה בשמירת ' + errors + ' מסלולים' : 'מסלולים נשמרו ✓');
 }
+
 async function adminTogglePkg(id, active) {
   const { error } = await adminSavePackage({ id, is_active: active });
   if (error) { toast('שגיאה'); return; }
@@ -150,16 +164,25 @@ function renderAdminMgrs(mgrs) {
   if (!list) return;
   list.innerHTML = mgrs.map(m => `
     <div class="admin-mgr-row" data-id="${m.id}">
-      <input value="${esc(m.name)}"        placeholder="שם"     onchange="adminEditMgrField('${m.id}','name',this.value)"/>
-      <input value="${esc(m.phone)}"       placeholder="972..."  onchange="adminEditMgrField('${m.id}','phone',this.value)"/>
-      <input value="${esc(m.role_title||'')}" placeholder="תפקיד" onchange="adminEditMgrField('${m.id}','role_title',this.value)" style="max-width:120px"/>
-      <input value="${esc(m.initials||'')}"   placeholder="ר"    onchange="adminEditMgrField('${m.id}','initials',this.value)" style="max-width:50px"/>
+      <input value="${esc(m.name)}"           placeholder="שם"    data-field="name"/>
+      <input value="${esc(m.phone)}"          placeholder="972..." data-field="phone"/>
+      <input value="${esc(m.role_title||'')}" placeholder="תפקיד" data-field="role_title" style="max-width:120px"/>
+      <input value="${esc(m.initials||'')}"   placeholder="ר"     data-field="initials" style="max-width:50px"/>
       <button class="btn-del" onclick="adminDeleteMgrItem('${m.id}')">🗑️</button>
     </div>`).join('');
 }
-async function adminEditMgrField(id, field, val) {
-  const { error } = await adminSaveManager({ id, [field]: val });
-  if (error) toast('שגיאה: ' + error.message);
+
+async function adminSaveAllMgrs() {
+  const rows = document.querySelectorAll('.admin-mgr-row');
+  let errors = 0;
+  for (const row of rows) {
+    const id = row.dataset.id;
+    const fields = { id };
+    row.querySelectorAll('[data-field]').forEach(el => { fields[el.dataset.field] = el.value; });
+    const { error } = await adminSaveManager(fields);
+    if (error) errors++;
+  }
+  toast(errors ? 'שגיאה בשמירת ' + errors + ' מנהלים' : 'מנהלים נשמרו ✓');
 }
 async function adminAddMgr() {
   const { error } = await adminSaveManager({ name:'מנהל חדש', phone:'972', role_title:'', initials:'מ', is_active:true, display_order:99 });
