@@ -4,8 +4,6 @@
 
 let currentUser    = null;
 let currentProfile = null;
-let userCards      = [];
-let userBalance    = 0;
 let siteManagers   = [];
 let sitePackages   = [];
 let siteSettings   = {};
@@ -65,56 +63,38 @@ async function loadPublicData() {
 // NAV
 // ============================================================
 function updateNav() {
-  const navAuth  = document.getElementById('na');
   const navUser  = document.getElementById('nu');
   const navName  = document.getElementById('nname');
   const navAv    = document.getElementById('navi');
-  const mobAuth  = document.getElementById('ma');
   const mobUser  = document.getElementById('mur');
   const mobName  = document.getElementById('mun');
   const adminBtn = document.getElementById('admin-nav-btn');
-  const mobDash  = document.getElementById('mob-dash-btn');
   const mobAdmin = document.getElementById('mob-admin-btn');
 
   if (currentProfile) {
-    navAuth && (navAuth.style.display = 'none');
     navUser && (navUser.style.display = 'flex');
     navName && (navName.textContent = currentProfile.first_name);
     navAv   && (navAv.textContent   = currentProfile.first_name?.[0] || 'א');
-    mobAuth && (mobAuth.style.display = 'none');
     mobUser && (mobUser.style.display = 'block');
-    mobName && (mobName.textContent = currentProfile.first_name + ' ' + currentProfile.last_name);
-    mobDash && (mobDash.style.display = 'block');
+    mobName && (mobName.textContent = currentProfile.first_name);
     const isAdmin = currentProfile.role === 'admin';
     if (adminBtn) adminBtn.style.display = isAdmin ? 'inline-flex' : 'none';
     if (mobAdmin) mobAdmin.style.display = isAdmin ? 'block' : 'none';
   } else {
-    navAuth && (navAuth.style.display = 'flex');
     navUser && (navUser.style.display = 'none');
-    mobAuth && (mobAuth.style.display = 'flex');
     mobUser && (mobUser.style.display = 'none');
-    mobDash && (mobDash.style.display = 'none');
     if (adminBtn) adminBtn.style.display = 'none';
     if (mobAdmin) mobAdmin.style.display = 'none';
   }
-
-  const blp = document.getElementById('blp');
-  if (blp) blp.style.display = currentProfile ? 'none' : 'block';
 }
 
 // ============================================================
 // ניווט
 // ============================================================
 function go(name, pushState = true) {
-  if (name === 'dashboard' && !currentUser) { go('login'); return; }
   if (name === 'admin') {
     if (!currentUser || currentProfile?.role !== 'admin') { go('home'); return; }
     loadAdmin();
-  }
-  if (name === 'publish' && !currentUser) {
-    toast('יש להתחבר כדי לפרסם');
-    go('login');
-    return;
   }
 
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -133,9 +113,8 @@ function go(name, pushState = true) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (pushState) { try { history.pushState({ page: name }, '', '#' + name); } catch(e) {} }
 
-  if (name === 'dashboard') loadDashboard();
-  if (name === 'publish')   initPublish();
-  if (name === 'login' || name === 'register') {
+  if (name === 'publish') initPublish();
+  if (name === 'login') {
     if (typeof applyTermsUI === 'function') applyTermsUI();
   }
 
@@ -144,103 +123,6 @@ function go(name, pushState = true) {
 
 window.addEventListener('popstate', e => go(e.state?.page || 'home', false));
 
-// ============================================================
-// DASHBOARD
-// ============================================================
-async function loadDashboard() {
-  if (!currentUser) return;
-
-  const [cardsRes, balance] = await Promise.all([
-    getCards(currentUser.id),
-    getBalance(currentUser.id)
-  ]);
-
-  userCards   = cardsRes.data || [];
-  userBalance = balance;
-
-  const elName  = document.getElementById('dash-name');
-  const elBal   = document.getElementById('dash-balance');
-  const elCount = document.getElementById('dash-card-count');
-  if (elName)  elName.textContent  = currentProfile?.first_name || '';
-  if (elBal)   elBal.textContent   = userBalance;
-  if (elCount) elCount.textContent = userCards.length;
-
-  renderDashCards();
-  checkReminder();
-}
-
-function renderDashCards() {
-  const favEl  = document.getElementById('dash-favs');
-  const listEl = document.getElementById('dash-cards-list');
-  if (!listEl) return;
-
-  const favs    = userCards.filter(c => c.is_favorite);
-  const regular = userCards.filter(c => !c.is_favorite);
-
-  if (favEl) {
-    favEl.style.display = favs.length ? 'block' : 'none';
-    const inner = favEl.querySelector('.dash-cards-inner');
-    if (inner) inner.innerHTML = favs.map(cardRow).join('');
-  }
-
-  if (!userCards.length) {
-    listEl.innerHTML = `<div class="empty-state">
-      <div style="font-size:48px;margin-bottom:12px">📝</div>
-      <p>עדיין אין כרטיסים. <a onclick="go('builder')" style="color:var(--gold-d);font-weight:700;cursor:pointer">צור כרטיס ראשון ←</a></p>
-    </div>`;
-    return;
-  }
-  listEl.innerHTML = regular.map(cardRow).join('');
-}
-
-function cardRow(c) {
-  const name = [c.first_name, c.last_name].filter(Boolean).join(' ') || 'ללא שם';
-  return `<div class="dash-card-row">
-    <div class="dash-card-name">${esc(name)}</div>
-    <div class="dash-card-actions">
-      <button class="dash-action-btn ${c.is_favorite?'fav-active':''}" title="מועדף" onclick="toggleFav('${c.id}',${!c.is_favorite})">⭐</button>
-      <button class="dash-action-btn" title="ערוך" onclick="editCard('${c.id}')">✏️</button>
-      <button class="dash-action-btn" title="העתק" onclick="copyCard('${c.id}')">📋</button>
-      <button class="dash-action-btn" title="מחק" onclick="confirmDeleteCard('${c.id}')">🗑️</button>
-    </div>
-  </div>`;
-}
-
-async function toggleFav(cardId, isFav) {
-  const { error } = await toggleFavorite(currentUser.id, cardId, isFav);
-  if (error) { toast('שגיאה: ' + error.message); return; }
-  await loadDashboard();
-}
-
-async function copyCard(cardId) {
-  const card = userCards.find(c => c.id === cardId);
-  if (!card) return;
-  copyToClipboard(buildText(card), () => toast('הועתק! ✓'));
-}
-
-async function editCard(cardId) {
-  const card = userCards.find(c => c.id === cardId);
-  if (!card) return;
-  currentCardId = card.id;
-  loadCardToForm(card);
-  go('builder');
-}
-
-async function confirmDeleteCard(cardId) {
-  if (!confirm('למחוק כרטיס זה לצמיתות?')) return;
-  const { error } = await deleteCard(currentUser.id, cardId);
-  if (error) { toast('שגיאה במחיקה: ' + error.message); return; }
-  toast('כרטיס נמחק');
-  await loadDashboard();
-}
-
-function checkReminder() {
-  const rem = document.getElementById('dash-reminder');
-  if (!rem || !userCards.length) { if (rem) rem.style.display='none'; return; }
-  const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-  const hasOld = userCards.some(c => new Date(c.updated_at).getTime() < sevenDaysAgo);
-  rem.style.display = hasOld ? 'block' : 'none';
-}
 
 // ============================================================
 // PUBLISH
@@ -250,10 +132,6 @@ let selectedManager = null;
 
 async function initPublish() {
   await loadPublicData();
-  if (currentUser) {
-    const res = await getCards(currentUser.id);
-    userCards = res.data || [];
-  }
   renderPackages();
   renderManagersSelect();
   goPayStep(1);
@@ -308,13 +186,9 @@ function renderManagersSelect() {
 function selectManager(mgrId) {
   selectedManager = siteManagers.find(m => m.id === mgrId);
   if (!selectedManager) return;
-  if (userCards.length > 0) {
-    openPickCardModal();
-  } else {
-    // פתח WA ללא כרטיס — בלי טקסט אוטומטי
-    const phone = selectedManager.phone.replace(/\D/g,'');
-    window.open('https://wa.me/' + phone, '_blank');
-  }
+  const phone = selectedManager.phone.replace(/\D/g,'');
+  const txt = window._card || '';
+  window.open('https://wa.me/' + phone + (txt ? '?text=' + encodeURIComponent(txt) : ''), '_blank');
 }
 
 function goPayStep(n) {
@@ -340,31 +214,6 @@ function goPayStep(n) {
   }
 }
 
-function openPickCardModal() {
-  const el   = document.getElementById('pick-card-modal');
-  const list = document.getElementById('pick-card-list');
-  if (!el || !list) return;
-  if (!userCards.length) {
-    list.innerHTML = `<p style="color:var(--is);padding:10px 0">עדיין אין כרטיסים שמורים. <a onclick="closeModal('pick-card-modal');go('builder')" style="color:var(--gold-d);font-weight:700;cursor:pointer">צור כרטיס ←</a></p>`;
-  } else {
-    list.innerHTML = userCards.map(c => {
-      const name = [c.first_name, c.last_name].filter(Boolean).join(' ') || 'ללא שם';
-      return `<button class="pick-card-btn" onclick="sendCardToManager('${c.id}')">${esc(name)}</button>`;
-    }).join('');
-  }
-  el.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function sendCardToManager(cardId) {
-  const card = userCards.find(c => c.id === cardId);
-  if (!card || !selectedManager) return;
-  // שולח רק תוכן הכרטיס — ללא הודעת פתיחה אוטומטית
-  const txt = buildText(card);
-  const phone = selectedManager.phone.replace(/\D/g,'');
-  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(txt), '_blank');
-  closeModal('pick-card-modal');
-}
 
 // ============================================================
 // BUILDER
@@ -423,18 +272,6 @@ function validateStep4() {
 async function finishCard() {
   if (!validateStep4()) return;
   const card = collectCard();
-
-  if (currentUser) {
-    const payload = currentCardId ? { ...card, id: currentCardId } : card;
-    const { data, error } = await saveCard(currentUser.id, payload);
-    if (error) { toast('שגיאה בשמירה: ' + error.message); return; }
-    if (data?.id) currentCardId = data.id;
-    const res = await getCards(currentUser.id);
-    userCards = res.data || [];
-    const scn = document.getElementById('scn');
-    if (scn) scn.style.display = 'block';
-  }
-
   const txt = buildText(card);
   window._card  = txt;
   window._cdata = card;

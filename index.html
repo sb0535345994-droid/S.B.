@@ -352,14 +352,9 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
       <button class="nl" onclick="go('builder')">📝 יצירת כרטיס</button>
       <button class="nl" onclick="go('publish')">💰 פרסום</button>
     </div>
-    <div class="nav-auth" id="na">
-      <button class="btn-login" onclick="go('login')">כניסה</button>
-      <button class="btn-register" onclick="go('register')">הרשמה</button>
-    </div>
     <div class="nav-user" id="nu" style="display:none">
       <div class="nav-av" id="navi">א</div>
       <span id="nname"></span>
-      <button class="btn btn-gold btn-sm" onclick="go('dashboard')" style="font-size:12px;padding:6px 12px">אזור אישי</button>
       <button id="admin-nav-btn" class="btn btn-dark btn-sm" onclick="go('admin')" style="font-size:12px;padding:6px 12px;display:none">⚙️ ניהול</button>
       <button class="btn-out" onclick="doLogout()">יציאה</button>
     </div>
@@ -370,12 +365,7 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
     <button onclick="go('rules')">📋 תקנון הערוץ</button>
     <button onclick="go('builder')">📝 יצירת כרטיס</button>
     <button onclick="go('publish')">💰 פרסום ותשלום</button>
-    <button onclick="go('dashboard')" id="mob-dash-btn" style="display:none">👤 אזור אישי</button>
     <button onclick="go('admin')" id="mob-admin-btn" style="display:none">⚙️ ניהול</button>
-    <div class="mob-auth" id="ma">
-      <button class="btn-login" style="border:1.5px solid var(--cd)" onclick="go('login')">כניסה</button>
-      <button class="btn-register" onclick="go('register')">הרשמה</button>
-    </div>
     <div id="mur" style="display:none;padding:10px 0;font-size:14px;color:var(--im)">
       מחובר: <span id="mun"></span>
       <button onclick="doLogout()" style="color:var(--red);float:left;font-size:13px;background:none;border:none;cursor:pointer">יציאה</button>
@@ -573,7 +563,6 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
     <h1 class="st">בנו את הכרטיס שלכם 📝</h1>
     <div class="div"></div>
     <p style="font-size:15px;color:var(--is);max-width:560px;margin-bottom:28px;font-weight:300;line-height:1.8">יצירת כרטיס היא <strong style="color:var(--ink)">חינמית לחלוטין</strong>. הכרטיס נבנה אוטומטית ומוכן לשיתוף. התשלום הוא רק על פרסום בערוץ.</p>
-    <div id="blp" class="al al-gold" style="max-width:640px;margin-bottom:20px;display:none">💡 <strong>רוצים לשמור את הכרטיס?</strong> <a href="#" onclick="go('login')" style="color:var(--gold-d);font-weight:700">התחברו</a> או <a href="#" onclick="go('register')" style="color:var(--gold-d);font-weight:700">הירשמו</a></div>
     <div class="bl">
       <div>
         <div class="pt-tip">
@@ -585,14 +574,6 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
           <div class="nogo"><p>❌ <strong>אין לשלוח תמונות עם:</strong> הוצאת לשון, פרצופים לא רציניים.</p></div>
         </div>
 
-        <!-- My cards (for logged in users) -->
-        <div class="mcs" id="mcs" style="display:none">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-            <h3 style="font-family:var(--fd);font-size:17px;font-weight:700">הכרטיסים שלי</h3>
-            <button class="btn btn-dark btn-sm" onclick="newCard()">+ כרטיס חדש</button>
-          </div>
-          <div class="mcg" id="mcg"></div>
-        </div>
 
         <!-- FORM -->
         <div class="card" style="padding:26px 22px" id="bform">
@@ -687,7 +668,6 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
               <button class="btn btn-dark btn-sm" id="cfb" onclick="cpFinal()">📋 העתק</button>
               <button class="btn btn-out2 btn-sm" onclick="newCard()">+ כרטיס חדש</button>
             </div>
-            <div id="scn" class="al al-gold" style="margin-top:14px;display:none">💾 הכרטיס נשמר לחשבון שלך.</div>
           </div>
 
           <div class="cbf" id="cbf">
@@ -798,76 +778,10 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
       </div>
       <button id="btn-login" class="btn btn-gold btn-full" onclick="doLogin()">כניסה</button>
     </div>
-    <div class="asw">עדיין אין לך חשבון? <a onclick="go('register')">הירשם כאן</a></div>
   </div></div>
 </div>
 
-<!-- ============================== REGISTER ============================== -->
-<div id="page-register" class="page">
-  <div class="aw"><div class="abox">
-    <div class="alogo">💍 שידוכים <span class="g">באמונה</span></div>
-    <h2>הרשמה</h2>
-    <p class="asub">צרו חשבון ושמרו את הכרטיסים שלכם</p>
-    <div id="r-alert" class="al" style="display:none"></div>
-    <div class="fg">
-      <div class="fi"><label>שם פרטי <span class="r">*</span></label><input id="rfn" placeholder="שם פרטי"/><div class="ferr" id="e-rfn"></div></div>
-      <div class="fi"><label>שם משפחה <span class="r">*</span></label><input id="rln" placeholder="שם משפחה"/><div class="ferr" id="e-rln"></div></div>
-      <div class="fi full"><label>טלפון <span class="r">*</span></label><input type="tel" id="rph" placeholder="05X-XXXXXXX"/><div class="ferr" id="e-rph"></div></div>
-      <div class="fi full"><label>אימייל <span class="r">*</span></label><input type="email" id="rem" placeholder="your@email.com"/><div class="ferr" id="e-rem"></div></div>
-      <div class="fi full"><label>סיסמה <span class="r">*</span></label>
-        <div class="pw-wrap"><input type="password" id="rpw" placeholder="לפחות 8 תווים" onkeydown="if(event.key==='Enter')doRegister()"/>
-        <button class="pw-eye" type="button" onclick="togglePw('rpw',this)">👁</button></div>
-        <div class="ferr" id="e-rpw"></div>
-      </div>
-      <div id="terms-wrap-register" class="fi full">
-        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:13px;color:var(--im)">
-          <input type="checkbox" id="terms-check-register" style="width:16px;height:16px;margin-top:2px;flex-shrink:0"/>
-          <span>קראתי ואני מאשר/ת את <a onclick="go('rules')" style="color:var(--gold-d);font-weight:600;cursor:pointer;text-decoration:underline">תקנון האתר</a></span>
-        </label>
-      </div>
-      <button id="btn-register" class="btn btn-gold btn-full fi full" onclick="doRegister()">הרשמה</button>
-    </div>
-    <div class="asw">כבר רשום? <a onclick="go('login')">כניסה כאן</a></div>
-  </div></div>
-</div>
 
-<!-- ============================== DASHBOARD ============================== -->
-<div id="page-dashboard" class="page pt">
-  <div class="sec"><div class="wrap" style="max-width:720px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
-      <div>
-        <h1 class="st" style="margin-bottom:4px">שלום, <span id="dash-name"></span> 👋</h1>
-        <p style="font-size:14px;color:var(--is)">ברוכים הבאים לאזור האישי שלכם</p>
-      </div>
-      <button class="btn btn-gold" onclick="go('publish')">🚀 פרסם כרטיס עכשיו</button>
-    </div>
-
-    <!-- תזכורת -->
-    <div id="dash-reminder" class="reminder-bar" style="display:none">
-      <span>⏰ לא פרסמת לאחרונה — רוצה לפרסם שוב?</span>
-      <button class="btn btn-gold btn-sm" onclick="go('publish')">פרסם עכשיו</button>
-    </div>
-
-    <!-- סטטיסטיקות -->
-    <div class="dash-stats">
-      <div class="dash-stat"><div class="dash-stat-num" id="dash-balance">0</div><div class="dash-stat-lbl">פרסומים זמינים</div></div>
-      <div class="dash-stat"><div class="dash-stat-num" id="dash-card-count">0</div><div class="dash-stat-lbl">כרטיסים שיצרת</div></div>
-    </div>
-
-    <!-- מועדפים -->
-    <div id="dash-favs" style="display:none;margin-bottom:24px">
-      <h3 style="font-family:var(--fd);font-size:17px;font-weight:700;margin-bottom:12px">⭐ מועדפים</h3>
-      <div class="dash-cards-inner"></div>
-    </div>
-
-    <!-- כרטיסים -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <h3 style="font-family:var(--fd);font-size:17px;font-weight:700">הכרטיסים שלי</h3>
-      <button class="btn btn-dark btn-sm" onclick="go('builder')">+ כרטיס חדש</button>
-    </div>
-    <div id="dash-cards-list"></div>
-  </div></div>
-</div>
 
 <!-- ============================== ADMIN ============================== -->
 <div id="page-admin" class="page pt">
@@ -941,15 +855,6 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
       <button class="btn btn-gold btn-sm" onclick="adminSaveRules()">שמור תקנון</button>
     </div>
 
-    <!-- הוספת פרסומים -->
-    <div class="admin-section">
-      <h3>📊 הוספת פרסומים למשתמש</h3>
-      <div class="fg" style="max-width:520px;margin-bottom:14px">
-        <div class="fi"><label>מספר טלפון של המשתמש</label><input id="admin-pub-phone" placeholder="05X-XXXXXXX"/></div>
-        <div class="fi"><label>כמות פרסומים להוסיף</label><input type="number" id="admin-pub-count" placeholder="1" min="1" value="1" style="max-width:100px"/></div>
-      </div>
-      <button class="btn btn-gold btn-sm" onclick="adminAddPublicationsForm()">הוסף פרסומים ✓</button>
-    </div>
 
     <!-- חסימות -->
     <div class="admin-section">
@@ -986,15 +891,6 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
   <button class="waf-btn" onclick="toggleWAFloat()" title="צרו קשר בוואטסאפ">💬</button>
 </div>
 
-<!-- Modal: בחירת כרטיס לפרסום -->
-<div id="pick-card-modal" class="ov">
-  <div class="modal">
-    <button class="mc" onclick="closeModal('pick-card-modal')">✕</button>
-    <h3>בחר כרטיס לשליחה</h3>
-    <p class="ms">הכרטיס יישלח למנהל שבחרת דרך וואטסאפ</p>
-    <div id="pick-card-list"></div>
-  </div>
-</div>
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
