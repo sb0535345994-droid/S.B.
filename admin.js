@@ -17,6 +17,10 @@ async function loadAdmin() {
     getVipSettings()
   ]);
 
+  // ביט
+  const bitEl = document.getElementById('admin-bit-phone');
+  if (bitEl) bitEl.value = settings.bit_phone || '';
+
   // סטטוס אתר
   const siteBtn = document.getElementById('admin-site-btn');
   const siteTxt = document.getElementById('admin-site-status-txt');
@@ -50,6 +54,17 @@ async function adminToggleSite() {
   if (error) { toast('שגיאה: ' + error.message); return; }
   toast(settings.site_enabled ? '⚠️ האתר הושבת' : '✅ האתר הופעל');
   await loadAdmin();
+}
+
+// ============================================================
+// ביט
+// ============================================================
+async function adminSaveBit() {
+  const phone = document.getElementById('admin-bit-phone')?.value?.trim() || '';
+  const { error } = await adminSaveSiteSettings({ bit_phone: phone });
+  if (error) { toast('שגיאה: ' + error.message); return; }
+  siteSettings = await getSiteSettings();
+  toast('פרטי תשלום נשמרו ✓');
 }
 
 // ============================================================

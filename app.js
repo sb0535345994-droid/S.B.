@@ -323,14 +323,19 @@ function goPayStep(n) {
     if (el) el.style.display = i === n ? 'block' : 'none';
   });
   if (n === 2) {
-    const linkEl = document.getElementById('pay-link-btn');
-    if (linkEl) {
-      linkEl.innerHTML = selectedPackage?.payment_link
-        ? `<a href="${esc(selectedPackage.payment_link)}" target="_blank" rel="noopener noreferrer"
-            style="display:inline-flex;align-items:center;gap:10px;background:#003087;color:#fff;font-weight:700;font-size:15px;padding:13px 28px;border-radius:50px;text-decoration:none;box-shadow:0 4px 18px rgba(0,48,135,.3);margin-bottom:20px">
-            💳 לתשלום מאובטח עם PayPal
-           </a>`
-        : '';
+    const el = document.getElementById('pay-methods');
+    if (el) {
+      let html = '';
+      if (selectedPackage?.payment_link) {
+        html += `<a href="${esc(selectedPackage.payment_link)}" target="_blank" rel="noopener noreferrer"
+          style="display:inline-flex;align-items:center;gap:10px;background:#003087;color:#fff;font-weight:700;font-size:15px;padding:13px 24px;border-radius:50px;text-decoration:none;box-shadow:0 4px 18px rgba(0,48,135,.3)">
+          💳 תשלום עם PayPal</a>`;
+      }
+      if (siteSettings?.bit_phone) {
+        html += `<button onclick="copyBit()" style="display:inline-flex;align-items:center;gap:10px;background:#00adef;color:#fff;font-weight:700;font-size:15px;padding:13px 24px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 4px 18px rgba(0,173,239,.3)">
+          📱 תשלום בביט — <span id="bit-num">${esc(siteSettings.bit_phone)}</span></button>`;
+      }
+      el.innerHTML = html || '<p style="font-size:14px;color:var(--is)">יש לשלם דרך ביט / פייפאל / העברה בנקאית</p>';
     }
   }
 }
@@ -736,6 +741,12 @@ function renderWAFloat() {
       <div class="waf-mgr-av" style="background:#fef3c7;border-color:#f59e0b;color:#d97706">✉️</div>
       <div><span class="waf-mgr-name">מייל</span><span class="waf-mgr-role">s.b.0535345994@gmail.com</span></div>
     </a>`;
+}
+
+function copyBit() {
+  const phone = siteSettings?.bit_phone;
+  if (!phone) return;
+  navigator.clipboard?.writeText(phone).then(() => toast('מספר ביט הועתק ✓')).catch(() => toast(phone));
 }
 
 function openWA(phone) {

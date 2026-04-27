@@ -739,11 +739,10 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
     <div id="pay-step2" style="display:none">
       <h2 class="st" style="margin-bottom:8px;font-size:22px">שלב 2 — תשלום חיצוני</h2>
       <p style="font-size:14px;color:var(--is);margin-bottom:20px">חבילה שנבחרה: <strong id="selected-pkg-name"></strong></p>
-      <div id="pay-link-btn"></div>
+      <div id="pay-methods" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;max-width:580px"></div>
       <div class="al al-gold" style="max-width:580px;margin-bottom:24px;font-size:15px;line-height:2">
-        <strong>כיצד לשלם:</strong><br/>
-        שלחו את הסכום דרך <strong>ביט / פייפאל / העברה בנקאית</strong><br/>
-        ושמרו את צילום המסך / הקבלה — תצטרכו לשלוח אותה למנהל.
+        <strong>לאחר התשלום:</strong><br/>
+        שמרו את צילום המסך / הקבלה — תצטרכו לשלוח אותה למנהל.
       </div>
       <div class="al al-red" style="max-width:580px;margin-bottom:28px;font-size:15px;line-height:2">
         ⚠️ <strong>ללא שליחת הודעה למנהל — הפרסום לא יבוצע!</strong><br/>
@@ -882,6 +881,15 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
       <h3>🌐 סטטוס האתר</h3>
       <p id="admin-site-status-txt" style="font-size:14px;margin-bottom:14px"></p>
       <button id="admin-site-btn" class="btn btn-sm" onclick="adminToggleSite()">טוען...</button>
+    </div>
+
+    <!-- פרטי תשלום -->
+    <div class="admin-section">
+      <h3>💳 פרטי תשלום</h3>
+      <div class="fg" style="max-width:480px;margin-bottom:14px">
+        <div class="fi full"><label>מספר ביט (לתשלום דרך ביט)</label><input id="admin-bit-phone" placeholder="05X-XXXXXXX" type="tel"/></div>
+      </div>
+      <button class="btn btn-gold btn-sm" onclick="adminSaveBit()">שמור פרטי תשלום</button>
     </div>
 
     <!-- הודעה כללית -->

@@ -100,8 +100,12 @@ CREATE TABLE IF NOT EXISTS site_settings (
   announcement_text    TEXT DEFAULT '',
   announcement_enabled BOOLEAN DEFAULT FALSE,
   site_enabled         BOOLEAN DEFAULT TRUE,
-  site_closed_message  TEXT DEFAULT 'המערכת סגורה זמנית. נחזור בקרוב.'
+  site_closed_message  TEXT DEFAULT 'המערכת סגורה זמנית. נחזור בקרוב.',
+  bit_phone            TEXT DEFAULT ''
 );
+
+-- מיגרציה: הוספת עמודת bit_phone אם הטבלה כבר קיימת
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS bit_phone TEXT DEFAULT '';
 
 -- 8. user_publication_balances
 CREATE TABLE IF NOT EXISTS user_publication_balances (
