@@ -206,10 +206,8 @@ function goPayStep(n) {
           💳 תשלום עם PayPal</a>`;
       }
       if (siteSettings?.bit_phone) {
-        const bitPhone = siteSettings.bit_phone.replace(/\D/g,'');
-        html += `<a href="https://www.bitpay.app/pay?phone=${bitPhone}" target="_blank" rel="noopener noreferrer"
-          style="display:inline-flex;align-items:center;gap:10px;background:#00adef;color:#fff;font-weight:700;font-size:15px;padding:13px 24px;border-radius:50px;text-decoration:none;box-shadow:0 4px 18px rgba(0,173,239,.3)">
-          📱 תשלום בביט</a>`;
+        html += `<button onclick="copyBit()" style="display:inline-flex;align-items:center;gap:10px;background:#00adef;color:#fff;font-weight:700;font-size:15px;padding:13px 24px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 4px 18px rgba(0,173,239,.3)">
+          📱 ביט — ${esc(siteSettings.bit_phone)} (לחץ להעתקה)</button>`;
       }
       el.innerHTML = html || '<p style="font-size:14px;color:var(--is)">יש לשלם דרך ביט / פייפאל / העברה בנקאית</p>';
     }
