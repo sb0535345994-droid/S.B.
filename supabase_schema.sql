@@ -65,12 +65,16 @@ CREATE TABLE IF NOT EXISTS purchase_packages (
   price              NUMERIC(10,2) NOT NULL,
   publications_count INT NOT NULL DEFAULT 1,
   marketing_label    TEXT DEFAULT '',
+  payment_link       TEXT DEFAULT '',
   is_active          BOOLEAN DEFAULT TRUE,
   is_promo           BOOLEAN DEFAULT FALSE,
   is_popular         BOOLEAN DEFAULT FALSE,
   display_order      INT DEFAULT 0,
   created_at         TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- מיגרציה: הוספת עמודת payment_link אם הטבלה כבר קיימת
+ALTER TABLE purchase_packages ADD COLUMN IF NOT EXISTS payment_link TEXT DEFAULT '';
 
 -- 5. vip_settings (שורה אחת תמיד)
 CREATE TABLE IF NOT EXISTS vip_settings (

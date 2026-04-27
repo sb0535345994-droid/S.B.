@@ -96,6 +96,7 @@ function renderAdminPkgs(pkgs) {
       <input value="${esc(p.price)}" placeholder="₪" type="number" onchange="adminEditPkgField('${p.id}','price',+this.value)" style="max-width:70px"/>
       <input value="${esc(p.publications_count)}" placeholder="כמות" type="number" onchange="adminEditPkgField('${p.id}','publications_count',+this.value)" style="max-width:70px"/>
       <input value="${esc(p.marketing_label||'')}" placeholder="תווית" onchange="adminEditPkgField('${p.id}','marketing_label',this.value)" style="max-width:130px"/>
+      <input value="${esc(p.payment_link||'')}" placeholder="קישור תשלום (PayPal...)" onchange="adminEditPkgField('${p.id}','payment_link',this.value)" style="max-width:220px"/>
       <label style="font-size:12px;display:flex;align-items:center;gap:4px;white-space:nowrap">
         <input type="checkbox" ${p.is_popular?'checked':''} onchange="adminEditPkgField('${p.id}','is_popular',this.checked)"/> פופולרי
       </label>

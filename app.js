@@ -322,6 +322,17 @@ function goPayStep(n) {
     const el = document.getElementById('pay-step' + i);
     if (el) el.style.display = i === n ? 'block' : 'none';
   });
+  if (n === 2) {
+    const linkEl = document.getElementById('pay-link-btn');
+    if (linkEl) {
+      linkEl.innerHTML = selectedPackage?.payment_link
+        ? `<a href="${esc(selectedPackage.payment_link)}" target="_blank" rel="noopener noreferrer"
+            style="display:inline-flex;align-items:center;gap:10px;background:#003087;color:#fff;font-weight:700;font-size:15px;padding:13px 28px;border-radius:50px;text-decoration:none;box-shadow:0 4px 18px rgba(0,48,135,.3);margin-bottom:20px">
+            💳 לתשלום מאובטח עם PayPal
+           </a>`
+        : '';
+    }
+  }
 }
 
 function openPickCardModal() {
