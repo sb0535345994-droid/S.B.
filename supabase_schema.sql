@@ -65,12 +65,16 @@ CREATE TABLE IF NOT EXISTS purchase_packages (
   price              NUMERIC(10,2) NOT NULL,
   publications_count INT NOT NULL DEFAULT 1,
   marketing_label    TEXT DEFAULT '',
+  payment_link       TEXT DEFAULT '',
   is_active          BOOLEAN DEFAULT TRUE,
   is_promo           BOOLEAN DEFAULT FALSE,
   is_popular         BOOLEAN DEFAULT FALSE,
   display_order      INT DEFAULT 0,
   created_at         TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- מיגרציה: הוספת עמודת payment_link אם הטבלה כבר קיימת
+ALTER TABLE purchase_packages ADD COLUMN IF NOT EXISTS payment_link TEXT DEFAULT '';
 
 -- 5. vip_settings (שורה אחת תמיד)
 CREATE TABLE IF NOT EXISTS vip_settings (
@@ -96,8 +100,12 @@ CREATE TABLE IF NOT EXISTS site_settings (
   announcement_text    TEXT DEFAULT '',
   announcement_enabled BOOLEAN DEFAULT FALSE,
   site_enabled         BOOLEAN DEFAULT TRUE,
-  site_closed_message  TEXT DEFAULT 'המערכת סגורה זמנית. נחזור בקרוב.'
+  site_closed_message  TEXT DEFAULT 'המערכת סגורה זמנית. נחזור בקרוב.',
+  bit_phone            TEXT DEFAULT ''
 );
+
+-- מיגרציה: הוספת עמודת bit_phone אם הטבלה כבר קיימת
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS bit_phone TEXT DEFAULT '';
 
 -- 8. user_publication_balances
 CREATE TABLE IF NOT EXISTS user_publication_balances (

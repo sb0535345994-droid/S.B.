@@ -157,11 +157,8 @@ async function doLogin() {
   currentUser    = data.user;
   currentProfile = profile;
 
-  // וודא שיש profile ו-balance (למקרה שנוצר ידנית)
-  await ensureProfileAndBalance(data.user, null);
-
   updateNav();
-  go('dashboard');
+  go(profile?.role === 'admin' ? 'admin' : 'home');
   toast('ברוכים הבאים, ' + (profile?.first_name || '') + ' 👋');
 }
 
