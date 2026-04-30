@@ -187,8 +187,7 @@ function selectManager(mgrId) {
   selectedManager = siteManagers.find(m => m.id === mgrId);
   if (!selectedManager) return;
   const phone = selectedManager.phone.replace(/\D/g,'');
-  const txt = window._card || '';
-  window.open('https://wa.me/' + phone + (txt ? '?text=' + encodeURIComponent(txt) : ''), '_blank');
+  window.open('https://wa.me/' + phone, '_blank');
 }
 
 function goPayStep(n) {
