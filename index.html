@@ -726,23 +726,29 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
 
     <!-- שלב 2: תשלום -->
     <div id="pay-step2" style="display:none">
-      <h2 class="st" style="margin-bottom:8px;font-size:22px">שלב 2 — תשלום חיצוני</h2>
+      <h2 class="st" style="margin-bottom:8px;font-size:22px">שלב 2 — תשלום</h2>
       <p style="font-size:14px;color:var(--is);margin-bottom:20px">חבילה שנבחרה: <strong id="selected-pkg-name"></strong></p>
+
+      <h3 style="font-size:16px;margin-bottom:12px;color:var(--gd)">בחרו אפשרות תשלום:</h3>
       <div id="pay-methods" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;max-width:580px"></div>
-      <div class="al al-gold" style="max-width:580px;margin-bottom:24px;font-size:15px;line-height:2">
-        <strong>לאחר התשלום:</strong><br/>
-        שמרו את צילום המסך / הקבלה — תצטרכו לשלוח אותה למנהל.
+
+      <div class="al al-gold" style="max-width:580px;margin-bottom:24px;font-size:14px;line-height:2">
+        🏦 <strong>העברה בנקאית:</strong><br/>
+        שם בעל החשבון: הרוש אלישע<br/>
+        בנק: דיסקונט (11)<br/>
+        סניף: גאולה (64)<br/>
+        מספר חשבון: 182065180
       </div>
-      <div class="al al-red" style="max-width:580px;margin-bottom:28px;font-size:15px;line-height:2">
-        ⚠️ <strong>ללא שליחת הודעה למנהל — הפרסום לא יבוצע!</strong><br/>
-        בשלב הבא תבחרו מנהל ותשלחו לו בוואטסאפ:<br/>
-        ✅ צילום מסך של התשלום או הקבלה<br/>
-        ✅ פרטי כרטיס השידוכים שלכם<br/>
-        ✅ תמונה (אם יש)
+
+      <div style="max-width:580px;margin-bottom:28px">
+        <h3 style="font-size:16px;margin-bottom:8px;color:var(--gd)">📨 שליחת אישור תשלום למנהל:</h3>
+        <p style="font-size:13px;color:var(--is);margin-bottom:14px">לחצו על המנהל — יפתח וואטסאפ עם הודעה מוכנה מראש</p>
+        <div id="pay-confirm-mgr-list" style="display:flex;flex-wrap:wrap;gap:12px"></div>
       </div>
+
       <p style="font-size:13px;color:var(--il);margin-bottom:20px">ביצוע תשלום מהווה אישור לתקנון האתר</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px">
-        <button class="btn btn-gold" onclick="goPayStep(3)">שילמתי — המשך ←</button>
+        <button class="btn btn-gold" onclick="goPayStep(3)">המשך לשליחת הכרטיס ←</button>
         <button class="btn btn-out2" onclick="goPayStep(1)">← חזרה</button>
       </div>
     </div>

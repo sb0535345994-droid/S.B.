@@ -207,11 +207,31 @@ function goPayStep(n) {
       }
       if (siteSettings?.bit_phone) {
         html += `<button onclick="copyBit()" style="display:inline-flex;align-items:center;gap:10px;background:#00adef;color:#fff;font-weight:700;font-size:15px;padding:13px 24px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 4px 18px rgba(0,173,239,.3)">
-          📱 ביט — ${esc(siteSettings.bit_phone)} (לחץ להעתקה)</button>`;
+          📱 ביט / PayBox — ${esc(siteSettings.bit_phone)} (לחץ להעתקה)</button>`;
       }
-      el.innerHTML = html || '<p style="font-size:14px;color:var(--is)">יש לשלם דרך ביט / פייפאל / העברה בנקאית</p>';
+      el.innerHTML = html || '<p style="font-size:14px;color:var(--is)">יש לשלם דרך ביט / PayBox / PayPal / העברה בנקאית</p>';
+    }
+    const mgrEl = document.getElementById('pay-confirm-mgr-list');
+    if (mgrEl) {
+      mgrEl.innerHTML = siteManagers.map(m => `
+        <button class="mgr-btn" onclick="sendPaymentConfirmation('${m.id}')">
+          <div class="mgr-btn-av">${esc(m.initials || m.name?.[0] || 'מ')}</div>
+          <div>
+            <div class="mgr-btn-name">${esc(m.name)}</div>
+            <div class="mgr-btn-role">${esc(m.role_title || '')}</div>
+          </div>
+        </button>`).join('');
     }
   }
+}
+
+function sendPaymentConfirmation(mgrId) {
+  const mgr = siteManagers.find(m => m.id === mgrId);
+  if (!mgr) return;
+  const pkgName = selectedPackage?.name || '';
+  const msg = `שלום, שילמתי עבור פרסום בערוץ שידוכים באמונה.\nהחבילה שנרכשה: ${pkgName}\nמצורף צילום מסך / אישור תשלום.`;
+  const phone = mgr.phone.replace(/\D/g,'');
+  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
 
@@ -583,7 +603,7 @@ function renderWAFloat() {
 function copyBit() {
   const phone = siteSettings?.bit_phone;
   if (!phone) return;
-  navigator.clipboard?.writeText(phone).then(() => toast('מספר ביט הועתק ✓')).catch(() => toast(phone));
+  navigator.clipboard?.writeText(phone).then(() => toast('המספר הועתק בהצלחה ✓')).catch(() => toast(phone));
 }
 
 function openWA(phone) {
