@@ -55,11 +55,6 @@ nav{position:fixed;top:0;right:0;left:0;z-index:100;background:rgba(250,248,243,
 .nl{font-size:13px;font-weight:500;color:var(--is);padding:7px 11px;border-radius:8px;border:none;background:none;cursor:pointer;white-space:nowrap;transition:all .2s}
 .nl:hover{color:var(--ink);background:var(--cm)}
 .nl.active{color:var(--gold-d);background:var(--gold-p);font-weight:600}
-.nav-auth{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.btn-login{font-size:13px;font-weight:600;color:var(--im);border:1.5px solid var(--cd);background:none;padding:7px 14px;border-radius:30px;transition:all .2s}
-.btn-login:hover{border-color:var(--gold);color:var(--gold-d)}
-.btn-register{font-size:13px;font-weight:600;color:#fff;background:var(--gold);border:none;padding:7px 14px;border-radius:30px;box-shadow:0 3px 12px rgba(184,151,90,.3);transition:all .2s}
-.btn-register:hover{background:var(--gold-d)}
 .nav-user{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--im);min-width:0}
 .nav-av{width:32px;height:32px;background:var(--gold-p);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--gold-d);flex-shrink:0}
 .btn-out{font-size:12px;color:var(--il);background:none;border:none;cursor:pointer;transition:color .2s}
@@ -70,11 +65,9 @@ nav{position:fixed;top:0;right:0;left:0;z-index:100;background:rgba(250,248,243,
 .mob-drawer.open{display:flex}
 .mob-drawer button{text-align:right;font-size:15px;font-weight:500;color:var(--im);background:none;border:none;padding:12px 0;border-bottom:1px solid var(--cd);cursor:pointer;transition:color .2s;width:100%}
 .mob-drawer button:hover{color:var(--gold)}
-.mob-auth{display:flex;gap:10px;margin-top:14px}
-.mob-auth button{flex:1;text-align:center;border-radius:30px;padding:11px}
-/* MOBILE: הסתר nav-links ו-nav-auth, הצג hamburger */
+/* MOBILE: הסתר nav-links, הצג hamburger */
 @media(max-width:760px){
-  .nav-links,.nav-auth{display:none!important}
+  .nav-links{display:none!important}
   .hamburger{display:flex}
   /* במצב מחובר — הסתר הכל חוץ מ-avatar ו-hamburger */
   .nav-user #nname,.nav-user .btn-out,.nav-user .btn,.nav-user #admin-nav-btn{display:none!important}
@@ -276,23 +269,6 @@ html,body{max-width:100%;overflow-x:hidden}
 .mgr-btn-name{font-size:15px;font-weight:700}
 .mgr-btn-role{font-size:12px;opacity:.8}
 
-/* DASHBOARD */
-.dash-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
-.dash-stat{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px;text-align:center;box-shadow:var(--sh1)}
-.dash-stat-num{font-family:var(--fd);font-size:36px;font-weight:900;color:var(--gold-d)}
-.dash-stat-lbl{font-size:13px;color:var(--is);margin-top:4px}
-.dash-card-row{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh1);transition:box-shadow .2s;margin-bottom:10px}
-.dash-card-row:hover{box-shadow:var(--sh2)}
-.dash-card-name{font-family:var(--fd);font-size:15px;font-weight:700;flex:1;color:var(--ink)}
-.dash-card-actions{display:flex;gap:6px;flex-shrink:0}
-.dash-action-btn{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--cd);background:none;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .2s}
-.dash-action-btn:hover{border-color:var(--gold);background:var(--gold-p)}
-.dash-action-btn.fav-active{border-color:#f59e0b;background:#fef3c7}
-.empty-state{text-align:center;padding:40px 20px;color:var(--is);font-size:15px}
-.reminder-bar{background:var(--gold-p);border:1px solid rgba(184,151,90,.3);border-radius:var(--r);padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;color:var(--im)}
-.pick-card-btn{display:block;width:100%;text-align:right;background:var(--cm);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;margin-bottom:8px;transition:background .2s}
-.pick-card-btn:hover{background:var(--gold-p);border-color:var(--gold)}
-
 /* ADMIN */
 .admin-section{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:20px}
 .admin-section h3{font-family:var(--fd);font-size:17px;font-weight:700;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--gold-p);display:flex;align-items:center;gap:8px}
@@ -303,7 +279,6 @@ html,body{max-width:100%;overflow-x:hidden}
 .admin-pkg-toggle.off{background:var(--cd)}
 .admin-mgr-row{background:var(--cm);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .admin-mgr-row input{flex:1;min-width:80px;padding:8px 10px;border:1.5px solid var(--cd);border-radius:8px;font-size:13px;background:var(--white)}
-.admin-blocked-row{background:#fdf2f2;border:1px solid rgba(192,57,43,.2);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:8px}
 .btn-del{background:#fee2e2;color:#991b1b;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer}
 .btn-del:hover{background:#fecaca}
 

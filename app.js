@@ -27,8 +27,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       currentUser = session.user;
       const { data } = await getProfile(session.user.id);
       currentProfile = data;
-      // וודא profile + balance קיימים
-      if (!data) await ensureProfileAndBalance(session.user, null);
     } else {
       currentUser    = null;
       currentProfile = null;

@@ -9,11 +9,10 @@ async function loadAdmin() {
     return;
   }
 
-  const [settings, pkgs, mgrs, blocked, vip] = await Promise.all([
+  const [settings, pkgs, mgrs, vip] = await Promise.all([
     getSiteSettings(),
     adminGetPackages(),
     adminGetManagers(),
-    adminGetBlocked(),
     getVipSettings()
   ]);
 
@@ -41,7 +40,6 @@ async function loadAdmin() {
 
   renderAdminPkgs(pkgs);
   renderAdminMgrs(mgrs);
-  renderBlockedList(blocked);
   renderAdminVip(vip);
 }
 
@@ -196,58 +194,6 @@ async function adminDeleteMgrItem(id) {
   if (error) { toast('שגיאה'); return; }
   renderAdminMgrs(await adminGetManagers());
   toast('מנהל נמחק');
-}
-
-// ============================================================
-// הוספת פרסומים
-// ============================================================
-async function adminAddPublicationsForm() {
-  const phone = document.getElementById('admin-pub-phone')?.value?.trim();
-  const count = +(document.getElementById('admin-pub-count')?.value) || 0;
-  if (!phone) { toast('הכנס מספר טלפון'); return; }
-  if (!count || count < 1) { toast('הכנס כמות תקינה'); return; }
-  const { data: profile, error: profileErr } = await getProfileByPhone(phone);
-  if (profileErr || !profile) { toast('משתמש לא נמצא'); return; }
-  const { error } = await adminAddPublications(profile.id, count);
-  if (error) { toast('שגיאה: ' + error.message); return; }
-  const el = document.getElementById('admin-pub-phone');
-  if (el) el.value = '';
-  toast(`✓ נוספו ${count} פרסומים ל-${profile.first_name}`);
-}
-
-// ============================================================
-// חסימות
-// ============================================================
-function renderBlockedList(blocked) {
-  const list = document.getElementById('admin-blocked-list');
-  if (!list) return;
-  if (!blocked.length) { list.innerHTML = '<p style="font-size:13px;color:var(--il)">אין חסומים</p>'; return; }
-  list.innerHTML = blocked.map(b => `
-    <div class="admin-blocked-row">
-      <div>
-        <strong>${esc(b.phone||'–')}</strong>
-        ${b.reason?' · '+esc(b.reason):''}
-      </div>
-      <button class="btn-del" onclick="adminUnblockUser('${b.id}')">בטל חסימה</button>
-    </div>`).join('');
-}
-async function adminBlockUserForm() {
-  const phone  = document.getElementById('admin-block-phone')?.value?.trim();
-  const reason = document.getElementById('admin-block-reason')?.value?.trim();
-  if (!phone) { toast('הכנס מספר טלפון'); return; }
-  const { error } = await adminBlockUser({ phone, reason });
-  if (error) { toast('שגיאה: ' + error.message); return; }
-  ['admin-block-phone','admin-block-reason'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.value='';
-  });
-  renderBlockedList(await adminGetBlocked());
-  toast('משתמש נחסם ✓');
-}
-async function adminUnblockUser(id) {
-  const { error } = await adminUnblock(id);
-  if (error) { toast('שגיאה'); return; }
-  renderBlockedList(await adminGetBlocked());
-  toast('חסימה בוטלה');
 }
 
 // ============================================================
