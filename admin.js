@@ -107,7 +107,6 @@ function renderAdminPkgs(pkgs) {
     <span style="max-width:110px;flex:1;min-width:80px">שם</span>
     <span style="max-width:70px;flex:1;min-width:50px">מחיר ₪</span>
     <span style="max-width:70px;flex:1;min-width:50px">כמות פרסומים</span>
-    <span style="max-width:130px;flex:1;min-width:80px">תווית שיווקית</span>
     <span style="max-width:220px;flex:1;min-width:80px">קישור תשלום</span>
     <span style="width:60px;flex-shrink:0">פופולרי</span>
   </div>`;
@@ -117,7 +116,6 @@ function renderAdminPkgs(pkgs) {
       <input value="${esc(p.name)}"  placeholder="שם" data-field="name" style="max-width:110px"/>
       <input value="${esc(p.price)}" placeholder="₪" type="number" data-field="price" style="max-width:70px"/>
       <input value="${esc(p.publications_count)}" placeholder="כמות" type="number" data-field="publications_count" style="max-width:70px"/>
-      <input value="${esc(p.marketing_label||'')}" placeholder="תווית" data-field="marketing_label" style="max-width:130px"/>
       <input value="${esc(p.payment_link||'')}" placeholder="קישור תשלום (PayPal...)" data-field="payment_link" style="max-width:220px"/>
       <label style="font-size:12px;display:flex;align-items:center;gap:4px;white-space:nowrap">
         <input type="checkbox" ${p.is_popular?'checked':''} data-field="is_popular"/> פופולרי
