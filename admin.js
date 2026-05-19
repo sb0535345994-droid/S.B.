@@ -102,7 +102,16 @@ function renderAdminPkgs(pkgs) {
   const list = document.getElementById('admin-pkgs-list');
   if (!list) return;
   if (!pkgs.length) { list.innerHTML = '<p style="font-size:13px;color:var(--il)">אין מסלולים</p>'; return; }
-  list.innerHTML = pkgs.map(p => `
+  const header = `<div style="display:flex;align-items:center;gap:10px;padding:0 16px 6px;font-size:11px;font-weight:700;color:var(--il);flex-wrap:wrap">
+    <span style="width:40px;flex-shrink:0">פעיל</span>
+    <span style="max-width:110px;flex:1;min-width:80px">שם</span>
+    <span style="max-width:70px;flex:1;min-width:50px">מחיר ₪</span>
+    <span style="max-width:70px;flex:1;min-width:50px">כמות פרסומים</span>
+    <span style="max-width:130px;flex:1;min-width:80px">תווית שיווקית</span>
+    <span style="max-width:220px;flex:1;min-width:80px">קישור תשלום</span>
+    <span style="width:60px;flex-shrink:0">פופולרי</span>
+  </div>`;
+  list.innerHTML = header + pkgs.map(p => `
     <div class="admin-pkg-row" data-id="${p.id}">
       <button class="admin-pkg-toggle ${p.is_active?'on':'off'}" onclick="adminTogglePkg('${p.id}',${!p.is_active})" title="${p.is_active?'כבה':'הפעל'}"></button>
       <input value="${esc(p.name)}"  placeholder="שם" data-field="name" style="max-width:110px"/>
