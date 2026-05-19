@@ -152,6 +152,7 @@ function renderPackages() {
         <li>${p.publications_count} פרסום${p.publications_count>1?'ים':''} בערוץ</li>
         <li>דיסקרטיות מלאה</li>
       </ul>
+      ${p.name.includes('מבוקר') ? `<div class="pinfo">פרסום מבוקר מאפשר לפרסם כרטיס שידוך, ובמידה והתקבלו מספיק פניות — ניתן לבקש הסרה מהערוץ.<br/>לפרטים נוספים: <a onclick="event.stopPropagation();go('rules')">תקנון הערוץ, סעיף 16</a>.</div>` : ''}
       <button class="btn btn-gold btn-full">בחירה ←</button>
     </div>`).join('');
 }
