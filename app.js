@@ -146,12 +146,12 @@ function renderPackages() {
     <div class="pcard ${p.is_popular?'feat':''} ${selectedPackage?.id===p.id?'sel':''}" onclick="selectPackage('${p.id}')">
       ${p.is_popular ? `<div class="pbadge">פופולרי</div>` : ''}
       <div class="pname">${esc(p.name)}</div>
-      <div class="pdesc">${esc(p.description)}</div>
       <div><span class="pcur">₪</span><span class="pamt">${p.price}</span></div>
       <ul class="pfeat">
         <li>${p.publications_count} פרסום${p.publications_count>1?'ים':''} בערוץ</li>
         <li>דיסקרטיות מלאה</li>
       </ul>
+      ${p.description ? `<div class="pinfo" onclick="event.stopPropagation()">${esc(p.description)}</div>` : ''}
       <button class="btn ${selectedPackage?.id===p.id?'btn-gold':'btn-out'} btn-full">${selectedPackage?.id===p.id?'✓ נבחר':'בחירה ←'}</button>
     </div>`).join('');
 }
