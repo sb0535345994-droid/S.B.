@@ -153,6 +153,7 @@ function renderPackages() {
         <li>דיסקרטיות מלאה</li>
       </ul>
       <button class="btn ${selectedPackage?.id===p.id?'btn-gold':'btn-out'} btn-full">${selectedPackage?.id===p.id?'✓ נבחר':'בחירה ←'}</button>
+      ${p.name.includes('מבוקר') ? `<div class="pinfo" onclick="event.stopPropagation()">פרסום מבוקר מאפשר לפרסם את הכרטיס בצורה רגילה, ובמידה והתקבלו מספיק פניות — ניתן לבקש להסיר את הפרסום מהערוץ בהתאם לתנאי המסלול.<br/><span style="font-size:11.5px">לפרטים המלאים: <a onclick="event.stopPropagation();go('rules')" class="pay-link">תקנון הערוץ, סעיף 16</a>.</span></div>` : ''}
     </div>`).join('');
 }
 
