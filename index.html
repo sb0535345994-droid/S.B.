@@ -270,6 +270,27 @@ html,body{max-width:100%;overflow-x:hidden}
 .mgr-btn-av{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
 .mgr-btn-name{font-size:15px;font-weight:700}
 .mgr-btn-role{font-size:12px;opacity:.8}
+/* ---- עמוד תשלום ---- */
+.pay-sub{font-size:14px;color:var(--is);margin-bottom:28px;max-width:540px;line-height:1.7}
+.pay-section{max-width:540px;margin-bottom:28px}
+.pay-stitle{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--ink)}
+.pay-form{display:flex;flex-direction:column;gap:14px}
+.pay-field{display:flex;flex-direction:column;gap:5px}
+.pay-field label{font-size:14px;font-weight:600;color:var(--ink)}
+.pay-field input{padding:12px 14px;border:1.5px solid var(--cd);border-radius:10px;font-size:15px;background:var(--white);font-family:var(--fb)}
+.pay-field input:focus{border-color:var(--gold);outline:none}
+.pay-field input.perr{border-color:#d63;}
+.pay-req{color:#d63}
+.pay-err{font-size:12px;color:#d63;min-height:15px}
+.pay-summary-box{background:var(--cm);border-radius:14px;padding:18px 20px}
+.pay-sum-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--cd);font-size:14px}
+.pay-sum-row:last-child{border-bottom:none}
+.pay-sum-total{font-size:16px;font-weight:700}
+.pay-terms-label{display:flex;align-items:flex-start;gap:10px;font-size:14px;cursor:pointer;line-height:1.7}
+.pay-terms-label input[type=checkbox]{margin-top:3px;flex-shrink:0;width:18px;height:18px;cursor:pointer;accent-color:var(--gold)}
+.pay-link{color:var(--gold);text-decoration:underline;cursor:pointer}
+.pcard.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+#pay-submit-btn:disabled{opacity:.4;cursor:not-allowed}
 
 /* ADMIN */
 .admin-section{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:20px}
@@ -695,74 +716,61 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
 <!-- ============================== PUBLISH ============================== -->
 <div id="page-publish" class="page pt">
   <div class="sec"><div class="wrap">
-    <div class="ey">פרסום ותשלום</div>
-    <h1 class="st">פרסום כרטיס שידוך 💍</h1>
+    <div class="ey">תשלום</div>
+    <h1 class="st">תשלום עבור פרסום 💍</h1>
     <div class="div"></div>
-    <div class="al al-gold" style="max-width:700px;margin-bottom:32px;display:flex;gap:12px;align-items:flex-start">
-      <span style="font-size:22px;flex-shrink:0">🔒</span>
-      <div><strong>תשלום מאובטח לחלוטין</strong><br/><span style="font-weight:300">התשלום מתבצע דרך אפליקציות מוכרות בלבד. האתר אינו שומר פרטי תשלום.</span></div>
-    </div>
-    <div class="psg" style="margin-bottom:44px">
-      <div class="ps"><div class="psn">1</div><h4>בחרו חבילה</h4><p>בחרו מסלול פרסום</p></div>
-      <div class="ps"><div class="psn">2</div><h4>שלמו חיצונית</h4><p>ביט, פייפאל וכד'</p></div>
-      <div class="ps"><div class="psn">3</div><h4>בחרו מנהל</h4><p>בחרו את המנהל לפנייה</p></div>
-      <div class="ps"><div class="psn">4</div><h4>שלחו כרטיס</h4><p>שלחו כרטיס + אישור תשלום</p></div>
+    <p class="pay-sub">הפרטים הבאים נדרשים לצורך הפקת חשבונית/קבלה וזיהוי התשלום.</p>
+
+    <!-- בחירת מסלול -->
+    <div class="pay-section">
+      <h3 class="pay-stitle">בחרו מסלול פרסום</h3>
+      <div class="prc" id="pkg-list"></div>
     </div>
 
-    <!-- שלב 1: בחירת חבילה -->
-    <div id="pay-step1">
-      <h2 class="st" style="margin-bottom:20px;font-size:22px">שלב 1 — בחרו חבילת פרסום</h2>
-      <div class="prc" id="pkg-list" style="max-width:600px"></div>
-    </div>
-
-    <!-- שלב 2: תשלום -->
-    <div id="pay-step2" style="display:none">
-      <h2 class="st" style="margin-bottom:8px;font-size:22px">שלב 2 — תשלום</h2>
-      <p style="font-size:14px;color:var(--is);margin-bottom:20px">חבילה שנבחרה: <strong id="selected-pkg-name"></strong></p>
-
-      <h3 style="font-size:16px;margin-bottom:12px;color:var(--gd)">בחרו אפשרות תשלום:</h3>
-      <div id="pay-methods" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;max-width:580px"></div>
-
-      <div class="al al-gold" style="max-width:580px;margin-bottom:24px;font-size:14px;line-height:2">
-        🏦 <strong>העברה בנקאית:</strong><br/>
-        שם בעל החשבון: הרוש אלישע<br/>
-        בנק: דיסקונט (11)<br/>
-        סניף: גאולה (64)<br/>
-        מספר חשבון: 182065180
-      </div>
-
-      <div style="max-width:580px;margin-bottom:28px">
-        <h3 style="font-size:16px;margin-bottom:8px;color:var(--gd)">📨 שליחת אישור תשלום למנהל:</h3>
-        <p style="font-size:13px;color:var(--is);margin-bottom:14px">לחצו על המנהל — יפתח וואטסאפ עם הודעה מוכנה מראש</p>
-        <div id="pay-confirm-mgr-list" style="display:flex;flex-wrap:wrap;gap:12px"></div>
-      </div>
-
-      <p style="font-size:13px;color:var(--il);margin-bottom:20px">ביצוע תשלום מהווה אישור לתקנון האתר</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px">
-        <button class="btn btn-gold" onclick="goPayStep(3)">המשך לשליחת הכרטיס ←</button>
-        <button class="btn btn-out2" onclick="goPayStep(1)">← חזרה</button>
+    <!-- פרטי חשבונית -->
+    <div class="pay-section">
+      <h3 class="pay-stitle">פרטי חשבונית</h3>
+      <div class="pay-form">
+        <div class="pay-field">
+          <label for="pay-name">לכבוד <span class="pay-req">*</span></label>
+          <input id="pay-name" type="text" placeholder="שם מלא" oninput="updatePayBtn()" />
+          <span class="pay-err" id="err-name"></span>
+        </div>
+        <div class="pay-field">
+          <label for="pay-email">אימייל <span class="pay-req">*</span></label>
+          <input id="pay-email" type="email" placeholder="example@email.com" oninput="updatePayBtn()" />
+          <span class="pay-err" id="err-email"></span>
+        </div>
+        <div class="pay-field">
+          <label for="pay-phone">טלפון נייד <span class="pay-req">*</span></label>
+          <input id="pay-phone" type="tel" placeholder="05XXXXXXXX" oninput="updatePayBtn()" />
+          <span class="pay-err" id="err-phone"></span>
+        </div>
       </div>
     </div>
 
-    <!-- שלב 3: בחירת מנהל -->
-    <div id="pay-step3" style="display:none">
-      <h2 class="st" style="margin-bottom:8px;font-size:22px">שלב 3 — בחרו מנהל לפנייה</h2>
-      <p style="font-size:14px;color:var(--is);margin-bottom:16px">לחצו על המנהל — יפתח וואטסאפ עם תוכן הכרטיס שלכם</p>
-      <div class="al al-red" style="max-width:560px;margin-bottom:20px;font-size:14px;line-height:1.85">
-        ⚠️ <strong>ללא שליחת הודעה למנהל — הפרסום לא יבוצע!</strong><br/>
-        יש לשלוח בהודעת וואטסאפ:<br/>
-        ✅ צילום מסך של התשלום / הקבלה<br/>
-        ✅ פרטי כרטיס השידוכים<br/>
-        ✅ תמונה (אם יש)
+    <!-- סיכום הזמנה -->
+    <div class="pay-section" id="pay-summary" style="display:none">
+      <h3 class="pay-stitle">סיכום הזמנה</h3>
+      <div class="pay-summary-box">
+        <div class="pay-sum-row"><span>מסלול</span><strong id="sum-name"></strong></div>
+        <div class="pay-sum-row" id="sum-count-row"><span>כמות פרסומים</span><span id="sum-count"></span></div>
+        <div class="pay-sum-row pay-sum-total"><span>מחיר לתשלום</span><strong id="sum-price"></strong></div>
+        <div class="pay-sum-row"><span>אמצעי תשלום</span><span id="sum-method"></span></div>
       </div>
-      <div id="managers-list" style="max-width:400px"></div>
-      <div class="al al-gold" style="max-width:560px;margin-top:24px;margin-bottom:8px;font-size:14px">
-        💬 <strong>לאחר הפרסום — הצטרפו לערוץ לעקוב אחרי הצעות שידוך:</strong><br/>
-        <a href="https://whatsapp.com/channel/0029VbCk83eHwXbIxQlo6s1f" target="_blank" rel="noopener noreferrer" style="color:var(--green);font-weight:700;text-decoration:underline">שידוכים באמונה ←</a>
-        &nbsp;|&nbsp;
-        <a href="https://whatsapp.com/channel/0029Vb8T6AQ7dmeRtNo83c46" target="_blank" rel="noopener noreferrer" style="color:var(--green);font-weight:700;text-decoration:underline">מתחזקים לזיווג באמונה ←</a>
-      </div>
-      <button class="btn btn-out2" style="margin-top:12px" onclick="goPayStep(2)">← חזרה</button>
+    </div>
+
+    <!-- תקנון -->
+    <div class="pay-section">
+      <label class="pay-terms-label">
+        <input type="checkbox" id="pay-terms-cb" onchange="updatePayBtn()" />
+        <span>אני מאשר/ת שקראתי את <a onclick="go('rules')" class="pay-link">תקנון הערוץ</a>, והתשלום מהווה הסכמה לתקנון.</span>
+      </label>
+    </div>
+
+    <!-- כפתור -->
+    <div class="pay-section">
+      <button id="pay-submit-btn" class="btn btn-gold btn-full" onclick="submitPayment()" disabled>המשך לתשלום</button>
     </div>
 
   </div></div>

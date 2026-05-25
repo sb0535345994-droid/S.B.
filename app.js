@@ -130,9 +130,9 @@ let selectedManager = null;
 
 async function initPublish() {
   await loadPublicData();
+  selectedPackage = null;
   renderPackages();
-  renderManagersSelect();
-  goPayStep(1);
+  updatePayBtn();
 }
 
 function renderPackages() {
@@ -143,8 +143,8 @@ function renderPackages() {
     return;
   }
   el.innerHTML = sitePackages.map(p => `
-    <div class="pcard ${p.is_popular?'feat':''}" onclick="selectPackage('${p.id}')">
-      ${p.marketing_label ? `<div class="pbadge">${esc(p.marketing_label)}</div>` : ''}
+    <div class="pcard ${p.is_popular?'feat':''} ${selectedPackage?.id===p.id?'sel':''}" onclick="selectPackage('${p.id}')">
+      ${p.is_popular ? `<div class="pbadge">פופולרי</div>` : ''}
       <div class="pname">${esc(p.name)}</div>
       <div class="pdesc">${esc(p.description)}</div>
       <div><span class="pcur">₪</span><span class="pamt">${p.price}</span></div>
@@ -152,84 +152,70 @@ function renderPackages() {
         <li>${p.publications_count} פרסום${p.publications_count>1?'ים':''} בערוץ</li>
         <li>דיסקרטיות מלאה</li>
       </ul>
-      ${p.name.includes('מבוקר') ? `<div class="pinfo">פרסום מבוקר מאפשר לפרסם כרטיס שידוך, ובמידה והתקבלו מספיק פניות — ניתן לבקש הסרה מהערוץ.<br/>לפרטים נוספים: <a onclick="event.stopPropagation();go('rules')">תקנון הערוץ, סעיף 16</a>.</div>` : ''}
-      <button class="btn btn-gold btn-full">בחירה ←</button>
+      <button class="btn ${selectedPackage?.id===p.id?'btn-gold':'btn-out'} btn-full">${selectedPackage?.id===p.id?'✓ נבחר':'בחירה ←'}</button>
     </div>`).join('');
 }
 
 function selectPackage(pkgId) {
   selectedPackage = sitePackages.find(p => p.id === pkgId);
   if (!selectedPackage) return;
-  const el = document.getElementById('selected-pkg-name');
-  if (el) el.textContent = `${selectedPackage.name} — ₪${selectedPackage.price}`;
-  goPayStep(2);
-}
-
-function renderManagersSelect() {
-  const el = document.getElementById('managers-list');
-  if (!el) return;
-  if (!siteManagers.length) {
-    el.innerHTML = '<p style="color:var(--is)">אין מנהלים זמינים כרגע</p>';
-    return;
+  renderPackages();
+  const sumEl = document.getElementById('pay-summary');
+  if (sumEl) {
+    const p = selectedPackage;
+    document.getElementById('sum-name').textContent = p.name;
+    document.getElementById('sum-count').textContent = p.publications_count + (p.publications_count > 1 ? ' פרסומים' : ' פרסום');
+    document.getElementById('sum-price').textContent = '₪' + p.price;
+    let method = [];
+    if (p.payment_link) method.push('PayPal');
+    if (siteSettings?.bit_phone) method.push('ביט / PayBox');
+    document.getElementById('sum-method').textContent = method.length ? method.join(' / ') : 'העברה בנקאית';
+    sumEl.style.display = 'block';
   }
-  el.innerHTML = siteManagers.map(m => `
-    <button class="mgr-btn" onclick="selectManager('${m.id}')">
-      <div class="mgr-btn-av">${esc(m.initials || m.name?.[0] || 'מ')}</div>
-      <div>
-        <div class="mgr-btn-name">${esc(m.name)}</div>
-        <div class="mgr-btn-role">${esc(m.role_title || '')}</div>
-      </div>
-    </button>`).join('');
+  updatePayBtn();
 }
 
-function selectManager(mgrId) {
-  selectedManager = siteManagers.find(m => m.id === mgrId);
-  if (!selectedManager) return;
-  const phone = selectedManager.phone.replace(/\D/g,'');
-  window.open('https://wa.me/' + phone, '_blank');
+function updatePayBtn() {
+  const name  = document.getElementById('pay-name')?.value.trim();
+  const email = document.getElementById('pay-email')?.value.trim();
+  const phone = document.getElementById('pay-phone')?.value.trim();
+  const terms = document.getElementById('pay-terms-cb')?.checked;
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || '');
+  const phoneOk = /^0\d{8,9}$/.test((phone || '').replace(/[-\s]/g, ''));
+  const btn = document.getElementById('pay-submit-btn');
+  if (btn) btn.disabled = !(name && emailOk && phoneOk && selectedPackage && terms);
 }
 
-function goPayStep(n) {
-  [1,2,3].forEach(i => {
-    const el = document.getElementById('pay-step' + i);
-    if (el) el.style.display = i === n ? 'block' : 'none';
+function submitPayment() {
+  const name  = document.getElementById('pay-name')?.value.trim();
+  const email = document.getElementById('pay-email')?.value.trim();
+  const phone = document.getElementById('pay-phone')?.value.trim();
+  const terms = document.getElementById('pay-terms-cb')?.checked;
+  ['name','email','phone'].forEach(f => {
+    document.getElementById('err-' + f).textContent = '';
+    document.getElementById('pay-' + f).classList.remove('perr');
   });
-  if (n === 2) {
-    const el = document.getElementById('pay-methods');
-    if (el) {
-      let html = '';
-      if (selectedPackage?.payment_link) {
-        html += `<a href="${esc(selectedPackage.payment_link)}" target="_blank" rel="noopener noreferrer"
-          style="display:inline-flex;align-items:center;gap:10px;background:#003087;color:#fff;font-weight:700;font-size:15px;padding:13px 24px;border-radius:50px;text-decoration:none;box-shadow:0 4px 18px rgba(0,48,135,.3)">
-          💳 תשלום עם PayPal</a>`;
-      }
-      if (siteSettings?.bit_phone) {
-        html += `<button onclick="copyBit()" style="display:inline-flex;align-items:center;gap:10px;background:#00adef;color:#fff;font-weight:700;font-size:15px;padding:13px 24px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 4px 18px rgba(0,173,239,.3)">
-          📱 ביט / PayBox — ${esc(siteSettings.bit_phone)} (לחץ להעתקה)</button>`;
-      }
-      el.innerHTML = html || '<p style="font-size:14px;color:var(--is)">יש לשלם דרך ביט / PayBox / PayPal / העברה בנקאית</p>';
-    }
-    const mgrEl = document.getElementById('pay-confirm-mgr-list');
-    if (mgrEl) {
-      mgrEl.innerHTML = siteManagers.map(m => `
-        <button class="mgr-btn" onclick="sendPaymentConfirmation('${m.id}')">
-          <div class="mgr-btn-av">${esc(m.initials || m.name?.[0] || 'מ')}</div>
-          <div>
-            <div class="mgr-btn-name">${esc(m.name)}</div>
-            <div class="mgr-btn-role">${esc(m.role_title || '')}</div>
-          </div>
-        </button>`).join('');
-    }
+  let ok = true;
+  if (!name)                                           { _payErr('name',  'שדה חובה'); ok = false; }
+  if (!email)                                          { _payErr('email', 'שדה חובה'); ok = false; }
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { _payErr('email', 'כתובת אימייל לא תקינה'); ok = false; }
+  if (!phone)                                                            { _payErr('phone', 'שדה חובה'); ok = false; }
+  else if (!/^0\d{8,9}$/.test(phone.replace(/[-\s]/g,'')))              { _payErr('phone', 'מספר לא תקין (05XXXXXXXX)'); ok = false; }
+  if (!selectedPackage) { toast('יש לבחור מסלול פרסום'); ok = false; }
+  if (!terms)           { toast('יש לאשר את תקנון הערוץ'); ok = false; }
+  if (!ok) return;
+  if (selectedPackage?.payment_link) {
+    window.open(selectedPackage.payment_link, '_blank', 'noopener noreferrer');
+  } else if (siteSettings?.bit_phone) {
+    copyBit();
+  } else {
+    toast('יש לשלם בהעברה בנקאית ולפנות למנהל');
   }
 }
 
-function sendPaymentConfirmation(mgrId) {
-  const mgr = siteManagers.find(m => m.id === mgrId);
-  if (!mgr) return;
-  const pkgName = selectedPackage?.name || '';
-  const msg = `שלום, שילמתי עבור פרסום בערוץ שידוכים באמונה.\nהחבילה שנרכשה: ${pkgName}\nמצורף צילום מסך / אישור תשלום.`;
-  const phone = mgr.phone.replace(/\D/g,'');
-  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+function _payErr(field, msg) {
+  document.getElementById('err-' + field).textContent = msg;
+  document.getElementById('pay-' + field).classList.add('perr');
 }
 
 
