@@ -151,7 +151,7 @@ function renderPackages() {
         <li>${p.publications_count} פרסום${p.publications_count>1?'ים':''} בערוץ</li>
         <li>דיסקרטיות מלאה</li>
       </ul>
-      ${p.description ? `<div class="pinfo" onclick="event.stopPropagation()">${esc(p.description)}</div>` : ''}
+      ${p.description ? `<div class="pinfo" onclick="event.stopPropagation()">${esc(p.description).replace('סעיף 16','<a onclick="event.stopPropagation();go(\'rules\');setTimeout(()=>{const el=document.getElementById(\'rule-16\');if(el)el.scrollIntoView({behavior:\'smooth\',block:\'start\'})},300)" class="pay-link">סעיף 16</a>')}</div>` : ''}
       <button class="btn ${selectedPackage?.id===p.id?'btn-gold':'btn-out'} btn-full">${selectedPackage?.id===p.id?'✓ נבחר':'בחירה ←'}</button>
     </div>`).join('');
 }
