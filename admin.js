@@ -111,7 +111,7 @@ function renderAdminPkgs(pkgs) {
     <span style="width:60px;flex-shrink:0">פופולרי</span>
   </div>`;
   list.innerHTML = header + pkgs.map(p => `
-    <div class="admin-pkg-row" data-id="${p.id}">
+    <div class="admin-pkg-row" data-id="${p.id}" style="flex-wrap:wrap">
       <button class="admin-pkg-toggle ${p.is_active?'on':'off'}" onclick="adminTogglePkg('${p.id}',${!p.is_active})" title="${p.is_active?'כבה':'הפעל'}"></button>
       <input value="${esc(p.name)}"  placeholder="שם" data-field="name" style="max-width:110px"/>
       <input value="${esc(p.price)}" placeholder="₪" type="number" data-field="price" style="max-width:70px"/>
@@ -121,6 +121,10 @@ function renderAdminPkgs(pkgs) {
         <input type="checkbox" ${p.is_popular?'checked':''} data-field="is_popular"/> פופולרי
       </label>
       <button class="btn-del" onclick="adminDeletePkgItem('${p.id}')">🗑️</button>
+      <div style="width:100%;display:flex;align-items:center;gap:8px;margin-top:6px">
+        <label style="font-size:11px;font-weight:700;color:var(--il);white-space:nowrap;flex-shrink:0">הסבר קצר לחבילה:</label>
+        <input value="${esc(p.description||'')}" placeholder="טקסט שיופיע בסיכום ההזמנה (אופציונלי)" data-field="description" style="flex:1"/>
+      </div>
     </div>`).join('');
 }
 
