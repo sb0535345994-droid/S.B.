@@ -13,6 +13,12 @@ let siteSettings   = {};
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
 
+  // ניהול נגיש רק דרך /#login — ניקוי סשן אם לא נכנסו דרך הקישור המנהל
+  const _initHash = location.hash.replace('#', '');
+  if (!['login', 'admin'].includes(_initHash)) {
+    await sbSignOut();
+  }
+
   await loadPublicData();
   renderWAFloat();
 
