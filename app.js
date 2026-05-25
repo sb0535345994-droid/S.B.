@@ -170,6 +170,8 @@ function selectPackage(pkgId) {
     if (p.payment_link) method.push('PayPal');
     if (siteSettings?.bit_phone) method.push('ביט / PayBox');
     document.getElementById('sum-method').textContent = method.length ? method.join(' / ') : 'העברה בנקאית';
+    const mokdar = document.getElementById('sum-mokdar');
+    if (mokdar) mokdar.style.display = p.name.includes('מבוקר') ? 'block' : 'none';
     sumEl.style.display = 'block';
   }
   updatePayBtn();
