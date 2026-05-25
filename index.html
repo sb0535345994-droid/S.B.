@@ -501,7 +501,10 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
       <div class="rb"><div class="rbt"><div class="rn">8</div>אם קיבלתם סירוב</div>
         <p>אם קיבלתם תשובה שהשידוך פחות מתאים – יש לכבד זאת.<br/>
         תגובה מכובדת יכולה להיות למשל:</p>
-        <div class="al al-gold" style="margin-top:10px;font-style:italic">"תודה רבה על הפנייה, פחות מתאים לי כרגע. מאחל/ת לך הרבה הצלחה במציאת הזיווג."</div></div>
+        <div class="al al-gold" style="margin-top:10px;font-style:italic;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <span>"תודה רבה על הפנייה, פחות מתאים לי כרגע. מאחל/ת לך הרבה הצלחה במציאת הזיווג."</span>
+          <button onclick="navigator.clipboard.writeText('תודה רבה על הפנייה, פחות מתאים לי כרגע. מאחל/ת לך הרבה הצלחה במציאת הזיווג.').then(()=>toast('הועתק ✓'))" style="flex-shrink:0;font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--gold);background:transparent;color:var(--gold-d);cursor:pointer;white-space:nowrap">📋 העתק</button>
+        </div></div>
 
       <div class="rb"><div class="rbt"><div class="rn">9</div>זהות ברורה</div>
         <p>יש לפנות עם שם ברור ותמונת פרופיל.<br/>
