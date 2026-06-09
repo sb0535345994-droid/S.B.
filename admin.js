@@ -9,11 +9,10 @@ async function loadAdmin() {
     return;
   }
 
-  const [settings, pkgs, mgrs, blocked, vip] = await Promise.all([
+  const [settings, pkgs, mgrs, vip] = await Promise.all([
     getSiteSettings(),
     adminGetPackages(),
     adminGetManagers(),
-    adminGetBlocked(),
     getVipSettings()
   ]);
 
@@ -41,7 +40,6 @@ async function loadAdmin() {
 
   renderAdminPkgs(pkgs);
   renderAdminMgrs(mgrs);
-  renderBlockedList(blocked);
   renderAdminVip(vip);
 }
 
@@ -104,18 +102,29 @@ function renderAdminPkgs(pkgs) {
   const list = document.getElementById('admin-pkgs-list');
   if (!list) return;
   if (!pkgs.length) { list.innerHTML = '<p style="font-size:13px;color:var(--il)">אין מסלולים</p>'; return; }
-  list.innerHTML = pkgs.map(p => `
-    <div class="admin-pkg-row" data-id="${p.id}">
+  const header = `<div style="display:flex;align-items:center;gap:10px;padding:0 16px 6px;font-size:11px;font-weight:700;color:var(--il);flex-wrap:wrap">
+    <span style="width:40px;flex-shrink:0">פעיל</span>
+    <span style="max-width:110px;flex:1;min-width:80px">שם</span>
+    <span style="max-width:70px;flex:1;min-width:50px">מחיר ₪</span>
+    <span style="max-width:70px;flex:1;min-width:50px">כמות פרסומים</span>
+    <span style="max-width:220px;flex:1;min-width:80px">קישור תשלום</span>
+    <span style="width:60px;flex-shrink:0">פופולרי</span>
+  </div>`;
+  list.innerHTML = header + pkgs.map(p => `
+    <div class="admin-pkg-row" data-id="${p.id}" style="flex-wrap:wrap">
       <button class="admin-pkg-toggle ${p.is_active?'on':'off'}" onclick="adminTogglePkg('${p.id}',${!p.is_active})" title="${p.is_active?'כבה':'הפעל'}"></button>
       <input value="${esc(p.name)}"  placeholder="שם" data-field="name" style="max-width:110px"/>
       <input value="${esc(p.price)}" placeholder="₪" type="number" data-field="price" style="max-width:70px"/>
       <input value="${esc(p.publications_count)}" placeholder="כמות" type="number" data-field="publications_count" style="max-width:70px"/>
-      <input value="${esc(p.marketing_label||'')}" placeholder="תווית" data-field="marketing_label" style="max-width:130px"/>
       <input value="${esc(p.payment_link||'')}" placeholder="קישור תשלום (PayPal...)" data-field="payment_link" style="max-width:220px"/>
       <label style="font-size:12px;display:flex;align-items:center;gap:4px;white-space:nowrap">
         <input type="checkbox" ${p.is_popular?'checked':''} data-field="is_popular"/> פופולרי
       </label>
       <button class="btn-del" onclick="adminDeletePkgItem('${p.id}')">🗑️</button>
+      <div style="width:100%;display:flex;align-items:center;gap:8px;margin-top:6px">
+        <label style="font-size:11px;font-weight:700;color:var(--il);white-space:nowrap;flex-shrink:0">הסבר קצר לחבילה:</label>
+        <input value="${esc(p.description||'')}" placeholder="טקסט שיופיע בסיכום ההזמנה (אופציונלי)" data-field="description" style="flex:1"/>
+      </div>
     </div>`).join('');
 }
 
@@ -196,58 +205,6 @@ async function adminDeleteMgrItem(id) {
   if (error) { toast('שגיאה'); return; }
   renderAdminMgrs(await adminGetManagers());
   toast('מנהל נמחק');
-}
-
-// ============================================================
-// הוספת פרסומים
-// ============================================================
-async function adminAddPublicationsForm() {
-  const phone = document.getElementById('admin-pub-phone')?.value?.trim();
-  const count = +(document.getElementById('admin-pub-count')?.value) || 0;
-  if (!phone) { toast('הכנס מספר טלפון'); return; }
-  if (!count || count < 1) { toast('הכנס כמות תקינה'); return; }
-  const { data: profile, error: profileErr } = await getProfileByPhone(phone);
-  if (profileErr || !profile) { toast('משתמש לא נמצא'); return; }
-  const { error } = await adminAddPublications(profile.id, count);
-  if (error) { toast('שגיאה: ' + error.message); return; }
-  const el = document.getElementById('admin-pub-phone');
-  if (el) el.value = '';
-  toast(`✓ נוספו ${count} פרסומים ל-${profile.first_name}`);
-}
-
-// ============================================================
-// חסימות
-// ============================================================
-function renderBlockedList(blocked) {
-  const list = document.getElementById('admin-blocked-list');
-  if (!list) return;
-  if (!blocked.length) { list.innerHTML = '<p style="font-size:13px;color:var(--il)">אין חסומים</p>'; return; }
-  list.innerHTML = blocked.map(b => `
-    <div class="admin-blocked-row">
-      <div>
-        <strong>${esc(b.phone||'–')}</strong>
-        ${b.reason?' · '+esc(b.reason):''}
-      </div>
-      <button class="btn-del" onclick="adminUnblockUser('${b.id}')">בטל חסימה</button>
-    </div>`).join('');
-}
-async function adminBlockUserForm() {
-  const phone  = document.getElementById('admin-block-phone')?.value?.trim();
-  const reason = document.getElementById('admin-block-reason')?.value?.trim();
-  if (!phone) { toast('הכנס מספר טלפון'); return; }
-  const { error } = await adminBlockUser({ phone, reason });
-  if (error) { toast('שגיאה: ' + error.message); return; }
-  ['admin-block-phone','admin-block-reason'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.value='';
-  });
-  renderBlockedList(await adminGetBlocked());
-  toast('משתמש נחסם ✓');
-}
-async function adminUnblockUser(id) {
-  const { error } = await adminUnblock(id);
-  if (error) { toast('שגיאה'); return; }
-  renderBlockedList(await adminGetBlocked());
-  toast('חסימה בוטלה');
 }
 
 // ============================================================

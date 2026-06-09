@@ -9,17 +9,14 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
     persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true
+    autoRefreshToken: false,
+    detectSessionInUrl: false
   }
 });
 
 // ============================================================
 // AUTH
 // ============================================================
-async function sbSignUp(email, password, meta) {
-  return await sb.auth.signUp({ email, password, options: { data: meta } });
-}
 async function sbSignIn(email, password) {
   return await sb.auth.signInWithPassword({ email, password });
 }
@@ -32,14 +29,6 @@ async function sbSignOut() {
 // ============================================================
 async function getProfile(uid) {
   const { data, error } = await sb.from('profiles').select('*').eq('id', uid).single();
-  return { data, error };
-}
-
-async function createProfile(uid, { first_name, last_name, phone }) {
-  const { data, error } = await sb
-    .from('profiles')
-    .upsert({ id: uid, first_name, last_name, phone, role: 'user' }, { onConflict: 'id' })
-    .select().single();
   return { data, error };
 }
 
@@ -63,76 +52,6 @@ async function isBlocked(phone) {
 }
 
 // ============================================================
-// SHIDDUCH CARDS
-// ============================================================
-async function getCards(uid) {
-  const { data, error } = await sb
-    .from('shidduch_cards').select('*')
-    .eq('user_id', uid).order('created_at', { ascending: false });
-  return { data: data || [], error };
-}
-
-async function saveCard(uid, card) {
-  if (card.id) {
-    // UPDATE
-    const { id, user_id, created_at, ...fields } = card;
-    const { data, error } = await sb
-      .from('shidduch_cards').update(fields)
-      .eq('id', id).eq('user_id', uid).select().single();
-    return { data, error };
-  } else {
-    // INSERT — הסר id אם undefined/null
-    const clean = Object.fromEntries(
-      Object.entries(card).filter(([k, v]) => k !== 'id' && v !== undefined && v !== null)
-    );
-    const { data, error } = await sb
-      .from('shidduch_cards').insert({ ...clean, user_id: uid }).select().single();
-    return { data, error };
-  }
-}
-
-async function deleteCard(uid, cardId) {
-  const { error } = await sb
-    .from('shidduch_cards').delete()
-    .eq('id', cardId).eq('user_id', uid);
-  return { error };
-}
-
-async function toggleFavorite(uid, cardId, isFav) {
-  const { error } = await sb
-    .from('shidduch_cards').update({ is_favorite: isFav })
-    .eq('id', cardId).eq('user_id', uid);
-  return { error };
-}
-
-// ============================================================
-// BALANCE
-// ============================================================
-async function getBalance(uid) {
-  try {
-    const { data } = await sb
-      .from('user_publication_balances')
-      .select('available_publications').eq('user_id', uid).single();
-    return data?.available_publications ?? 0;
-  } catch { return 0; }
-}
-
-async function initBalance(uid) {
-  return await sb
-    .from('user_publication_balances')
-    .upsert({ user_id: uid, available_publications: 0 }, { onConflict: 'user_id' });
-}
-
-async function decrementBalance(uid) {
-  const current = await getBalance(uid);
-  if (current <= 0) return { error: { message: 'אין פרסומים זמינים' } };
-  const { error } = await sb
-    .from('user_publication_balances')
-    .upsert({ user_id: uid, available_publications: current - 1 }, { onConflict: 'user_id' });
-  return { error };
-}
-
-// ============================================================
 // PUBLIC DATA
 // ============================================================
 const STATIC_MANAGERS = [
@@ -149,9 +68,10 @@ async function getManagers() {
 
 async function getPackages() {
   try {
-    const { data } = await sb.from('purchase_packages').select('*').eq('is_active', true).order('display_order');
+    const { data, error } = await sb.from('purchase_packages').select('*').eq('is_active', true).order('display_order', { nullsFirst: false });
+    if (error) { console.error('getPackages:', error.message, error.code); return []; }
     return data || [];
-  } catch { return []; }
+  } catch(e) { console.error('getPackages exception:', e); return []; }
 }
 
 async function getSiteSettings() {
@@ -171,23 +91,6 @@ async function getVipSettings() {
 // ============================================================
 // ADMIN
 // ============================================================
-async function adminGetBlocked() {
-  const { data } = await sb.from('blocked_users').select('*').order('created_at', { ascending: false });
-  return data || [];
-}
-
-async function adminBlockUser({ phone, reason }) {
-  return await sb.from('blocked_users').insert({
-    phone: normalizePhone(phone) || null,
-    reason: reason || ''
-  });
-}
-
-async function adminUnblock(id) {
-  const { error } = await sb.from('blocked_users').delete().eq('id', id);
-  return { error };
-}
-
 async function adminGetPackages() {
   const { data } = await sb.from('purchase_packages').select('*').order('display_order');
   return data || [];
@@ -248,19 +151,3 @@ async function adminSaveVip(fields) {
   return { error };
 }
 
-async function getProfileByPhone(phone) {
-  const { data, error } = await sb
-    .from('profiles')
-    .select('id, first_name, last_name')
-    .eq('phone', phone.trim())
-    .single();
-  return { data, error };
-}
-
-async function adminAddPublications(userId, count) {
-  const current = await getBalance(userId);
-  const { error } = await sb
-    .from('user_publication_balances')
-    .upsert({ user_id: userId, available_publications: current + count }, { onConflict: 'user_id' });
-  return { error };
-}
