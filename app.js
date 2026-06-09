@@ -182,14 +182,22 @@ function selectPackage(pkgId) {
 }
 
 function updatePayBtn() {
-  const name  = document.getElementById('pay-name')?.value.trim();
-  const email = document.getElementById('pay-email')?.value.trim();
-  const phone = document.getElementById('pay-phone')?.value.trim();
-  const terms = document.getElementById('pay-terms-cb')?.checked;
+  const name   = document.getElementById('pay-name')?.value.trim();
+  const email  = document.getElementById('pay-email')?.value.trim();
+  const phone  = document.getElementById('pay-phone')?.value.trim();
+  const terms  = document.getElementById('pay-terms-cb')?.checked;
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || '');
   const phoneOk = /^0\d{8,9}$/.test((phone || '').replace(/[-\s]/g, ''));
-  const btn = document.getElementById('pay-submit-btn');
-  if (btn) btn.disabled = !(name && emailOk && phoneOk && selectedPackage && terms);
+  const missing = [];
+  if (!selectedPackage)      missing.push('לא נבחר מסלול פרסום ↑');
+  if (!name)                 missing.push('חסר שם');
+  if (!email || !emailOk)    missing.push('חסר אימייל תקין');
+  if (!phone || !phoneOk)    missing.push('חסר טלפון תקין');
+  if (!terms)                missing.push('יש לאשר את התקנון');
+  const hint = document.getElementById('pay-hint');
+  const btn  = document.getElementById('pay-submit-btn');
+  if (hint) { hint.textContent = missing.join(' · '); hint.style.display = missing.length ? 'block' : 'none'; }
+  if (btn)  btn.disabled = !!missing.length;
 }
 
 function submitPayment() {
