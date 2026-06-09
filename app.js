@@ -13,15 +13,11 @@ let siteSettings   = {};
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
 
-  await loadPublicData();
-  renderWAFloat();
+  // ניווט מיידי לפי hash — לא מחכים לטעינת נתונים
+  const hash = location.hash.replace('#', '') || 'home';
+  go(hash, false);
 
-  if (siteSettings.site_enabled === false) {
-    showSiteClosed();
-    return;
-  }
-
-  // האזנה ל-auth state (כולל שחזור session אחרי רענון)
+  // האזנה ל-auth state
   sb.auth.onAuthStateChange(async (event, session) => {
     if (session?.user) {
       currentUser = session.user;
@@ -34,16 +30,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateNav();
   });
 
-  if (siteSettings.announcement_enabled && siteSettings.announcement_text) {
-    showAnnouncement(siteSettings.announcement_text);
-  }
-
   initPills();
   updatePreview();
   showBuilderStep(1);
 
-  const hash = location.hash.replace('#', '') || 'home';
-  go(hash, false);
+  await loadPublicData();
+  renderWAFloat();
+
+  if (siteSettings.site_enabled === false) {
+    showSiteClosed();
+    return;
+  }
+
+  if (siteSettings.announcement_enabled && siteSettings.announcement_text) {
+    showAnnouncement(siteSettings.announcement_text);
+  }
+
 });
 
 async function loadPublicData() {
