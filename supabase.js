@@ -68,9 +68,10 @@ async function getManagers() {
 
 async function getPackages() {
   try {
-    const { data } = await sb.from('purchase_packages').select('*').eq('is_active', true).order('display_order');
+    const { data, error } = await sb.from('purchase_packages').select('*').eq('is_active', true).order('display_order', { nullsFirst: false });
+    if (error) { console.error('getPackages:', error.message, error.code); return []; }
     return data || [];
-  } catch { return []; }
+  } catch(e) { console.error('getPackages exception:', e); return []; }
 }
 
 async function getSiteSettings() {

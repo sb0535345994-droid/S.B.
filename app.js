@@ -139,7 +139,7 @@ function renderPackages() {
   const el = document.getElementById('pkg-list');
   if (!el) return;
   if (!sitePackages.length) {
-    el.innerHTML = '<p style="color:var(--is)">אין מסלולים זמינים כרגע</p>';
+    el.innerHTML = '<p style="color:var(--is)">לא נמצאו מסלולים — יש לוודא שהחבילות פעילות בפאנל הניהול</p>';
     return;
   }
   el.innerHTML = sitePackages.map(p => `
