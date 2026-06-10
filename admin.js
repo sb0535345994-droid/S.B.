@@ -33,7 +33,7 @@ async function loadAdmin() {
   // פרסום ותשלום
   const pubBtn = document.getElementById('admin-publish-btn');
   const pubTxt = document.getElementById('admin-publish-status-txt');
-  const pubEnabled = settings.publish_enabled !== false; // ברירת מחדל: פעיל
+  const pubEnabled = settings.publish_enabled !== false;
   if (pubBtn) {
     pubBtn.textContent = pubEnabled ? 'כבה פרסום ותשלום' : 'הפעל פרסום ותשלום';
     pubBtn.style.background = pubEnabled ? '#c0392b' : 'var(--green)';
