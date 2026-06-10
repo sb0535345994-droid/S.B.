@@ -1,5 +1,8 @@
 node_modules/
 site_files.zip
+.claude/
+package-lock.json
+package.json
 screenshot.js
 screenshot2.js
 screenshot_site.js
