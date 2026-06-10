@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -15,14 +14,14 @@
 
 <style>
 :root{
-  --gold:#C9A24D;--gold-l:#E0BE78;--gold-p:#F5EDD8;--gold-d:#A07A30;
-  --cream:#F7F4EF;--cm:#EDE8DC;--cd:#DDD5C0;
-  --ink:#0D1B2A;--im:#1A2E40;--is:#4A6480;--il:#7A94A8;
+  --gold:#b8975a;--gold-l:#d4b87e;--gold-p:#f0e8d6;--gold-d:#8a6e3a;
+  --cream:#faf8f3;--cm:#f3ede0;--cd:#e8dfc8;
+  --ink:#1c1810;--im:#3a3020;--is:#6b5e48;--il:#9a8a72;
   --white:#fff;--green:#25d366;--red:#c0392b;
-  --border:rgba(13,27,42,.15);
-  --sh1:0 2px 12px rgba(13,27,42,.07);
-  --sh2:0 8px 32px rgba(13,27,42,.12);
-  --sh3:0 20px 60px rgba(13,27,42,.16);
+  --border:rgba(184,151,90,.2);
+  --sh1:0 2px 12px rgba(28,24,16,.06);
+  --sh2:0 6px 28px rgba(28,24,16,.10);
+  --sh3:0 16px 56px rgba(28,24,16,.13);
   --r:14px;--rl:20px;
   --fd:'Frank Ruhl Libre',serif;--fb:'Heebo',sans-serif;
   --ease:cubic-bezier(.4,0,.2,1);
@@ -44,56 +43,46 @@ input,textarea,select{font-family:var(--fb);direction:rtl;text-align:right}
 /* ANNOUNCEMENT BAR */
 #announcement-bar{display:none;background:var(--gold);color:#fff;text-align:center;padding:10px 20px;font-size:14px;font-weight:600;position:fixed;top:0;right:0;left:0;z-index:150}
 body.has-announcement nav{top:40px}
-body.has-announcement .pt{padding-top:106px}
+body.has-announcement .pt{padding-top:102px}
 
 /* NAV */
-nav{position:fixed;top:0;right:0;left:0;z-index:100;background:rgba(13,27,42,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,162,77,.2);box-shadow:0 2px 24px rgba(13,27,42,.35)}
-.nav-inner{max-width:1080px;margin:0 auto;padding:0 24px;height:66px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.nav-logo{font-family:var(--fd);font-size:20px;font-weight:700;color:#fff;display:flex;align-items:center;gap:7px;cursor:pointer;flex-shrink:0}
+nav{position:fixed;top:0;right:0;left:0;z-index:100;background:rgba(250,248,243,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);box-shadow:var(--sh1)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-logo{font-family:var(--fd);font-size:19px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px;cursor:pointer;flex-shrink:0}
 .nav-logo span{color:var(--gold)}
 .nav-links{display:flex;align-items:center;gap:2px;flex:1;justify-content:center}
-.nl{font-size:13px;font-weight:500;color:rgba(255,255,255,.68);padding:7px 11px;border-radius:8px;border:none;background:none;cursor:pointer;white-space:nowrap;transition:all .2s}
-.nl:hover{color:#fff;background:rgba(255,255,255,.09)}
-.nl.active{color:var(--gold);background:rgba(201,162,77,.14);font-weight:600}
-.nav-user{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.8);min-width:0}
-.nav-av{width:32px;height:32px;background:rgba(201,162,77,.2);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--gold);flex-shrink:0}
-.btn-out{font-size:12px;color:rgba(255,255,255,.5);background:none;border:none;cursor:pointer;transition:color .2s}
-.btn-out:hover{color:#f87171}
-.hamburger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer;background:none;border:none;flex-shrink:0}
-.hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px}
-.mob-drawer{display:none;flex-direction:column;background:var(--ink);border-top:1px solid rgba(255,255,255,.08);padding:16px 20px 20px;gap:4px;max-height:calc(100vh - 66px);overflow-y:auto}
+.nl{font-size:13px;font-weight:500;color:var(--is);padding:7px 11px;border-radius:8px;border:none;background:none;cursor:pointer;white-space:nowrap;transition:all .2s}
+.nl:hover{color:var(--ink);background:var(--cm)}
+.nl.active{color:var(--gold-d);background:var(--gold-p);font-weight:600}
+.nav-auth{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.btn-login{font-size:13px;font-weight:600;color:var(--im);border:1.5px solid var(--cd);background:none;padding:7px 14px;border-radius:30px;transition:all .2s}
+.btn-login:hover{border-color:var(--gold);color:var(--gold-d)}
+.btn-register{font-size:13px;font-weight:600;color:#fff;background:var(--gold);border:none;padding:7px 14px;border-radius:30px;box-shadow:0 3px 12px rgba(184,151,90,.3);transition:all .2s}
+.btn-register:hover{background:var(--gold-d)}
+.nav-user{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--im)}
+.nav-av{width:32px;height:32px;background:var(--gold-p);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--gold-d)}
+.btn-out{font-size:12px;color:var(--il);background:none;border:none;cursor:pointer;transition:color .2s}
+.btn-out:hover{color:var(--red)}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:6px;cursor:pointer;background:none;border:none}
+.hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px}
+.mob-drawer{display:none;flex-direction:column;background:var(--white);border-top:1px solid var(--border);padding:16px 20px 20px;gap:4px}
 .mob-drawer.open{display:flex}
-.mob-drawer button{text-align:right;font-size:15px;font-weight:500;color:rgba(255,255,255,.72);background:none;border:none;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer;transition:color .2s;width:100%}
+.mob-drawer button{text-align:right;font-size:15px;font-weight:500;color:var(--im);background:none;border:none;padding:11px 0;border-bottom:1px solid var(--cd);cursor:pointer;transition:color .2s}
 .mob-drawer button:hover{color:var(--gold)}
-/* MOBILE: הסתר nav-links, הצג hamburger */
-@media(max-width:760px){
-  .nav-links{display:none!important}
-  .hamburger{display:flex}
-  /* במצב מחובר — הסתר הכל חוץ מ-avatar ו-hamburger */
-  .nav-user #nname,.nav-user .btn-out,.nav-user .btn,.nav-user #admin-nav-btn{display:none!important}
-  .nav-user{gap:8px}
-}
-/* מניעת overflow אופקי */
-html,body{max-width:100%;overflow-x:hidden}
-@media(max-width:760px){
-  #page-builder .bl{display:block}
-  #page-builder .bl>*{width:100%;max-width:100%;min-width:0}
-  #page-builder .cb-pills{flex-wrap:nowrap;overflow-x:auto}
-  #page-builder .pill-g{flex-wrap:wrap}
-  #page-builder .fg{display:grid;grid-template-columns:1fr}
-  #page-builder .fi{min-width:0;max-width:100%}
-}
+.mob-auth{display:flex;gap:10px;margin-top:14px}
+.mob-auth button{flex:1;text-align:center;border-radius:30px;padding:11px}
+@media(max-width:760px){.nav-links,.nav-auth{display:none}.hamburger{display:flex}}
 
 /* LAYOUT */
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
-.pt{padding-top:66px}
+.pt{padding-top:62px}
 .sec{padding:72px 0 56px}
 
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--fb);font-weight:600;font-size:15px;padding:13px 28px;border-radius:50px;border:none;cursor:pointer;transition:all .25s var(--ease);white-space:nowrap}
-.btn-gold{background:var(--gold);color:#fff;box-shadow:0 4px 18px rgba(201,162,77,.38)}
-.btn-gold:hover{background:var(--gold-d);transform:translateY(-2px);box-shadow:0 6px 24px rgba(201,162,77,.48)}
-.btn-dark{background:var(--ink);color:#fff;box-shadow:0 4px 18px rgba(13,27,42,.28)}
+.btn-gold{background:var(--gold);color:#fff;box-shadow:0 4px 18px rgba(184,151,90,.3)}
+.btn-gold:hover{background:var(--gold-d);transform:translateY(-2px)}
+.btn-dark{background:var(--ink);color:#fff;box-shadow:0 4px 18px rgba(28,24,16,.2)}
 .btn-dark:hover{background:var(--im);transform:translateY(-2px)}
 .btn-out2{background:transparent;color:var(--ink);border:1.5px solid var(--cd)}
 .btn-out2:hover{border-color:var(--gold);color:var(--gold-d)}
@@ -104,12 +93,12 @@ html,body{max-width:100%;overflow-x:hidden}
 .btn[disabled]{opacity:.65;pointer-events:none}
 
 /* EYEBROW */
-.ey{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,162,77,.5);border-radius:30px;padding:4px 14px;margin-bottom:14px;background:rgba(201,162,77,.07)}
+.ey{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);border-radius:30px;padding:4px 14px;margin-bottom:14px}
 
 /* SECTION TITLE */
 .st{font-family:var(--fd);font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:14px}
 .ss{font-size:16px;color:var(--is);font-weight:300;max-width:560px;margin-bottom:44px;line-height:1.8}
-.div{width:52px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:28px}
+.div{width:48px;height:2px;background:var(--gold);margin-bottom:28px}
 .center{text-align:center}
 .center .ss,.center .div{margin-left:auto;margin-right:auto}
 
@@ -118,7 +107,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 /* ALERTS */
 .al{border-radius:var(--r);padding:14px 18px;font-size:14px;line-height:1.65;margin-bottom:12px}
-.al-gold{background:var(--gold-p);border:1px solid rgba(201,162,77,.3);color:var(--im)}
+.al-gold{background:var(--gold-p);border:1px solid rgba(184,151,90,.3);color:var(--im)}
 .al-red{background:#fdf2f2;border:1px solid rgba(192,57,43,.25);color:#922b21}
 .al-green{background:#f0fdf4;border:1px solid rgba(37,211,102,.3);color:#166534}
 
@@ -128,8 +117,8 @@ html,body{max-width:100%;overflow-x:hidden}
 .fi.full{grid-column:1/-1}
 .fi label{font-size:13px;font-weight:600;color:var(--im)}
 .fi label .r{color:var(--gold-d)}
-.fi input,.fi textarea,.fi select{padding:11px 14px;border:1.5px solid var(--cd);border-radius:var(--r);font-size:14px;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s,box-shadow .2s}
-.fi input:focus,.fi textarea:focus,.fi select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,77,.13);background:var(--white)}
+.fi input,.fi textarea,.fi select{padding:11px 14px;border:1.5px solid var(--cd);border-radius:var(--r);font-size:14px;color:var(--ink);background:var(--cream);outline:none;transition:border-color .2s,box-shadow .2s}
+.fi input:focus,.fi textarea:focus,.fi select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,151,90,.12);background:var(--white)}
 .fi textarea{resize:vertical;min-height:90px}
 .ferr{font-size:12px;color:var(--red);margin-top:4px;display:none}
 .ferr.show{display:block}
@@ -148,7 +137,7 @@ html,body{max-width:100%;overflow-x:hidden}
 @media(max-width:560px){.fg{grid-template-columns:1fr}}
 
 /* MODAL */
-.ov{display:none;position:fixed;inset:0;background:rgba(13,27,42,.78);z-index:200;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.ov{display:none;position:fixed;inset:0;background:rgba(28,24,16,.72);z-index:200;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
 .ov.open{display:flex}
 .modal{background:var(--white);border-radius:var(--rl);width:100%;max-width:460px;padding:36px 28px;position:relative;animation:pi .26s var(--ease);margin:auto}
 @keyframes pi{from{opacity:0;transform:scale(.95) translateY(14px)}to{opacity:1;transform:none}}
@@ -158,11 +147,11 @@ html,body{max-width:100%;overflow-x:hidden}
 .modal .ms{font-size:14px;color:var(--is);margin-bottom:22px}
 
 /* AUTH */
-.aw{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 20px 40px;background:linear-gradient(160deg,var(--cream) 0%,var(--cm) 100%)}
-.abox{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:40px 32px;width:100%;max-width:430px;box-shadow:var(--sh2)}
-.alogo{text-align:center;margin-bottom:26px;font-family:var(--fd);font-size:22px;font-weight:700;color:var(--ink)}
+.aw{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 20px 40px}
+.abox{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:38px 30px;width:100%;max-width:430px;box-shadow:var(--sh2)}
+.alogo{text-align:center;margin-bottom:24px;font-family:var(--fd);font-size:22px;font-weight:700}
 .alogo .g{color:var(--gold)}
-.abox h2{font-family:var(--fd);font-size:23px;font-weight:700;margin-bottom:6px;color:var(--ink)}
+.abox h2{font-family:var(--fd);font-size:23px;font-weight:700;margin-bottom:6px}
 .asub{font-size:14px;color:var(--is);margin-bottom:24px}
 .asw{text-align:center;margin-top:18px;font-size:14px;color:var(--is)}
 .asw a{color:var(--gold-d);font-weight:600;cursor:pointer;text-decoration:underline}
@@ -173,101 +162,47 @@ html,body{max-width:100%;overflow-x:hidden}
 
 /* PROGRESS BAR */
 .prog-bar{width:100%;height:5px;background:var(--cd);border-radius:3px;margin-bottom:22px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:3px;transition:width .4s var(--ease)}
+.prog-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .4s var(--ease)}
 
-/* HOME HERO */
-.home-hero{position:relative;overflow:hidden;min-height:clamp(460px,75vw,600px);display:flex;align-items:flex-end;padding:0}
-.home-hero-bg{position:absolute;inset:0;z-index:0;
-  background:
-    radial-gradient(ellipse at 50% 105%,rgba(201,162,77,.65) 0%,transparent 50%),
-    radial-gradient(ellipse at 15% 65%,rgba(180,120,30,.45) 0%,transparent 38%),
-    radial-gradient(ellipse at 85% 20%,rgba(13,27,42,.95) 0%,transparent 45%),
-    linear-gradient(175deg,#0D1B2A 0%,#0F1E33 22%,#1F1205 52%,#3D2800 78%,#6A4800 100%)}
-.home-hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(13,27,42,.15) 0%,transparent 60%)}
-.home-hero-content{position:relative;z-index:2;width:100%;max-width:1100px;margin:0 auto;padding:108px 24px 68px}
-.hero-ornament{display:flex;align-items:center;gap:8px;margin-bottom:18px}
-.hero-ornament-line{width:36px;height:1px;background:rgba(201,162,77,.55);border-radius:1px}
-.hero-ornament-diamond{width:7px;height:7px;background:var(--gold);transform:rotate(45deg);flex-shrink:0}
-.home-hero .ht{color:#fff;font-size:clamp(46px,9.5vw,90px);text-shadow:0 2px 40px rgba(0,0,0,.35);margin-bottom:0;letter-spacing:-.02em}
-.home-hero .ht em{font-style:normal;color:var(--gold-l)}
-.home-hero .gold-divider{background:linear-gradient(to left,transparent,rgba(201,162,77,.6) 40%,rgba(201,162,77,.6) 60%,transparent)}
-.home-hero .hs{color:rgba(247,244,239,.82);max-width:520px;font-size:16px}
-.home-hero .hero-actions{margin-bottom:0}
-.ht{font-family:var(--fd);font-size:clamp(48px,7.5vw,82px);line-height:1.03;color:#0D1B2A;margin-bottom:0;letter-spacing:-.02em}
-.ht em{font-style:normal;color:#C9A24D}
-.gold-divider{width:130px;height:2px;background:linear-gradient(to left,transparent,#C9A24D 40%,#C9A24D 60%,transparent);margin:22px 0;border-radius:2px}
-.hs{font-size:17px;color:#475569;font-weight:300;max-width:480px;line-height:1.95;margin-bottom:32px}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:32px}
-/* WELCOME */
-.welcome-section{background:#fff;padding:72px 0 64px}
-.welcome-title-area{text-align:center;margin-bottom:52px}
-.welcome-title-area h2{font-family:var(--fd);font-size:clamp(22px,4vw,36px);font-weight:700;color:var(--ink);margin-bottom:10px}
-.welcome-title-area .wt-divider{width:52px;height:3px;background:var(--gold);border-radius:2px;margin:0 auto 16px}
-.welcome-title-area p{font-size:15px;color:var(--is);font-weight:300;max-width:540px;margin:0 auto;line-height:1.9}
-.feature-cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:680px;margin:0 auto}
-.feature-card{background:var(--white);border:1.5px solid var(--cd);border-radius:20px;padding:26px 20px;text-align:center;box-shadow:var(--sh1);transition:transform .22s var(--ease),box-shadow .22s,border-color .22s;cursor:default}
-.feature-card:hover{transform:translateY(-5px);box-shadow:var(--sh2);border-color:var(--gold)}
-.fc-icon{width:56px;height:56px;background:rgba(201,162,77,.1);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:var(--gold-d);transition:background .22s}
-.feature-card:hover .fc-icon{background:rgba(201,162,77,.18)}
-.feature-card h3{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px}
-.feature-card p{font-size:12.5px;color:var(--is);line-height:1.65}
-/* QUICK FORM */
-.quick-form-section{background:linear-gradient(148deg,#E0C060 0%,#C9A24D 45%,#A07A30 100%);padding:60px 24px 52px;border-top:2px solid rgba(201,162,77,.28)}
-.quick-form-inner{max-width:440px;margin:0 auto;text-align:center}
-.qf-icon{width:64px;height:64px;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:#fff}
-.quick-form-inner h2{font-family:var(--fd);font-size:clamp(20px,4vw,28px);font-weight:700;color:#fff;margin-bottom:22px;text-shadow:0 1px 6px rgba(0,0,0,.15)}
-.qf-fields{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
-.qf-input{width:100%;padding:13px 18px;border:none;border-radius:12px;font-size:15px;font-family:var(--fb);background:rgba(255,255,255,.9);color:var(--ink);direction:rtl;text-align:right;outline:none;transition:background .2s,box-shadow .2s}
-.qf-input:focus{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.4)}
-.qf-submit{width:52px;height:52px;background:var(--green);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;cursor:pointer;box-shadow:0 4px 18px rgba(37,211,102,.45);transition:transform .2s,box-shadow .2s}
-.qf-submit:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(37,211,102,.55)}
-.qf-brand{margin-top:16px;font-size:13px;color:rgba(255,255,255,.65);font-style:italic}
-/* QUOTE */
-.quote-strip{background:#0D1B2A;color:#fff;text-align:center;padding:40px 24px;border-top:2px solid rgba(201,162,77,.35)}
-.quote-strip p{font-family:var(--fd);font-size:clamp(18px,3vw,28px);font-weight:700;color:rgba(247,244,239,.88)}
-.quote-strip em{font-style:normal;color:#C9A24D}
-/* PAGE HERO (sub-pages) */
-.page-hero{position:relative;overflow:hidden;background:radial-gradient(circle at 5% 90%,rgba(201,162,77,.1),transparent 35%),linear-gradient(148deg,#F7F4EF 0%,#FFFFFF 58%,#F7F4EF 100%);padding:80px 0 56px;border-bottom:1px solid rgba(201,162,77,.15)}
-.page-hero-inner{max-width:1100px;margin:0 auto;padding:0 24px}
-.page-hero h1{font-family:var(--fd);font-size:clamp(34px,5.5vw,56px);font-weight:700;color:#0D1B2A;margin-bottom:0;line-height:1.1}
-.page-hero h1 em{font-style:normal;color:#C9A24D}
-.page-hero .page-hero-sub{font-size:15px;color:#475569;max-width:620px;line-height:1.85;font-weight:300;margin-top:14px}
-.astrip{display:none}
-/* Removed old home styles */
-.home-hero-inner,.hero-kicker,.tr,.ti,.td,.visual-card,.vc-inner,.vc-ornament,.vc-title,.vc-subtitle,.vc-badges,.vc-badge,.vc-badge-icon,.vc-badge-text,.vc-badge-sub{/* kept for compatibility */}
-.home-nav-cards{display:none}
-.features-strip{display:none}
-.welcome-inner{display:none}
-.welcome-content-card{display:none}
-.quick-card{display:none}
-@media(max-width:760px){
-  .home-hero-content{padding:88px 20px 52px}
-  .feature-cards-grid{grid-template-columns:1fr;max-width:360px}
-  .quick-form-section{padding:48px 20px 40px}
-  .home-hero .hs{font-size:15px}
-}
-@media(max-width:480px){
-  .feature-cards-grid{max-width:100%;padding:0 4px}
-}
+/* HOME */
+.hero{padding:96px 0 64px;text-align:center}
+.hero-ring{font-size:52px;display:block;margin-bottom:18px}
+.ht{font-family:var(--fd);font-size:clamp(32px,5vw,54px);font-weight:900;color:var(--ink);line-height:1.15;margin-bottom:16px}
+.ht em{font-style:normal;color:var(--gold)}
+.hs{font-size:17px;color:var(--is);font-weight:300;max-width:500px;margin:0 auto 40px;line-height:1.85}
+.ncs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:620px;margin:0 auto 44px}
+.nc{background:var(--white);border:1.5px solid var(--border);border-radius:var(--rl);padding:28px 18px;text-align:center;cursor:pointer;transition:all .25s var(--ease);box-shadow:var(--sh1)}
+.nc:hover{border-color:var(--gold);box-shadow:var(--sh2);transform:translateY(-3px)}
+.nc-icon{font-size:36px;margin-bottom:12px;display:block}
+.nc-title{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.nc-desc{font-size:13px;color:var(--is);line-height:1.55}
+@media(max-width:480px){.ncs{grid-template-columns:1fr;max-width:320px}}
+.tr{display:flex;gap:22px;justify-content:center;flex-wrap:wrap}
+.ti{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--is)}
+.td{color:var(--gold);font-size:16px}
+.astrip{background:var(--ink);color:var(--cream);padding:52px 0}
+.asi{max-width:680px;margin:0 auto;text-align:center}
+.asi h2{font-family:var(--fd);font-size:24px;font-weight:700;color:var(--cream);margin-bottom:18px}
+.asi p{font-size:15px;color:rgba(250,248,243,.68);line-height:1.9;margin-bottom:12px;font-weight:300}
+.asi strong{color:var(--gold-l);font-weight:600}
 
 /* RULES */
-.rb{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:24px 24px 20px;margin-bottom:14px;transition:box-shadow .2s}
-.rb:hover{box-shadow:var(--sh1)}
+.rb{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px 22px 18px;margin-bottom:14px}
 .rbt{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:10px}
-.rn{width:30px;height:30px;border-radius:50%;background:var(--gold);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.rb p{font-size:14px;color:var(--is);line-height:1.85;font-weight:300}
+.rn{width:28px;height:28px;border-radius:50%;background:var(--gold-p);color:var(--gold-d);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rb p{font-size:14px;color:var(--is);line-height:1.8;font-weight:300}
 .pvb{background:var(--ink);border-radius:var(--r);padding:26px 22px;margin-top:6px}
-.pvb h3{font-family:var(--fd);font-size:18px;color:#fff;margin-bottom:12px}
-.pvb p{font-size:14px;color:rgba(247,244,239,.62);line-height:1.8;font-weight:300;margin-bottom:8px}
-.pvb li{font-size:14px;color:rgba(247,244,239,.62);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.07);display:flex;gap:8px}
+.pvb h3{font-family:var(--fd);font-size:18px;color:var(--cream);margin-bottom:12px}
+.pvb p{font-size:14px;color:rgba(250,248,243,.62);line-height:1.8;font-weight:300;margin-bottom:8px}
+.pvb li{font-size:14px;color:rgba(250,248,243,.62);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.07);display:flex;gap:8px}
 .pvb li:last-child{border-bottom:none}
 
 /* BUILDER */
 .bl{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
-.bs{position:sticky;top:82px}
+.bs{position:sticky;top:78px}
 @media(max-width:860px){.bl{grid-template-columns:1fr}.bs{position:static}}
 .pt-tip{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:20px}
-.pt-tip h3{font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:14px;color:var(--ink)}
+.pt-tip h3{font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:14px}
 .ptg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .ptc{background:var(--cm);border-radius:10px;padding:13px 14px}
 .ptc .ptt{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:5px}
@@ -282,7 +217,7 @@ html,body{max-width:100%;overflow-x:hidden}
 .cb-pills::-webkit-scrollbar{display:none}
 .cpp{font-size:12px;font-weight:600;padding:6px 11px;border-radius:30px;background:var(--cm);color:var(--il);white-space:nowrap;border:1.5px solid var(--cd);transition:all .2s;flex-shrink:0}
 .cpp.active{background:var(--gold-p);color:var(--gold-d);border-color:var(--gold)}
-.cpp.done{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cpp.done{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .cbp{display:none}.cbp.active{display:block}
 .cbl{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:2px solid var(--gold-p)}
 .cbf{display:flex;align-items:center;justify-content:space-between;margin-top:24px;padding-top:18px;border-top:1px solid var(--cd);gap:10px}
@@ -290,65 +225,59 @@ html,body{max-width:100%;overflow-x:hidden}
 .bb:hover{background:var(--cd)}
 .cp2{font-size:12px;color:var(--il)}
 .prev-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden}
-.pch{background:var(--ink);color:#fff;padding:13px 16px;font-size:13px;font-weight:600}
+.pch{background:var(--ink);color:var(--cream);padding:13px 16px;font-size:13px;font-weight:600}
 .pcb{padding:16px;font-size:13px;line-height:1.9;color:var(--im);white-space:pre-wrap;direction:rtl;max-height:400px;overflow-y:auto}
 .pca{padding:12px 16px;border-top:1px solid var(--cd);display:flex;gap:8px}
 
 /* PUBLISH */
 .psg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px}
 .ps{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px 16px;text-align:center}
-.psn{width:44px;height:44px;background:var(--ink);color:var(--gold);font-family:var(--fd);font-size:20px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.ps h4{font-family:var(--fd);font-size:15px;font-weight:700;margin-bottom:7px;color:var(--ink)}
+.psn{width:44px;height:44px;background:var(--ink);color:var(--gold-l);font-family:var(--fd);font-size:20px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.ps h4{font-family:var(--fd);font-size:15px;font-weight:700;margin-bottom:7px}
 .ps p{font-size:13px;color:var(--is);line-height:1.65}
 @media(max-width:700px){.psg{grid-template-columns:1fr 1fr}}
 @media(max-width:400px){.psg{grid-template-columns:1fr}}
 .prc{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:560px;margin:0 auto}
 @media(max-width:480px){.prc{grid-template-columns:1fr}}
-.pcard{background:var(--white);border:2px solid var(--border);border-radius:var(--r);padding:28px 22px;text-align:center;position:relative;transition:all .28s var(--ease);cursor:pointer}
-.pcard:hover{border-color:var(--gold);box-shadow:var(--sh2);transform:translateY(-2px)}
-.pcard.feat{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),var(--sh1)}
-.pbadge{position:absolute;top:-12px;right:50%;transform:translateX(50%);background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:4px 14px;border-radius:20px;white-space:nowrap}
-.pname{font-family:var(--fd);font-size:18px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.pcard{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:26px 20px;text-align:center;position:relative;transition:box-shadow .25s;cursor:pointer}
+.pcard:hover{box-shadow:var(--sh2)}
+.pcard.feat{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.pbadge{position:absolute;top:-11px;right:50%;transform:translateX(50%);background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:4px 13px;border-radius:20px}
+.pname{font-family:var(--fd);font-size:17px;font-weight:700;margin-bottom:6px}
 .pdesc{font-size:13px;color:var(--is);margin-bottom:16px}
-.pamt{font-family:var(--fd);font-size:38px;font-weight:900;color:var(--ink)}
+.pamt{font-family:var(--fd);font-size:36px;font-weight:900;color:var(--ink)}
 .pcur{font-size:18px;vertical-align:super;color:var(--is)}
 .pnote{font-size:12px;color:var(--il);margin-top:4px;margin-bottom:16px}
 .pfeat{text-align:right;margin:14px 0;list-style:none}
 .pfeat li{font-size:13px;color:var(--im);padding:5px 0;border-bottom:1px solid var(--cd);display:flex;align-items:center;gap:7px}
 .pfeat li:last-child{border-bottom:none}
-.pfeat li::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0}
-.pinfo{background:var(--gold-p);border:1px solid rgba(201,162,77,.3);border-radius:10px;padding:12px 14px;margin:14px 0 0;font-size:12.5px;color:var(--im);line-height:1.7;text-align:right}
-.pinfo a{color:var(--gold-d);font-weight:600;text-decoration:underline;cursor:pointer}
+.pfeat li::before{content:'✓';color:var(--gold-d);font-weight:700;flex-shrink:0}
 .mgr-btn{display:flex;align-items:center;gap:12px;background:var(--green);color:#fff;border:none;border-radius:var(--r);padding:14px 18px;cursor:pointer;width:100%;text-align:right;transition:background .2s;font-family:var(--fb);margin-bottom:10px}
 .mgr-btn:hover{background:#1da851}
 .mgr-btn-av{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
 .mgr-btn-name{font-size:15px;font-weight:700}
 .mgr-btn-role{font-size:12px;opacity:.8}
-/* ---- עמוד תשלום ---- */
-.pay-sub{font-size:14px;color:var(--is);margin-bottom:28px;max-width:560px;line-height:1.7}
-.pay-section{max-width:560px;margin-bottom:32px}
-.pay-stitle{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--ink);padding-bottom:8px;border-bottom:2px solid rgba(201,162,77,.25)}
-.pay-form{display:flex;flex-direction:column;gap:14px}
-.pay-field{display:flex;flex-direction:column;gap:5px}
-.pay-field label{font-size:14px;font-weight:600;color:var(--ink)}
-.pay-field input{padding:12px 14px;border:1.5px solid var(--cd);border-radius:10px;font-size:15px;background:var(--white);font-family:var(--fb);transition:border-color .2s,box-shadow .2s}
-.pay-field input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(201,162,77,.13)}
-.pay-field input.perr{border-color:#e05;}
-.pay-req{color:#e05}
-.pay-err{font-size:12px;color:#e05;min-height:15px}
-.pay-summary-box{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:20px 22px;box-shadow:var(--sh1)}
-.pay-sum-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--cd);font-size:14px;color:var(--ink)}
-.pay-sum-row:last-child{border-bottom:none}
-.pay-sum-total{font-size:16px;font-weight:700}
-.pay-terms-label{display:flex;align-items:flex-start;gap:10px;font-size:14px;cursor:pointer;line-height:1.7;color:var(--im)}
-.pay-terms-label input[type=checkbox]{margin-top:3px;flex-shrink:0;width:18px;height:18px;cursor:pointer;accent-color:var(--gold)}
-.pay-link{color:var(--gold-d);text-decoration:underline;cursor:pointer;font-weight:600}
-.pcard.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);background:rgba(201,162,77,.04)}
-#pay-submit-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* DASHBOARD */
+.dash-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+.dash-stat{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px;text-align:center;box-shadow:var(--sh1)}
+.dash-stat-num{font-family:var(--fd);font-size:36px;font-weight:900;color:var(--gold-d)}
+.dash-stat-lbl{font-size:13px;color:var(--is);margin-top:4px}
+.dash-card-row{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh1);transition:box-shadow .2s;margin-bottom:10px}
+.dash-card-row:hover{box-shadow:var(--sh2)}
+.dash-card-name{font-family:var(--fd);font-size:15px;font-weight:700;flex:1;color:var(--ink)}
+.dash-card-actions{display:flex;gap:6px;flex-shrink:0}
+.dash-action-btn{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--cd);background:none;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .2s}
+.dash-action-btn:hover{border-color:var(--gold);background:var(--gold-p)}
+.dash-action-btn.fav-active{border-color:#f59e0b;background:#fef3c7}
+.empty-state{text-align:center;padding:40px 20px;color:var(--is);font-size:15px}
+.reminder-bar{background:var(--gold-p);border:1px solid rgba(184,151,90,.3);border-radius:var(--r);padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;color:var(--im)}
+.pick-card-btn{display:block;width:100%;text-align:right;background:var(--cm);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;margin-bottom:8px;transition:background .2s}
+.pick-card-btn:hover{background:var(--gold-p);border-color:var(--gold)}
 
 /* ADMIN */
-.admin-section{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin-bottom:20px;box-shadow:var(--sh1)}
-.admin-section h3{font-family:var(--fd);font-size:17px;font-weight:700;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--gold-p);display:flex;align-items:center;gap:8px;color:var(--ink)}
+.admin-section{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:20px}
+.admin-section h3{font-family:var(--fd);font-size:17px;font-weight:700;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--gold-p);display:flex;align-items:center;gap:8px}
 .admin-pkg-row{background:var(--cm);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .admin-pkg-row input{flex:1;min-width:80px;padding:8px 10px;border:1.5px solid var(--cd);border-radius:8px;font-size:13px;background:var(--white)}
 .admin-pkg-toggle{width:40px;height:22px;border-radius:11px;border:none;cursor:pointer;transition:background .2s;flex-shrink:0}
@@ -356,11 +285,12 @@ html,body{max-width:100%;overflow-x:hidden}
 .admin-pkg-toggle.off{background:var(--cd)}
 .admin-mgr-row{background:var(--cm);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .admin-mgr-row input{flex:1;min-width:80px;padding:8px 10px;border:1.5px solid var(--cd);border-radius:8px;font-size:13px;background:var(--white)}
+.admin-blocked-row{background:#fdf2f2;border:1px solid rgba(192,57,43,.2);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:8px}
 .btn-del{background:#fee2e2;color:#991b1b;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer}
 .btn-del:hover{background:#fecaca}
 
 /* TOAST */
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:14px;font-weight:600;padding:11px 24px;border-radius:30px;box-shadow:var(--sh3);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;border:1px solid rgba(201,162,77,.25)}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);font-size:14px;font-weight:600;padding:11px 22px;border-radius:30px;box-shadow:var(--sh3);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap}
 .toast.show{opacity:1}
 
 /* WA FLOAT BUTTON */
@@ -370,7 +300,7 @@ html,body{max-width:100%;overflow-x:hidden}
 @media(max-width:760px){.waf{bottom:20px;left:16px}.waf-btn{width:50px;height:50px;font-size:22px}}
 .waf-panel{display:none;position:absolute;bottom:68px;left:0;background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh3);min-width:220px;overflow:hidden;animation:pi .2s var(--ease)}
 .waf-panel.open{display:block}
-.waf-panel-hdr{background:var(--ink);color:#fff;padding:11px 16px;font-size:13px;font-weight:600}
+.waf-panel-hdr{background:var(--ink);color:var(--cream);padding:11px 16px;font-size:13px;font-weight:600}
 .waf-mgr-btn{display:flex;align-items:center;gap:12px;width:100%;background:none;border:none;padding:13px 16px;cursor:pointer;border-bottom:1px solid var(--cd);text-align:right;transition:background .18s;font-family:var(--fb)}
 .waf-mgr-btn:last-child{border-bottom:none}
 .waf-mgr-btn:hover{background:var(--cm)}
@@ -379,14 +309,14 @@ html,body{max-width:100%;overflow-x:hidden}
 .waf-mgr-role{font-size:12px;color:var(--il)}
 
 /* FOOTER */
-footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1px solid rgba(201,162,77,.2)}
+footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
 .fi2{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
-.flog{font-family:var(--fd);font-size:20px;font-weight:700;color:#fff}
-.flog span{color:var(--gold)}
+.flog{font-family:var(--fd);font-size:18px;font-weight:700}
+.flog span{color:var(--gold-l)}
 .flinks{display:flex;gap:18px;flex-wrap:wrap}
-.flinks button{font-size:13px;color:rgba(247,244,239,.45);background:none;border:none;cursor:pointer;transition:color .2s}
-.flinks button:hover{color:var(--gold)}
-.fcp{font-size:12px;color:rgba(247,244,239,.3);width:100%;text-align:center;margin-top:14px}
+.flinks button{font-size:13px;color:rgba(250,248,243,.45);background:none;border:none;cursor:pointer;transition:color .2s}
+.flinks button:hover{color:var(--cream)}
+.fcp{font-size:12px;color:rgba(250,248,243,.3);width:100%;text-align:center;margin-top:14px}
 </style>
 </head>
 <body>
@@ -397,317 +327,134 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 <!-- NAV -->
 <nav id="mn">
   <div class="nav-inner">
-    <div class="nav-logo" onclick="go('home')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--gold)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg> שידוכים <span>באמונה</span></div>
+    <div class="nav-logo" onclick="go('home')">💍 שידוכים <span>באמונה</span></div>
     <div class="nav-links">
-      <button class="nl" onclick="go('about')">על הערוץ</button>
-      <button class="nl" onclick="go('rules')">תקנון הערוץ</button>
-      <button class="nl" onclick="go('builder')">יצירת כרטיס</button>
-      <button class="nl" onclick="go('publish')">פרסום</button>
-      <a href="https://whatsapp.com/channel/0029VbCk83eHwXbIxQlo6s1f" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#fff;background:var(--green);padding:7px 13px;border-radius:30px;text-decoration:none;white-space:nowrap">💬 שידוכים באמונה</a>
-      <a href="https://whatsapp.com/channel/0029Vb8T6AQ7dmeRtNo83c46" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#fff;background:var(--green);padding:7px 13px;border-radius:30px;text-decoration:none;white-space:nowrap">💬 מתחזקים לזיווג</a>
+      <button class="nl" onclick="go('about')">📜 על הערוץ</button>
+      <button class="nl" onclick="go('rules')">📋 כללים</button>
+      <button class="nl" onclick="go('builder')">📝 יצירת כרטיס</button>
+      <button class="nl" onclick="go('publish')">💰 פרסום</button>
+    </div>
+    <div class="nav-auth" id="na">
+      <button class="btn-login" onclick="go('login')">כניסה</button>
+      <button class="btn-register" onclick="go('register')">הרשמה</button>
     </div>
     <div class="nav-user" id="nu" style="display:none">
       <div class="nav-av" id="navi">א</div>
       <span id="nname"></span>
-      <button id="admin-nav-btn" class="btn btn-dark btn-sm" onclick="go('admin')" style="font-size:12px;padding:6px 12px;display:none">ניהול</button>
+      <button class="btn btn-gold btn-sm" onclick="go('dashboard')" style="font-size:12px;padding:6px 12px">אזור אישי</button>
+      <button id="admin-nav-btn" class="btn btn-dark btn-sm" onclick="go('admin')" style="font-size:12px;padding:6px 12px;display:none">⚙️ ניהול</button>
       <button class="btn-out" onclick="doLogout()">יציאה</button>
     </div>
     <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
   </div>
   <div class="mob-drawer" id="md">
-    <button onclick="go('about')">על הערוץ</button>
-    <button onclick="go('rules')">תקנון הערוץ</button>
-    <button onclick="go('builder')">יצירת כרטיס</button>
-    <button onclick="go('publish')">פרסום ותשלום</button>
-    <a href="https://whatsapp.com/channel/0029VbCk83eHwXbIxQlo6s1f" target="_blank" rel="noopener noreferrer" style="display:block;text-align:right;font-size:15px;font-weight:600;color:var(--green);background:none;border:none;padding:12px 0;border-bottom:1px solid var(--cd);text-decoration:none">💬 שידוכים באמונה — הצטרף לערוץ</a>
-    <a href="https://whatsapp.com/channel/0029Vb8T6AQ7dmeRtNo83c46" target="_blank" rel="noopener noreferrer" style="display:block;text-align:right;font-size:15px;font-weight:600;color:var(--green);background:none;border:none;padding:12px 0;border-bottom:1px solid var(--cd);text-decoration:none">💬 מתחזקים לזיווג באמונה — הצטרף לערוץ</a>
-    <button onclick="go('admin')" id="mob-admin-btn" style="display:none">ניהול</button>
-    <div id="mur" style="display:none;padding:10px 0;font-size:14px;color:rgba(255,255,255,.7)">
+    <button onclick="go('about')">📜 על הערוץ</button>
+    <button onclick="go('rules')">📋 כללים</button>
+    <button onclick="go('builder')">📝 יצירת כרטיס</button>
+    <button onclick="go('publish')">💰 פרסום ותשלום</button>
+    <button onclick="go('dashboard')" id="mob-dash-btn" style="display:none">👤 אזור אישי</button>
+    <button onclick="go('admin')" id="mob-admin-btn" style="display:none">⚙️ ניהול</button>
+    <div class="mob-auth" id="ma">
+      <button class="btn-login" style="border:1.5px solid var(--cd)" onclick="go('login')">כניסה</button>
+      <button class="btn-register" onclick="go('register')">הרשמה</button>
+    </div>
+    <div id="mur" style="display:none;padding:10px 0;font-size:14px;color:var(--im)">
       מחובר: <span id="mun"></span>
-      <button onclick="doLogout()" style="color:#f87171;float:left;font-size:13px;background:none;border:none;cursor:pointer">יציאה</button>
+      <button onclick="doLogout()" style="color:var(--red);float:left;font-size:13px;background:none;border:none;cursor:pointer">יציאה</button>
     </div>
   </div>
 </nav>
 
 <!-- ============================== HOME ============================== -->
 <div id="page-home" class="page active pt">
-
-  <!-- HERO -->
-  <section class="home-hero">
-    <div class="home-hero-bg"></div>
-    <div class="home-hero-content">
-      <div class="hero-ornament">
-        <span class="hero-ornament-line"></span>
-        <span class="hero-ornament-diamond"></span>
-        <span class="hero-ornament-line"></span>
-      </div>
+  <div class="hero">
+    <div class="wrap">
+      <span class="hero-ring">💍</span>
       <h1 class="ht">שידוכים <em>באמונה</em></h1>
-      <div class="gold-divider" style="margin:20px 0"></div>
-      <p class="hs">ערוץ שידוכים דיסקרטי ומכובד לגברים ונשים עם זיקה ליהדות.<br/>לקחת הדרך למציאת הזיווג הנכון בעזרת ה׳.</p>
-      <div class="hero-actions" style="margin-top:28px">
-        <a href="https://whatsapp.com/channel/0029VbCk83eHwXbIxQlo6s1f" target="_blank" rel="noopener noreferrer" class="btn btn-green" style="font-size:16px;padding:14px 32px">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          הצטרף לערוץ
-        </a>
+      <p class="hs">ערוץ שידוכים מכובד ודיסקרטי לגברים ונשים עם זיקה ליהדות.<br/>מכאן מתחיל הדרך למציאת הזיווג הנכון.</p>
+      <div class="ncs">
+        <div class="nc" onclick="go('about')"><span class="nc-icon">📜</span><div class="nc-title">על הערוץ</div><div class="nc-desc">מי אנחנו, מה המטרה ולמי זה מיועד</div></div>
+        <div class="nc" onclick="go('rules')"><span class="nc-icon">📋</span><div class="nc-title">כללי הערוץ</div><div class="nc-desc">חוקי ההתנהלות ושמירת הדיסקרטיות</div></div>
+        <div class="nc" onclick="go('builder')"><span class="nc-icon">📝</span><div class="nc-title">יצירת כרטיס שידוך</div><div class="nc-desc">בנו כרטיס מקצועי תוך דקה — חינם לחלוטין</div></div>
+        <div class="nc" onclick="go('publish')"><span class="nc-icon">💰</span><div class="nc-title">פרסום ותשלום</div><div class="nc-desc">איך מפרסמים ומהם מסלולי התשלום</div></div>
+      </div>
+      <div class="tr">
+        <div class="ti"><span class="td">✓</span>דיסקרטיות מלאה</div>
+        <div class="ti"><span class="td">✓</span>יצירת כרטיס חינמית</div>
+        <div class="ti"><span class="td">✓</span>תהליך פשוט וברור</div>
+        <div class="ti"><span class="td">✓</span>מכובד ורציני</div>
       </div>
     </div>
-  </section>
-
-  <!-- WELCOME + 4 FEATURE CARDS -->
-  <section class="welcome-section">
+  </div>
+  <div class="astrip">
     <div class="wrap">
-      <div class="welcome-title-area">
-        <h2>ברוכים הבאים לערוץ השידוכים</h2>
-        <div class="wt-divider"></div>
-        <p>אנו כאן כדי לסייע לאנשים למצוא את הזיווג שלהם — בצורה רצינית, דיסקרטית ומכובדת.</p>
-      </div>
-      <div class="feature-cards-grid">
-        <div class="feature-card">
-          <div class="fc-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <h3>מאגר פרטים שידוך</h3>
-          <p>מאגר מוסדי ומסודר של כרטיסי שידוך</p>
-        </div>
-        <div class="feature-card">
-          <div class="fc-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M6.5 16c.8-2 4.2-2 5 0"/><path d="M14 9h4"/><path d="M14 13h4"/></svg>
-          </div>
-          <h3>יצירת כרטיס שידוך</h3>
-          <p>כרטיס מקצועי ומפורט — חינמי לחלוטין</p>
-        </div>
-        <div class="feature-card">
-          <div class="fc-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
-          </div>
-          <h3>ידידות שאלון שדכן</h3>
-          <p>שאלון ידידותי המסייע לשדכנים לפעול</p>
-        </div>
-        <div class="feature-card">
-          <div class="fc-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          </div>
-          <h3>מחיר קל ונוח</h3>
-          <p>מסלולי תשלום גמישים ומשתלמים</p>
-        </div>
+      <div class="asi">
+        <h2>ברוכים הבאים לערוץ השידוכים ❤️</h2>
+        <p>ערוץ זה נועד לפרסום הצעות שידוך בלבד, במטרה לעזור לגברים ונשים למצוא את הזיווג המתאים להם בעזרת ה'.</p>
+        <p>הערוץ מיועד לציבור רחב עם זיקה ליהדות: <strong>דתיים, מסורתיים, מתחזקים, חוזרים בתשובה, חרדים, חרדים מודרניים, ברסלב, חב"ד</strong>, וכל מי שמחפש קשר רציני שמוביל לנישואין כדת משה וישראל.</p>
+        <p style="color:var(--gold-l);font-weight:600;margin-top:6px">בשם ה' נעשה ונצליח 🙏</p>
       </div>
     </div>
-  </section>
-
-  <!-- QUICK FORM SECTION -->
-  <section class="quick-form-section">
-    <div class="quick-form-inner">
-      <div class="qf-icon">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      </div>
-      <h2>יצירת כרטיס — פשוט ונוח</h2>
-      <div class="qf-fields">
-        <input id="qf-name" class="qf-input" type="text" placeholder="שם פרטי" autocomplete="given-name"/>
-        <input id="qf-age" class="qf-input" type="number" placeholder="גיל" min="18" max="99"/>
-      </div>
-      <button class="qf-submit" onclick="startQuickCard()">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-      </button>
-      <p class="qf-brand">בניית כרטיס באמונה</p>
-    </div>
-  </section>
-
-  <!-- QUOTE STRIP -->
-  <section class="quote-strip">
-    <div class="wrap">
-      <p>מציאת זיווג היא <em>שליחות</em>, בניית בית היא <em>אמונה</em></p>
-    </div>
-  </section>
-
+  </div>
 </div>
 
 <!-- ============================== ABOUT ============================== -->
 <div id="page-about" class="page pt">
-  <div class="page-hero">
-    <div class="page-hero-inner">
-      <div class="hero-kicker">על הערוץ</div>
-      <h1>ברוכים הבאים לערוץ <em>השידוכים</em></h1>
-      <div class="gold-divider"></div>
-      <p class="page-hero-sub">מי אנחנו, מה המטרה — ולמי הערוץ מיועד.</p>
-    </div>
-  </div>
   <div class="sec"><div class="wrap">
-    <div style="max-width:700px">
-
-      <div class="card" style="margin-bottom:18px">
-        <p style="font-size:16px;line-height:2;color:var(--is);font-weight:300">
-          ערוץ זה נועד לפרסום הצעות שידוך בלבד, במטרה לעזור לגברים ונשים למצוא את הזיווג המתאים להם בעזרת ה'.
-        </p>
+    <div class="ey">על הערוץ</div>
+    <h1 class="st">ברוכים הבאים לערוץ השידוכים ❤️</h1>
+    <div class="div"></div>
+    <div style="max-width:680px">
+      <div class="card" style="margin-bottom:16px"><p style="font-size:16px;line-height:1.9;color:var(--is);font-weight:300">ערוץ זה נועד לפרסום הצעות שידוך בלבד, במטרה לעזור לגברים ונשים למצוא את הזיווג המתאים להם בעזרת ה'.</p></div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:10px">למי מיועד הערוץ?</div>
+        <p style="font-size:15px;color:var(--is);line-height:1.9;font-weight:300">הערוץ מיועד לציבור רחב עם זיקה ליהדות: <strong style="color:var(--ink);font-weight:600">דתיים, מסורתיים, מתחזקים, חוזרים בתשובה, חרדים, חרדים מודרניים, ברסלב, חב"ד</strong>, וכל מי שמחפש קשר רציני שמוביל לנישואין כדת משה וישראל.</p>
       </div>
-
-      <div class="card" style="margin-bottom:18px">
-        <div style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:12px">🙏 למי מיועד הערוץ?</div>
-        <p style="font-size:15px;color:var(--is);line-height:2;font-weight:300">
-          הערוץ מיועד לציבור רחב עם זיקה ליהדות:<br/>
-          <strong style="color:var(--ink);font-weight:600">דתיים, מסורתיים, מתחזקים, חוזרים בתשובה, חרדים, חרדים מודרניים, ברסלב, חב"ד</strong>,
-          וכל מי שמחפש קשר רציני שמוביל לנישואין כדת משה וישראל.
-        </p>
+      <div class="card" style="background:var(--gold-p);border-color:rgba(184,151,90,.3)">
+        <div style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:10px">💛 ללא עלות</div>
+        <p style="font-size:15px;color:var(--im);line-height:1.85;font-weight:300">השימוש בערוץ הוא ללא עלות. גם אם בעזרת ה' תכירו כאן ותתחתנו – אין חובה לשלם דבר.</p>
+        <p style="margin-top:10px;font-size:15px;font-weight:700;color:var(--gold-d)">בשם ה' נעשה ונצליח 🙏</p>
       </div>
-
-      <div class="card" style="margin-bottom:18px">
-        <div style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:12px">💛 המטרה שלנו</div>
-        <p style="font-size:15px;color:var(--is);line-height:2;font-weight:300">
-          המטרה כאן היא לעזור לאנשים טובים למצוא את החצי השני שלהם בצורה מכובדת, צנועה וישרה.
-        </p>
-      </div>
-
-      <div class="card" style="background:var(--gold-p);border-color:rgba(201,162,77,.3)">
-        <div style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:12px">✨ יצירת כרטיס — חינמית לחלוטין</div>
-        <p style="font-size:15px;color:var(--im);line-height:2;font-weight:300">
-          יצירת כרטיס שידוך באתר היא <strong>ללא עלות לחלוטין</strong>.<br/>
-          גם אם בעזרת ה' תכירו כאן ותתחתנו – אין חובה לשלם דבר.<br/><br/>
-          פרסום הכרטיס בערוץ הוואטסאפ מתבצע בתשלום סמלי בלבד.<br/>
-          לפרטים ומסלולים — ראו עמוד <a onclick="go('publish')" style="color:var(--gold-d);font-weight:700;cursor:pointer;text-decoration:underline">הפרסום</a>.
-        </p>
-        <p style="margin-top:14px;font-size:16px;font-weight:700;color:var(--gold-d)">בשם ה' נעשה ונצליח 🙏</p>
-      </div>
-
     </div>
   </div></div>
 </div>
 
 <!-- ============================== RULES ============================== -->
 <div id="page-rules" class="page pt">
-  <div class="page-hero">
-    <div class="page-hero-inner">
-      <div class="hero-kicker">תקנון הערוץ</div>
-      <h1>תקנון <em>הערוץ</em></h1>
-      <div class="gold-divider"></div>
-      <p class="page-hero-sub">כדי לשמור על איכות המשתתפים, כבוד הדדי וסביבה נעימה – חובה לכבד את התקנון הבא.</p>
-    </div>
-  </div>
   <div class="sec"><div class="wrap">
-    <div style="max-width:720px">
-
-      <div class="rb"><div class="rbt"><div class="rn">1</div>מטרת הערוץ</div>
-        <p>הערוץ מיועד לפרסום הצעות שידוך בלבד.<br/>רק הנהלת הערוץ רשאית לפרסם הודעות.</p></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">2</div>שליחת כרטיס שידוך</div>
-        <p>שליחת פרטים לפרסום נעשית בהודעה פרטית בלבד למנהל הערוץ.<br/>
-        יש לשלוח פרטים בצורה מכובדת, ברורה ואמיתית.<br/>
-        אין לשלוח מידע שקרי, מטעה או חלקי בכוונה.<br/><br/>
-        המידע נמסר על ידי המשתתפים בלבד, והאחריות הבלעדית על נכונותו, אמיתותו ושלמותו חלה על מוסר הפרטים.<br/>
-        הנהלת הערוץ אינה מתחייבת לבדוק או לאמת את הפרטים ואינה אחראית לכל נזק שייגרם עקב הסתמכות על המידע.</p></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">3</div>פרסום כרטיס שידוך</div>
-        <p>מי שמעוניין לפרסם כרטיס שידוך בערוץ – מוזמן לפנות למנהל הערוץ בהודעה פרטית.<br/>
-        ניתן לשלוח כרטיס שידוך עם פרטים ותמונה, במידה ורוצים.</p></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">4</div>פנייה למועמדים</div>
-        <p>לפני פנייה יש לקרוא היטב את כרטיס השידוך ולבדוק התאמה בסיסית לפרטים שנכתבו.<br/>
-        אין לפנות כאשר ברור מראש שאין התאמה.</p></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">5</div>צורת הפנייה</div>
-        <p>הפנייה חייבת להיות מכובדת, מנומסת וצנועה.<br/>
-        אין לשלוח הודעות פוגעניות, מזלזלות או מטרידות.</p></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">6</div>שיחות טלפון</div>
-        <p>אין להתקשר לאף משתתף או משתתפת ללא רשות מראש.<br/>
-        הפנייה הראשונית נעשית בהודעת וואטסאפ בלבד.</p></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">7</div>ללא וואטסאפ</div>
-        <p>כל התקשורת בערוץ מתבצעת דרך וואטסאפ בלבד.<br/>
-        מי שאין ברשותו וואטסאפ חייב לציין איש קשר חלופי (חבר או בן משפחה) שיש לו וואטסאפ, ודרכו יתבצעו כל הפניות.<br/>
-        לא ניתן לנהל תקשורת ללא וואטסאפ.</p></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">8</div>אם קיבלתם סירוב</div>
-        <p>אם קיבלתם תשובה שהשידוך פחות מתאים – יש לכבד זאת.<br/>
-        תגובה מכובדת יכולה להיות למשל:</p>
-        <div class="al al-gold" style="margin-top:10px;font-style:italic;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-          <span>"תודה רבה על הפנייה, פחות מתאים לי כרגע. מאחל/ת לך הרבה הצלחה במציאת הזיווג."</span>
-          <button onclick="navigator.clipboard.writeText('תודה רבה על הפנייה, פחות מתאים לי כרגע. מאחל/ת לך הרבה הצלחה במציאת הזיווג.').then(()=>toast('הועתק ✓'))" style="flex-shrink:0;font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--gold);background:transparent;color:var(--gold-d);cursor:pointer;white-space:nowrap">📋 העתק</button>
-        </div></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">9</div>זהות ברורה</div>
-        <p>יש לפנות עם שם ברור ותמונת פרופיל.<br/>
-        רוב האנשים לא ישיבו להודעות מחשבון שמסתיר את זהותו.</p></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">10</div>אחריות על תוכן הכרטיסים</div>
-        <p>המידע המתפרסם בכרטיסי השידוך נמסר על ידי המשתתפים בלבד.<br/>
-        הנהלת הערוץ משמשת כפלטפורמת פרסום בלבד ואינה צד לכל קשר, שיח או התקשרות בין המשתתפים.</p></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">11</div>הסכמה לפרסום ושימוש בפרטים</div>
-        <p>עצם השימוש באתר או בערוץ, לרבות שליחת כרטיס שידוך, פרטים או תמונה, מהווה אישור לכך שהמשתמש קרא, הבין והסכים לתקנון הערוץ, וכן אישור לפרסום המידע לצורך מטרת השידוך.<br/>
-        באחריות השולח לוודא כי קיבל רשות מכל אדם שפרטיו או תמונתו נשלחו לפרסום.</p></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">12</div>גיל המשתתפים</div>
-        <p>הערוץ מיועד לגברים ונשים מגיל <strong>18 ומעלה</strong>.<br/>
-        לא יתפרסמו כרטיסים של מי שטרם מלאו לו 18 שנים.<br/>
-        באחריות השולח לוודא כי גילו תואם את תנאי הערוץ.</p></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">13</div>תמונה לכרטיס שידוך</div>
-        <p>כרטיס שידוך הוא למעשה כרטיס הביקור שלכם.<br/>
-        רוב האנשים מסתכלים קודם על התמונה ורק לאחר מכן על התוכן, לכן חשוב להשקיע בתמונה מכובדת וברורה.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0">
-          <div style="background:var(--cm);border-radius:10px;padding:14px">
-            <div style="font-weight:700;margin-bottom:8px;font-size:14px">👩 נשים</div>
-            <p style="font-size:13px;color:var(--is);line-height:1.7">לבוש צנוע ומכובד. יש להימנע מתמונות עם מחשופים, גופיות או לבוש שאינו מתאים. חשוב לכבד את המשתתפים הדתיים בערוץ.</p>
-          </div>
-          <div style="background:var(--cm);border-radius:10px;padding:14px">
-            <div style="font-weight:700;margin-bottom:8px;font-size:14px">👨 גברים</div>
-            <p style="font-size:13px;color:var(--is);line-height:1.7">לבוש מסודר ומכובד. תמונות בלבוש נקי ומסודר, חולצה מכופתרת וכדומה משאירות רושם טוב.</p>
-          </div>
-        </div>
-        <div style="background:#fdf2f2;border-radius:10px;padding:12px 14px">
-          <p style="font-size:13px;color:#922b21;line-height:1.7">❌ <strong>אין לשלוח תמונות עם:</strong> הוצאת לשון · פרצופים לא רציניים · מחוות לא מכבדות</p>
-        </div></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">14</div>פרטיות ודיסקרטיות</div>
-        <p>שמירת פרטיות המשתתפים היא דבר חשוב מאוד.</p>
-        <div class="pvb" style="margin-top:12px">
-          <p><strong style="color:var(--cream)">חל איסור מוחלט על:</strong></p>
-          <ul style="list-style:none;margin:10px 0">
-            <li><span style="color:#e74c3c">✗</span> צילום מסך של כרטיסים</li>
-            <li><span style="color:#e74c3c">✗</span> הפצת כרטיסים מחוץ לערוץ</li>
-            <li><span style="color:#e74c3c">✗</span> העברת פרטים לאחרים ללא רשות</li>
-            <li><span style="color:#e74c3c">✗</span> שימוש במידע לצחוק, לעג או פגיעה</li>
-          </ul>
-        </div></div>
-
-      <div class="rb"><div class="rbt"><div class="rn">15</div>אכיפת התקנון</div>
-        <p>הנהלת הערוץ שומרת לעצמה את הזכות:</p>
-        <ul style="list-style:none;margin:10px 0 0;padding-right:4px">
-          <li style="padding:4px 0;color:var(--is);font-size:14px">· למחוק הודעות</li>
-          <li style="padding:4px 0;color:var(--is);font-size:14px">· להסיר משתתפים</li>
-          <li style="padding:4px 0;color:var(--is);font-size:14px">· לחסום משתמשים</li>
-          <li style="padding:4px 0;color:var(--is);font-size:14px">· לא לפרסם כרטיסים לפי שיקול דעתה</li>
+    <div class="ey">כללי הערוץ</div>
+    <h1 class="st">כללי הערוץ</h1>
+    <div class="div"></div>
+    <p style="font-size:15px;color:var(--is);max-width:620px;margin-bottom:28px;font-weight:300;line-height:1.8">כדי לשמור על איכות המשתתפים, כבוד הדדי וסביבה נעימה – חובה לכבד את הכללים הבאים.</p>
+    <div style="max-width:700px">
+      <div class="rb"><div class="rbt"><div class="rn">1</div>מטרת הערוץ</div><p>הערוץ מיועד לפרסום הצעות שידוך בלבד. רק הנהלת הערוץ רשאית לפרסם הודעות.</p></div>
+      <div class="rb"><div class="rbt"><div class="rn">2</div>שליחת כרטיס שידוך</div><p>שליחת פרטים לפרסום נעשית בהודעה פרטית בלבד למנהל הערוץ. יש לשלוח פרטים בצורה מכובדת, ברורה ואמיתית.</p></div>
+      <div class="rb"><div class="rbt"><div class="rn">3</div>פנייה למועמדים</div><p>לפני פנייה – יש לקרוא היטב את כרטיס השידוך ולבדוק התאמה בסיסית. אין לפנות כאשר ברור מראש שאין התאמה.</p></div>
+      <div class="rb"><div class="rbt"><div class="rn">4</div>צורת הפנייה</div><p>הפנייה חייבת להיות מכובדת, מנומסת וצנועה. הפנייה הראשונית נעשית בהודעת וואטסאפ בלבד.</p></div>
+      <div class="rb"><div class="rbt"><div class="rn">5</div>אם קיבלתם סירוב</div><p>אם קיבלתם תשובה שהשידוך פחות מתאים – יש לכבד זאת.</p></div>
+      <div class="rb"><div class="rbt"><div class="rn">6</div>גיל המשתתפים</div><p>הערוץ מיועד לגברים ונשים בגילאי <strong>18 עד 45 בלבד</strong>.</p></div>
+      <div class="pvb">
+        <h3>🔒 פרטיות ודיסקרטיות</h3>
+        <p><strong style="color:var(--cream)">חל איסור מוחלט על:</strong></p>
+        <ul style="list-style:none;margin:10px 0">
+          <li><span style="color:#e74c3c">✗</span> צילום מסך של כרטיסים</li>
+          <li><span style="color:#e74c3c">✗</span> הפצת כרטיסים מחוץ לערוץ</li>
+          <li><span style="color:#e74c3c">✗</span> העברת פרטים לאחרים ללא רשות</li>
         </ul>
-        <p style="margin-top:14px;font-weight:600;color:var(--gold-d)">שמירה על התקנון היא תנאי להשתתפות בערוץ.</p></div>
-
-      <div class="rb" id="rule-16"><div class="rbt"><div class="rn">16</div>פרסום מבוקר</div>
-        <p>פרסום מבוקר הוא פרסום בתשלום הכולל אפשרות לבקש הסרה של הכרטיס מהערוץ לאחר שהמפרסם קיבל מספיק פניות.</p>
-        <p style="margin-top:10px">מטרת החבילה היא לאפשר למפרסם שליטה טובה יותר על כמות הפניות, ולמנוע מצב שבו הכרטיס ממשיך להופיע בערוץ וגורם לעומס פניות לאחר שכבר התקבלו מספיק הצעות.</p>
-        <ul style="list-style:none;margin:14px 0 0;padding-right:4px">
-          <li style="padding:5px 0;color:var(--is);font-size:14px">· כדי לבקש הסרה, על המפרסם להיכנס לערוץ, למצוא את ההודעה שבה פורסם הכרטיס שלו, ולשתף את ההודעה ישירות למנהל/ת הערוץ בוואטסאפ. <strong>אין לשלוח בקשה כללית</strong> כמו "תמחקו לי את הכרטיס" ללא שיתוף ההודעה עצמה, משום שהמנהלים אינם יכולים לחפש ידנית בין כל פרסומי הערוץ.</li>
-          <li style="padding:5px 0;color:var(--is);font-size:14px">· מומלץ <strong>לשמור את הכרטיס בכוכבית</strong> בוואטסאפ מיד לאחר הפרסום, כדי שיהיה קל למצוא אותו בעת הצורך.</li>
-          <li style="padding:5px 0;color:var(--is);font-size:14px">· בקשת הסרה תטופל לפי זמינות המנהלים ובזמן סביר ככל האפשר. המנהלים אינם זמינים 24/7, ואין התחייבות להסרה מיידית ברגע שליחת הבקשה.</li>
-          <li style="padding:5px 0;color:var(--is);font-size:14px">· האפשרות לבקש הסרה קיימת עד <strong>30 יום</strong> ממועד פרסום הכרטיס בערוץ, בהתאם למגבלות הניהול הקיימות בוואטסאפ.</li>
-          <li style="padding:5px 0;color:var(--is);font-size:14px">· לאחר 30 יום ממועד הפרסום, ייתכן שלא תהיה אפשרות להסיר את הכרטיס מהערוץ, ולכן האחריות לבקש הסרה בזמן היא על המפרסם.</li>
-          <li style="padding:5px 0;color:var(--is);font-size:14px">· הסרת כרטיס במסגרת פרסום מבוקר <strong>אינה מזכה בהחזר כספי</strong>, ואינה נחשבת כפרסום נוסף.</li>
-          <li style="padding:5px 0;color:var(--is);font-size:14px">· אם לאחר הסרת הכרטיס המפרסם ירצה לפרסם שוב את אותו כרטיס או כרטיס חדש — הדבר ייחשב כ<strong>פרסום חדש בתשלום</strong>.</li>
-        </ul>
+        <p style="margin-top:10px;color:var(--gold-l);font-weight:600">שמירה על הכללים היא תנאי להשתתפות בערוץ.</p>
       </div>
-
     </div>
   </div></div>
 </div>
 
 <!-- ============================== BUILDER ============================== -->
 <div id="page-builder" class="page pt">
-  <div class="page-hero">
-    <div class="page-hero-inner">
-      <div class="hero-kicker">יצירת כרטיס שידוך</div>
-      <h1>בנו את <em>הכרטיס</em> שלכם</h1>
-      <div class="gold-divider"></div>
-      <p class="page-hero-sub">יצירת כרטיס היא <strong style="color:#0D1B2A;font-weight:700">חינמית לחלוטין</strong>. הכרטיס נבנה אוטומטית ומוכן לשיתוף. התשלום הוא רק על פרסום בערוץ.</p>
-    </div>
-  </div>
   <div class="sec"><div class="wrap">
+    <div class="ey">יצירת כרטיס</div>
+    <h1 class="st">בנו את הכרטיס שלכם 📝</h1>
+    <div class="div"></div>
+    <p style="font-size:15px;color:var(--is);max-width:560px;margin-bottom:28px;font-weight:300;line-height:1.8">יצירת כרטיס היא <strong style="color:var(--ink)">חינמית לחלוטין</strong>. הכרטיס נבנה אוטומטית ומוכן לשיתוף. התשלום הוא רק על פרסום בערוץ.</p>
+    <div id="blp" class="al al-gold" style="max-width:640px;margin-bottom:20px;display:none">💡 <strong>רוצים לשמור את הכרטיס?</strong> <a href="#" onclick="go('login')" style="color:var(--gold-d);font-weight:700">התחברו</a> או <a href="#" onclick="go('register')" style="color:var(--gold-d);font-weight:700">הירשמו</a></div>
     <div class="bl">
       <div>
         <div class="pt-tip">
@@ -719,6 +466,14 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
           <div class="nogo"><p>❌ <strong>אין לשלוח תמונות עם:</strong> הוצאת לשון, פרצופים לא רציניים.</p></div>
         </div>
 
+        <!-- My cards (for logged in users) -->
+        <div class="mcs" id="mcs" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <h3 style="font-family:var(--fd);font-size:17px;font-weight:700">הכרטיסים שלי</h3>
+            <button class="btn btn-dark btn-sm" onclick="newCard()">+ כרטיס חדש</button>
+          </div>
+          <div class="mcg" id="mcg"></div>
+        </div>
 
         <!-- FORM -->
         <div class="card" style="padding:26px 22px" id="bform">
@@ -737,10 +492,10 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
             <div class="fg">
               <div class="fi"><label>שם פרטי <span class="r">*</span></label><input id="fn" placeholder="שם פרטי" maxlength="30" oninput="updatePreview()"/><div class="ferr" id="en">אנא הכנס/י שם</div></div>
               <div class="fi"><label>שם משפחה</label><input id="fln" placeholder="שם משפחה" maxlength="30" oninput="updatePreview()"/></div>
-              <div class="fi"><label>גיל <span class="r">*</span></label><input type="number" inputmode="numeric" id="fa" placeholder="גיל" min="18" oninput="updatePreview()"/><div class="ferr" id="ea">גיל מינימלי 18</div></div>
+              <div class="fi"><label>גיל <span class="r">*</span></label><input type="text" inputmode="numeric" id="fa" placeholder="גיל" maxlength="3" oninput="updatePreview()"/><div class="ferr" id="ea">גיל תקין 18–80</div></div>
               <div class="fi"><label>גובה</label><input id="fh" placeholder="170 ס״מ" maxlength="20" oninput="updatePreview()"/></div>
               <div class="fi full"><label>מבנה גוף</label>
-                <select id="fb" onchange="chkBuild(this.value)"><option value="">בחר...</option><option>רזה</option><option>ממוצע</option><option>ספורטיבי</option><option>מלא</option><option>אחר</option></select>
+                <select id="fb" onchange="chkBuild(this.value)"><option value="">בחר...</option><option>רזה</option><option>ממוצע</option><option>בינוני</option><option>ספורטיבי</option><option>מלא</option><option>אחר</option></select>
                 <input id="fb-other" placeholder="פרט מבנה גוף..." maxlength="40" style="margin-top:8px;display:none" oninput="updatePreview()"/>
               </div>
               <div class="fi full"><label>עדה</label><input id="fe" placeholder="אשכנזי, ספרדי, תימני..." maxlength="40" oninput="updatePreview()"/></div>
@@ -792,7 +547,7 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
             <div class="cbl">💬 תוכן אישי</div>
             <div class="fg">
               <div class="fi full"><label>קצת עליי <span class="r">*</span> <small style="font-weight:400;color:var(--il)">(עד 500 תווים)</small></label><textarea id="fab" placeholder="ספרו על עצמכם – אופי, תחביבים, ערכים..." maxlength="500" oninput="cc(this,'cab',500)"></textarea><div class="cc" id="cab">0/500</div><div class="ferr" id="eab">אנא מלא/י שדה זה</div></div>
-              <div class="fi full"><label>מה אני מחפש/ת <span class="r">*</span> <small style="font-weight:400;color:var(--il)">(עד 500 תווים)</small></label><textarea id="flk" placeholder="גילאים, סגנון דתי, אזור, תכונות חשובות..." maxlength="500" oninput="cc(this,'clk',500)"></textarea><div class="cc" id="clk">0/500</div><div class="ferr" id="elk">אנא מלא/י שדה זה</div></div>
+              <div class="fi full"><label>מה אני מחפש/ת <span class="r">*</span> <small style="font-weight:400;color:var(--il)">(עד 500 תווים)</small></label><textarea id="flk" placeholder="גילאים, סגנון דתי, אזור, תכונות חשובות..." maxlength="500" oninput="cc(this,'clk',500)"></textarea><div class="cc" id="clk">0/500</div></div>
               <div class="fi full" style="border-top:2px solid var(--gold-p);padding-top:16px">
                 <label style="font-size:14px;font-weight:700;color:var(--ink)">📩 פרטי יצירת קשר לפניות</label>
                 <p style="font-size:12px;color:var(--il);margin-bottom:10px;font-weight:300">השם והמספר שיופיעו בכרטיס</p>
@@ -813,6 +568,7 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
               <button class="btn btn-dark btn-sm" id="cfb" onclick="cpFinal()">📋 העתק</button>
               <button class="btn btn-out2 btn-sm" onclick="newCard()">+ כרטיס חדש</button>
             </div>
+            <div id="scn" class="al al-gold" style="margin-top:14px;display:none">💾 הכרטיס נשמר לחשבון שלך.</div>
           </div>
 
           <div class="cbf" id="cbf">
@@ -839,73 +595,62 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 
 <!-- ============================== PUBLISH ============================== -->
 <div id="page-publish" class="page pt">
-  <div class="page-hero">
-    <div class="page-hero-inner">
-      <div class="hero-kicker">פרסום ותשלום</div>
-      <h1>תשלום עבור <em>פרסום</em></h1>
-      <div class="gold-divider"></div>
-      <p class="page-hero-sub">הפרטים הבאים נדרשים לצורך הפקת חשבונית/קבלה וזיהוי התשלום.</p>
-    </div>
-  </div>
   <div class="sec"><div class="wrap">
-    <p class="pay-sub" style="display:none"></p>
-
-    <!-- בחירת מסלול -->
-    <div class="pay-section">
-      <h3 class="pay-stitle">בחרו מסלול פרסום</h3>
-      <div class="prc" id="pkg-list"></div>
+    <div class="ey">פרסום ותשלום</div>
+    <h1 class="st">פרסום כרטיס שידוך 💍</h1>
+    <div class="div"></div>
+    <div class="al al-gold" style="max-width:700px;margin-bottom:32px;display:flex;gap:12px;align-items:flex-start">
+      <span style="font-size:22px;flex-shrink:0">🔒</span>
+      <div><strong>תשלום מאובטח לחלוטין</strong><br/><span style="font-weight:300">התשלום מתבצע דרך אפליקציות מוכרות בלבד. האתר אינו שומר פרטי תשלום.</span></div>
+    </div>
+    <div class="psg" style="margin-bottom:44px">
+      <div class="ps"><div class="psn">1</div><h4>בחרו חבילה</h4><p>בחרו מסלול פרסום</p></div>
+      <div class="ps"><div class="psn">2</div><h4>שלמו חיצונית</h4><p>ביט, פייפאל וכד'</p></div>
+      <div class="ps"><div class="psn">3</div><h4>בחרו מנהל</h4><p>בחרו את המנהל לפנייה</p></div>
+      <div class="ps"><div class="psn">4</div><h4>שלחו כרטיס</h4><p>שלחו כרטיס + אישור תשלום</p></div>
     </div>
 
-    <!-- פרטי חשבונית -->
-    <div class="pay-section">
-      <h3 class="pay-stitle">פרטי חשבונית</h3>
-      <div class="pay-form">
-        <div class="pay-field">
-          <label for="pay-name">לכבוד <span class="pay-req">*</span></label>
-          <input id="pay-name" type="text" placeholder="שם מלא" oninput="updatePayBtn()" />
-          <span class="pay-err" id="err-name"></span>
-        </div>
-        <div class="pay-field">
-          <label for="pay-email">אימייל <span class="pay-req">*</span></label>
-          <input id="pay-email" type="email" placeholder="example@email.com" oninput="updatePayBtn()" />
-          <span class="pay-err" id="err-email"></span>
-        </div>
-        <div class="pay-field">
-          <label for="pay-phone">טלפון נייד <span class="pay-req">*</span></label>
-          <input id="pay-phone" type="tel" placeholder="05XXXXXXXX" oninput="updatePayBtn()" />
-          <span class="pay-err" id="err-phone"></span>
-        </div>
+    <!-- שלב 1: בחירת חבילה -->
+    <div id="pay-step1">
+      <h2 class="st" style="margin-bottom:20px;font-size:22px">שלב 1 — בחרו חבילת פרסום</h2>
+      <div class="prc" id="pkg-list" style="max-width:600px"></div>
+    </div>
+
+    <!-- שלב 2: תשלום -->
+    <div id="pay-step2" style="display:none">
+      <h2 class="st" style="margin-bottom:8px;font-size:22px">שלב 2 — תשלום חיצוני</h2>
+      <p style="font-size:14px;color:var(--is);margin-bottom:20px">חבילה שנבחרה: <strong id="selected-pkg-name"></strong></p>
+      <div class="al al-gold" style="max-width:580px;margin-bottom:24px;font-size:15px;line-height:2">
+        <strong>כיצד לשלם:</strong><br/>
+        שלחו את הסכום דרך <strong>ביט / פייפאל / העברה בנקאית</strong><br/>
+        ושמרו את צילום המסך / הקבלה — תצטרכו לשלוח אותה למנהל.
+      </div>
+      <div class="al al-red" style="max-width:580px;margin-bottom:28px;font-size:15px;line-height:2">
+        ⚠️ <strong>ללא שליחת הודעה למנהל — הפרסום לא יבוצע!</strong><br/>
+        בשלב הבא תבחרו מנהל ותשלחו לו בוואטסאפ:<br/>
+        ✅ צילום מסך של התשלום או הקבלה<br/>
+        ✅ פרטי כרטיס השידוכים שלכם<br/>
+        ✅ תמונה (אם יש)
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px">
+        <button class="btn btn-gold" onclick="goPayStep(3)">שילמתי — המשך ←</button>
+        <button class="btn btn-out2" onclick="goPayStep(1)">← חזרה</button>
       </div>
     </div>
 
-    <!-- סיכום הזמנה -->
-    <div class="pay-section" id="pay-summary" style="display:none">
-      <h3 class="pay-stitle">סיכום הזמנה</h3>
-      <div class="pay-summary-box">
-        <div class="pay-sum-row"><span>מסלול</span><strong id="sum-name"></strong></div>
-        <div id="sum-desc-row" style="display:none;padding:5px 0 3px;font-size:12.5px;color:var(--is);line-height:1.65;border-bottom:1px solid var(--cd)"><span id="sum-desc"></span></div>
-        <div class="pay-sum-row" id="sum-count-row"><span>כמות פרסומים</span><span id="sum-count"></span></div>
-        <div class="pay-sum-row pay-sum-total"><span>מחיר לתשלום</span><strong id="sum-price"></strong></div>
-        <div class="pay-sum-row"><span>אמצעי תשלום</span><span id="sum-method"></span></div>
+    <!-- שלב 3: בחירת מנהל -->
+    <div id="pay-step3" style="display:none">
+      <h2 class="st" style="margin-bottom:8px;font-size:22px">שלב 3 — בחרו מנהל לפנייה</h2>
+      <p style="font-size:14px;color:var(--is);margin-bottom:16px">לחצו על המנהל — יפתח וואטסאפ עם תוכן הכרטיס שלכם</p>
+      <div class="al al-red" style="max-width:560px;margin-bottom:20px;font-size:14px;line-height:1.85">
+        ⚠️ <strong>ללא שליחת הודעה למנהל — הפרסום לא יבוצע!</strong><br/>
+        יש לשלוח בהודעת וואטסאפ:<br/>
+        ✅ צילום מסך של התשלום / הקבלה<br/>
+        ✅ פרטי כרטיס השידוכים<br/>
+        ✅ תמונה (אם יש)
       </div>
-      <div id="sum-mokdar" style="display:none;margin-top:12px;padding:12px 14px;background:var(--gold-p);border:1px solid rgba(201,162,77,.25);border-radius:10px;font-size:13px;color:var(--im);line-height:1.7">
-        פרסום מבוקר מאפשר לפרסם את הכרטיס בצורה רגילה, ובמידה והתקבלו מספיק פניות — ניתן לבקש להסיר את הפרסום מהערוץ בהתאם לתנאי המסלול.<br/>
-        <span style="font-size:12px;color:var(--il)">לפרטים המלאים: <a onclick="go('rules')" class="pay-link">תקנון הערוץ, סעיף 16</a>.</span>
-      </div>
-    </div>
-
-    <!-- תקנון -->
-    <div class="pay-section">
-      <label class="pay-terms-label">
-        <input type="checkbox" id="pay-terms-cb" onchange="updatePayBtn()" />
-        <span>אני מאשר/ת שקראתי את <a onclick="go('rules')" class="pay-link">תקנון הערוץ</a>, והתשלום מהווה הסכמה לתקנון.</span>
-      </label>
-    </div>
-
-    <!-- כפתור -->
-    <div class="pay-section">
-      <div id="pay-hint" style="font-size:13px;color:var(--gold-d);margin-bottom:10px;display:none"></div>
-      <button id="pay-submit-btn" class="btn btn-gold btn-full" onclick="submitPayment()" disabled>המשך לתשלום</button>
+      <div id="managers-list" style="max-width:400px"></div>
+      <button class="btn btn-out2" style="margin-top:20px" onclick="goPayStep(2)">← חזרה</button>
     </div>
 
   </div></div>
@@ -914,55 +659,96 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 <!-- ============================== LOGIN ============================== -->
 <div id="page-login" class="page">
   <div class="aw"><div class="abox">
-    <div class="alogo">שידוכים <span class="g">באמונה</span></div>
+    <div class="alogo">💍 שידוכים <span class="g">באמונה</span></div>
     <h2>כניסה לחשבון</h2>
     <p class="asub">ברוכים השבים! נעים לראות אתכם שוב.</p>
     <div id="l-alert" class="al" style="display:none"></div>
     <div class="fg" style="grid-template-columns:1fr">
-      <div class="fi"><label>אימייל <span class="r">*</span></label><input type="email" id="lem" placeholder="your@email.com" autocomplete="email" onkeydown="if(event.key==='Enter')document.getElementById('lpw').focus()"/><div class="ferr" id="e-lem"></div></div>
+      <div class="fi"><label>אימייל <span class="r">*</span></label><input type="email" id="lem" placeholder="your@email.com" autocomplete="email"/><div class="ferr" id="e-lem"></div></div>
       <div class="fi"><label>סיסמה <span class="r">*</span></label>
         <div class="pw-wrap"><input type="password" id="lpw" placeholder="סיסמה" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
         <button class="pw-eye" type="button" onclick="togglePw('lpw',this)">👁</button></div>
         <div class="ferr" id="e-lpw"></div>
       </div>
-      <div id="terms-wrap-login" class="fi full">
-        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:13px;color:var(--im)">
-          <input type="checkbox" id="terms-check-login" style="width:16px;height:16px;margin-top:2px;flex-shrink:0"/>
-          <span>קראתי ואני מאשר/ת את <a onclick="go('rules')" style="color:var(--gold-d);font-weight:600;cursor:pointer;text-decoration:underline">תקנון האתר</a></span>
-        </label>
-      </div>
       <button id="btn-login" class="btn btn-gold btn-full" onclick="doLogin()">כניסה</button>
     </div>
+    <div class="asw">עדיין אין לך חשבון? <a onclick="go('register')">הירשם כאן</a></div>
   </div></div>
 </div>
 
+<!-- ============================== REGISTER ============================== -->
+<div id="page-register" class="page">
+  <div class="aw"><div class="abox">
+    <div class="alogo">💍 שידוכים <span class="g">באמונה</span></div>
+    <h2>הרשמה</h2>
+    <p class="asub">צרו חשבון ושמרו את הכרטיסים שלכם</p>
+    <div id="r-alert" class="al" style="display:none"></div>
+    <div class="fg">
+      <div class="fi"><label>שם פרטי <span class="r">*</span></label><input id="rfn" placeholder="שם פרטי"/><div class="ferr" id="e-rfn"></div></div>
+      <div class="fi"><label>שם משפחה <span class="r">*</span></label><input id="rln" placeholder="שם משפחה"/><div class="ferr" id="e-rln"></div></div>
+      <div class="fi full"><label>טלפון <span class="r">*</span></label><input type="tel" id="rph" placeholder="05X-XXXXXXX"/><div class="ferr" id="e-rph"></div></div>
+      <div class="fi full"><label>אימייל <span class="r">*</span></label><input type="email" id="rem" placeholder="your@email.com"/><div class="ferr" id="e-rem"></div></div>
+      <div class="fi full"><label>סיסמה <span class="r">*</span></label>
+        <div class="pw-wrap"><input type="password" id="rpw" placeholder="לפחות 8 תווים"/>
+        <button class="pw-eye" type="button" onclick="togglePw('rpw',this)">👁</button></div>
+        <div class="ferr" id="e-rpw"></div>
+      </div>
+      <button id="btn-register" class="btn btn-gold btn-full fi full" onclick="doRegister()">הרשמה</button>
+    </div>
+    <div class="asw">כבר רשום? <a onclick="go('login')">כניסה כאן</a></div>
+  </div></div>
+</div>
 
+<!-- ============================== DASHBOARD ============================== -->
+<div id="page-dashboard" class="page pt">
+  <div class="sec"><div class="wrap" style="max-width:720px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+      <div>
+        <h1 class="st" style="margin-bottom:4px">שלום, <span id="dash-name"></span> 👋</h1>
+        <p style="font-size:14px;color:var(--is)">ברוכים הבאים לאזור האישי שלכם</p>
+      </div>
+      <button class="btn btn-gold" onclick="go('publish')">🚀 פרסם כרטיס עכשיו</button>
+    </div>
+
+    <!-- תזכורת -->
+    <div id="dash-reminder" class="reminder-bar" style="display:none">
+      <span>⏰ לא פרסמת לאחרונה — רוצה לפרסם שוב?</span>
+      <button class="btn btn-gold btn-sm" onclick="go('publish')">פרסם עכשיו</button>
+    </div>
+
+    <!-- סטטיסטיקות -->
+    <div class="dash-stats">
+      <div class="dash-stat"><div class="dash-stat-num" id="dash-balance">0</div><div class="dash-stat-lbl">פרסומים זמינים</div></div>
+      <div class="dash-stat"><div class="dash-stat-num" id="dash-card-count">0</div><div class="dash-stat-lbl">כרטיסים שיצרת</div></div>
+    </div>
+
+    <!-- מועדפים -->
+    <div id="dash-favs" style="display:none;margin-bottom:24px">
+      <h3 style="font-family:var(--fd);font-size:17px;font-weight:700;margin-bottom:12px">⭐ מועדפים</h3>
+      <div class="dash-cards-inner"></div>
+    </div>
+
+    <!-- כרטיסים -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <h3 style="font-family:var(--fd);font-size:17px;font-weight:700">הכרטיסים שלי</h3>
+      <button class="btn btn-dark btn-sm" onclick="go('builder')">+ כרטיס חדש</button>
+    </div>
+    <div id="dash-cards-list"></div>
+  </div></div>
+</div>
 
 <!-- ============================== ADMIN ============================== -->
 <div id="page-admin" class="page pt">
-  <div class="page-hero">
-    <div class="page-hero-inner">
-      <div class="hero-kicker">ניהול</div>
-      <h1>מערכת <em>ניהול</em></h1>
-      <div class="gold-divider"></div>
-    </div>
-  </div>
   <div class="sec"><div class="wrap">
+    <div class="ey">ניהול</div>
+    <h1 class="st">מערכת ניהול ⚙️</h1>
+    <div class="div"></div>
 
     <!-- סטטוס אתר -->
     <div class="admin-section">
       <h3>🌐 סטטוס האתר</h3>
       <p id="admin-site-status-txt" style="font-size:14px;margin-bottom:14px"></p>
       <button id="admin-site-btn" class="btn btn-sm" onclick="adminToggleSite()">טוען...</button>
-    </div>
-
-    <!-- פרטי תשלום -->
-    <div class="admin-section">
-      <h3>💳 פרטי תשלום</h3>
-      <div class="fg" style="max-width:480px;margin-bottom:14px">
-        <div class="fi full"><label>מספר ביט (לתשלום דרך ביט)</label><input id="admin-bit-phone" placeholder="05X-XXXXXXX" type="tel"/></div>
-      </div>
-      <button class="btn btn-gold btn-sm" onclick="adminSaveBit()">שמור פרטי תשלום</button>
     </div>
 
     <!-- הודעה כללית -->
@@ -979,10 +765,7 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
     <div class="admin-section">
       <h3>💰 מסלולי רכישה</h3>
       <div id="admin-pkgs-list" style="margin-bottom:14px"></div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-gold btn-sm" onclick="adminSaveAllPkgs()">💾 שמור שינויים</button>
-        <button class="btn btn-dark btn-sm" onclick="adminAddPkg()">+ מסלול חדש</button>
-      </div>
+      <button class="btn btn-dark btn-sm" onclick="adminAddPkg()">+ מסלול חדש</button>
     </div>
 
     <!-- מנהלים -->
@@ -990,10 +773,7 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
       <h3>👥 מנהלים</h3>
       <p style="font-size:12px;color:var(--il);margin-bottom:14px">שם · טלפון (972...) · תפקיד · ראשי תיבות</p>
       <div id="admin-mgr-list" style="margin-bottom:14px"></div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-gold btn-sm" onclick="adminSaveAllMgrs()">💾 שמור שינויים</button>
-        <button class="btn btn-dark btn-sm" onclick="adminAddMgr()">+ מנהל חדש</button>
-      </div>
+      <button class="btn btn-dark btn-sm" onclick="adminAddMgr()">+ מנהל חדש</button>
     </div>
 
     <!-- VIP -->
@@ -1009,9 +789,22 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 
     <!-- כללים -->
     <div class="admin-section">
-      <h3>📋 תקנון הערוץ</h3>
-      <textarea id="admin-rules-txt" style="width:100%;min-height:160px;padding:10px;border:1.5px solid var(--cd);border-radius:var(--r);font-size:14px;margin-bottom:12px" placeholder="כתוב את תקנון הערוץ..."></textarea>
-      <button class="btn btn-gold btn-sm" onclick="adminSaveRules()">שמור תקנון</button>
+      <h3>📋 כללי האתר</h3>
+      <textarea id="admin-rules-txt" style="width:100%;min-height:160px;padding:10px;border:1.5px solid var(--cd);border-radius:var(--r);font-size:14px;margin-bottom:12px" placeholder="כתוב את כללי האתר..."></textarea>
+      <button class="btn btn-gold btn-sm" onclick="adminSaveRules()">שמור כללים</button>
+    </div>
+
+    <!-- חסימות -->
+    <div class="admin-section">
+      <h3>🚫 חסימת משתמשים</h3>
+      <div class="fg" style="max-width:600px;margin-bottom:16px">
+        <div class="fi"><label>טלפון</label><input id="admin-block-phone" placeholder="05X-XXXXXXX"/></div>
+        <div class="fi"><label>אימייל (אופציונלי)</label><input id="admin-block-email" placeholder="email@..."/></div>
+        <div class="fi full"><label>סיבה (למנהל בלבד)</label><input id="admin-block-reason" placeholder="סיבת החסימה..."/></div>
+      </div>
+      <button class="btn btn-sm" style="background:#c0392b;color:#fff;margin-bottom:20px" onclick="adminBlockUserForm()">חסום משתמש</button>
+      <h4 style="font-size:14px;font-weight:700;margin-bottom:10px">רשימת חסומים</h4>
+      <div id="admin-blocked-list"></div>
     </div>
 
   </div></div>
@@ -1037,6 +830,15 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
   <button class="waf-btn" onclick="toggleWAFloat()" title="צרו קשר בוואטסאפ">💬</button>
 </div>
 
+<!-- Modal: בחירת כרטיס לפרסום -->
+<div id="pick-card-modal" class="ov">
+  <div class="modal">
+    <button class="mc" onclick="closeModal('pick-card-modal')">✕</button>
+    <h3>בחר כרטיס לשליחה</h3>
+    <p class="ms">הכרטיס יישלח למנהל שבחרת דרך וואטסאפ</p>
+    <div id="pick-card-list"></div>
+  </div>
+</div>
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
@@ -1044,30 +846,27 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 <footer>
   <div class="wrap">
     <div class="fi2">
-      <div class="flog">שידוכים <span>באמונה</span></div>
+      <div class="flog">💍 שידוכים <span>באמונה</span></div>
       <div class="flinks">
         <button onclick="go('about')">על הערוץ</button>
-        <button onclick="go('rules')">תקנון הערוץ</button>
+        <button onclick="go('rules')">כללים</button>
         <button onclick="go('builder')">יצירת כרטיס</button>
-        <a href="https://whatsapp.com/channel/0029VbCk83eHwXbIxQlo6s1f" target="_blank" rel="noopener noreferrer" style="color:var(--green);font-weight:600;text-decoration:none;font-size:13px">💬 שידוכים באמונה</a>
-        <a href="https://whatsapp.com/channel/0029Vb8T6AQ7dmeRtNo83c46" target="_blank" rel="noopener noreferrer" style="color:var(--green);font-weight:600;text-decoration:none;font-size:13px">💬 מתחזקים לזיווג</a>
       </div>
     </div>
-    <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(201,162,77,.15);display:flex;gap:20px;flex-wrap:wrap;align-items:center">
-      <span style="font-size:13px;color:rgba(247,244,239,.5)">📞 יצירת קשר:</span>
+    <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:13px;color:rgba(250,248,243,.5)">📞 יצירת קשר:</span>
       <a onclick="openWA('972535345994')" style="cursor:pointer;display:flex;align-items:center;gap:7px;font-size:13px;color:var(--green);font-weight:600">
         <span style="font-size:16px">💬</span> אלישע (מנהל ראשי)
       </a>
       <a onclick="openWA('972535346046')" style="cursor:pointer;display:flex;align-items:center;gap:7px;font-size:13px;color:var(--green);font-weight:600">
         <span style="font-size:16px">💬</span> חנה (מנהלת)
       </a>
-      <a href="mailto:s.b.0535345994@gmail.com" style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--gold);font-weight:600">
+      <a href="mailto:s.b.0535345994@gmail.com" style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--gold-l);font-weight:600">
         <span style="font-size:16px">✉️</span> מייל
       </a>
     </div>
     <div class="fcp">© 2025 שידוכים באמונה · כל הזכויות שמורות</div>
-    <div class="fcp" style="margin-top:6px">Built by <a href="mailto:trqmsh3@gmail.com" style="color:var(--gold);font-weight:600;text-decoration:none" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">MG Studio</a></div>
-    <div class="fcp" style="margin-top:10px;font-size:12px;color:rgba(247,244,239,.35);line-height:1.6">האתר משמש כפלטפורמה בלבד וכל ההתקשרויות מתבצעות מחוץ לאתר ובאחריות המשתמשים</div>
+    <div class="fcp" style="margin-top:6px">Built by <a href="mailto:trqmsh3@gmail.com" style="color:var(--gold-l);font-weight:600;text-decoration:none" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">MG Studio</a></div>
   </div>
 </footer>
 
@@ -1076,6 +875,14 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 <script src="auth.js"></script>
 <script src="admin.js"></script>
 
+<script>
+function togglePw(id, btn) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const show = el.type === 'password';
+  el.type = show ? 'text' : 'password';
+  btn.textContent = show ? '🙈' : '👁';
+}
+</script>
 </body>
 </html>
-
