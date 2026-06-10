@@ -115,7 +115,7 @@ function go(name, pushState = true) {
 
   if (name === 'publish') {
     if (siteSettings && siteSettings.publish_enabled === false) {
-      toast('פרסום ותשלום אינו זמין כרגע');
+      toast('פרסום אינו זמין כרגע');
       go('home');
       return;
     }
@@ -210,6 +210,10 @@ function updatePayBtn() {
 }
 
 function submitPayment() {
+  if (siteSettings && siteSettings.payment_enabled === false) {
+    toast('התשלום אינו זמין כרגע');
+    return;
+  }
   const name  = document.getElementById('pay-name')?.value.trim();
   const email = document.getElementById('pay-email')?.value.trim();
   const phone = document.getElementById('pay-phone')?.value.trim();
