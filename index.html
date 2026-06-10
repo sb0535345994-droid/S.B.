@@ -398,31 +398,31 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 <!-- NAV -->
 <nav id="mn">
   <div class="nav-inner">
-    <div class="nav-logo" onclick="go('home')">💍 שידוכים <span>באמונה</span></div>
+    <div class="nav-logo" onclick="go('home')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--gold)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg> שידוכים <span>באמונה</span></div>
     <div class="nav-links">
-      <button class="nl" onclick="go('about')">📜 על הערוץ</button>
-      <button class="nl" onclick="go('rules')">📋 תקנון הערוץ</button>
-      <button class="nl" onclick="go('builder')">📝 יצירת כרטיס</button>
-      <button class="nl" onclick="go('publish')">💰 פרסום</button>
+      <button class="nl" onclick="go('about')">על הערוץ</button>
+      <button class="nl" onclick="go('rules')">תקנון הערוץ</button>
+      <button class="nl" onclick="go('builder')">יצירת כרטיס</button>
+      <button class="nl" onclick="go('publish')">פרסום</button>
       <a href="https://whatsapp.com/channel/0029VbCk83eHwXbIxQlo6s1f" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#fff;background:var(--green);padding:7px 13px;border-radius:30px;text-decoration:none;white-space:nowrap">💬 שידוכים באמונה</a>
       <a href="https://whatsapp.com/channel/0029Vb8T6AQ7dmeRtNo83c46" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#fff;background:var(--green);padding:7px 13px;border-radius:30px;text-decoration:none;white-space:nowrap">💬 מתחזקים לזיווג</a>
     </div>
     <div class="nav-user" id="nu" style="display:none">
       <div class="nav-av" id="navi">א</div>
       <span id="nname"></span>
-      <button id="admin-nav-btn" class="btn btn-dark btn-sm" onclick="go('admin')" style="font-size:12px;padding:6px 12px;display:none">⚙️ ניהול</button>
+      <button id="admin-nav-btn" class="btn btn-dark btn-sm" onclick="go('admin')" style="font-size:12px;padding:6px 12px;display:none">ניהול</button>
       <button class="btn-out" onclick="doLogout()">יציאה</button>
     </div>
     <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
   </div>
   <div class="mob-drawer" id="md">
-    <button onclick="go('about')">📜 על הערוץ</button>
-    <button onclick="go('rules')">📋 תקנון הערוץ</button>
-    <button onclick="go('builder')">📝 יצירת כרטיס</button>
-    <button onclick="go('publish')">💰 פרסום ותשלום</button>
+    <button onclick="go('about')">על הערוץ</button>
+    <button onclick="go('rules')">תקנון הערוץ</button>
+    <button onclick="go('builder')">יצירת כרטיס</button>
+    <button onclick="go('publish')">פרסום ותשלום</button>
     <a href="https://whatsapp.com/channel/0029VbCk83eHwXbIxQlo6s1f" target="_blank" rel="noopener noreferrer" style="display:block;text-align:right;font-size:15px;font-weight:600;color:var(--green);background:none;border:none;padding:12px 0;border-bottom:1px solid var(--cd);text-decoration:none">💬 שידוכים באמונה — הצטרף לערוץ</a>
     <a href="https://whatsapp.com/channel/0029Vb8T6AQ7dmeRtNo83c46" target="_blank" rel="noopener noreferrer" style="display:block;text-align:right;font-size:15px;font-weight:600;color:var(--green);background:none;border:none;padding:12px 0;border-bottom:1px solid var(--cd);text-decoration:none">💬 מתחזקים לזיווג באמונה — הצטרף לערוץ</a>
-    <button onclick="go('admin')" id="mob-admin-btn" style="display:none">⚙️ ניהול</button>
+    <button onclick="go('admin')" id="mob-admin-btn" style="display:none">ניהול</button>
     <div id="mur" style="display:none;padding:10px 0;font-size:14px;color:rgba(255,255,255,.7)">
       מחובר: <span id="mun"></span>
       <button onclick="doLogout()" style="color:#f87171;float:left;font-size:13px;background:none;border:none;cursor:pointer">יציאה</button>
@@ -432,88 +432,156 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 
 <!-- ============================== HOME ============================== -->
 <div id="page-home" class="page active pt">
-  <div class="hero">
-    <div class="wrap">
-      <div class="hero-inner">
-        <div class="hero-text">
-          <div class="ey" style="margin-bottom:18px">ערוץ שידוכים מכובד</div>
-          <h1 class="ht">שידוכים <em>באמונה</em></h1>
-          <p class="hs">ערוץ שידוכים דיסקרטי ומכובד לגברים ונשים עם זיקה ליהדות.<br/>מכאן מתחיל הדרך למציאת הזיווג הנכון.</p>
-          <div class="hero-cta">
-            <button class="btn btn-gold" onclick="go('builder')">📝 יצירת כרטיס שידוך</button>
-            <a href="https://whatsapp.com/channel/0029VbCk83eHwXbIxQlo6s1f" target="_blank" rel="noopener noreferrer" class="btn btn-green">💬 הצטרף לערוץ</a>
-          </div>
-          <div class="tr">
-            <div class="ti"><span class="td">✓</span>דיסקרטיות מלאה</div>
-            <div class="ti"><span class="td">✓</span>יצירת כרטיס חינמית</div>
-            <div class="ti"><span class="td">✓</span>תהליך פשוט וברור</div>
-            <div class="ti"><span class="td">✓</span>מכובד ורציני</div>
-          </div>
+
+  <!-- HERO -->
+  <section class="home-hero">
+    <div class="home-hero-inner">
+      <div class="hero-content">
+        <div class="hero-kicker">מתוך אמונה. לבנות בית.</div>
+        <h1 class="ht">שידוכים <em>באמונה</em></h1>
+        <div class="gold-divider"></div>
+        <p class="hs">ערוץ שידוכים דיסקרטי ומכובד לגברים ונשים עם זיקה ליהדות.<br/>מכאן מתחיל הדרך למציאת הזיווג הנכון.</p>
+        <div class="hero-actions">
+          <button class="btn btn-dark" onclick="go('builder')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M6.5 16c.8-2 4.2-2 5 0"/><path d="M14 9h4"/><path d="M14 13h4"/></svg>
+            יצירת כרטיס שידוך
+          </button>
+          <a href="https://whatsapp.com/channel/0029VbCk83eHwXbIxQlo6s1f" target="_blank" rel="noopener noreferrer" class="btn btn-green">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            הצטרף לערוץ
+          </a>
         </div>
-        <div class="hero-visual">
-          <div class="hero-visual-title">💍 שידוכים באמונה</div>
-          <div style="display:flex;flex-direction:column;gap:10px">
-            <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(201,162,77,.12)'" onmouseleave="this.style.background='rgba(255,255,255,.07)'" onclick="go('about')">
-              <span style="font-size:22px">📜</span>
-              <div>
-                <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px">על הערוץ</div>
-                <div style="font-size:12px;color:rgba(247,244,239,.5)">מי אנחנו ומה המטרה</div>
-              </div>
+        <div class="tr">
+          <div class="ti"><span class="td">✓</span>דיסקרטיות מלאה</div>
+          <div class="ti"><span class="td">✓</span>יצירת כרטיס חינמית</div>
+          <div class="ti"><span class="td">✓</span>תהליך פשוט וברור</div>
+          <div class="ti"><span class="td">✓</span>מכובד ורציני</div>
+        </div>
+      </div>
+      <div class="visual-card">
+        <div class="vc-inner">
+          <div class="vc-ornament">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+          </div>
+          <div class="vc-title">שידוכים באמונה</div>
+          <div class="vc-subtitle">מציאת זיווג מתוך כבוד ואמונה</div>
+          <div class="vc-badges">
+            <div class="vc-badge" onclick="go('about')">
+              <div class="vc-badge-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <div><span class="vc-badge-text">על הערוץ</span><span class="vc-badge-sub">מי אנחנו ומה המטרה</span></div>
             </div>
-            <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(201,162,77,.12)'" onmouseleave="this.style.background='rgba(255,255,255,.07)'" onclick="go('rules')">
-              <span style="font-size:22px">📋</span>
-              <div>
-                <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px">תקנון הערוץ</div>
-                <div style="font-size:12px;color:rgba(247,244,239,.5)">חוקי ההתנהלות</div>
-              </div>
+            <div class="vc-badge" onclick="go('rules')">
+              <div class="vc-badge-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-5"/></svg></div>
+              <div><span class="vc-badge-text">תקנון הערוץ</span><span class="vc-badge-sub">חוקי ההתנהלות</span></div>
             </div>
-            <div style="background:rgba(201,162,77,.14);border:1px solid rgba(201,162,77,.3);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(201,162,77,.22)'" onmouseleave="this.style.background='rgba(201,162,77,.14)'" onclick="go('builder')">
-              <span style="font-size:22px">📝</span>
-              <div>
-                <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:2px">יצירת כרטיס שידוך</div>
-                <div style="font-size:12px;color:rgba(247,244,239,.5)">חינם לחלוטין</div>
-              </div>
+            <div class="vc-badge" onclick="go('builder')" style="border-color:rgba(201,162,77,.45);background:rgba(201,162,77,.06)">
+              <div class="vc-badge-icon" style="background:rgba(201,162,77,.2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M6.5 16c.8-2 4.2-2 5 0"/><path d="M14 9h4"/><path d="M14 13h4"/></svg></div>
+              <div><span class="vc-badge-text" style="color:#A07A30">יצירת כרטיס שידוך</span><span class="vc-badge-sub">חינם לחלוטין</span></div>
             </div>
-            <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(201,162,77,.12)'" onmouseleave="this.style.background='rgba(255,255,255,.07)'" onclick="go('publish')">
-              <span style="font-size:22px">💰</span>
-              <div>
-                <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px">פרסום ותשלום</div>
-                <div style="font-size:12px;color:rgba(247,244,239,.5)">מסלולי פרסום</div>
-              </div>
+            <div class="vc-badge" onclick="go('publish')">
+              <div class="vc-badge-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+              <div><span class="vc-badge-text">פרסום ותשלום</span><span class="vc-badge-sub">מסלולי פרסום</span></div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="hero-features">
+  </section>
+
+  <!-- NAV CARDS -->
+  <section class="home-nav-cards">
     <div class="wrap">
-      <div class="ncs">
-        <div class="nc" onclick="go('about')"><span class="nc-icon">📜</span><div class="nc-title">על הערוץ</div><div class="nc-desc">מי אנחנו, מה המטרה ולמי זה מיועד</div></div>
-        <div class="nc" onclick="go('rules')"><span class="nc-icon">📋</span><div class="nc-title">תקנון הערוץ</div><div class="nc-desc">חוקי ההתנהלות ושמירת הדיסקרטיות</div></div>
-        <div class="nc" onclick="go('builder')"><span class="nc-icon">📝</span><div class="nc-title">יצירת כרטיס שידוך</div><div class="nc-desc">בנו כרטיס מקצועי תוך דקה — חינם לחלוטין</div></div>
-        <div class="nc" onclick="go('publish')"><span class="nc-icon">💰</span><div class="nc-title">פרסום ותשלום</div><div class="nc-desc">איך מפרסמים ומהם מסלולי התשלום</div></div>
+      <div class="home-cards-grid">
+        <button class="home-card" onclick="go('about')">
+          <div class="card-icon">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>על הערוץ</h3>
+          <p>מי אנחנו, מה המטרה ולמי זה מיועד</p>
+        </button>
+        <button class="home-card" onclick="go('rules')">
+          <div class="card-icon">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-5"/></svg>
+          </div>
+          <h3>תקנון הערוץ</h3>
+          <p>חוקי ההתנהלות ושמירת הדיסקרטיות</p>
+        </button>
+        <button class="home-card" onclick="go('builder')">
+          <div class="card-icon">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M6.5 16c.8-2 4.2-2 5 0"/><path d="M14 9h4"/><path d="M14 13h4"/></svg>
+          </div>
+          <h3>יצירת כרטיס שידוך</h3>
+          <p>בנו כרטיס מקצועי תוך דקה — חינם לחלוטין</p>
+        </button>
+        <button class="home-card" onclick="go('publish')">
+          <div class="card-icon">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <h3>פרסום ותשלום</h3>
+          <p>איך מפרסמים ומהם מסלולי התשלום</p>
+        </button>
       </div>
     </div>
-  </div>
-  <div class="astrip">
+  </section>
+
+  <!-- FEATURES STRIP -->
+  <section class="features-strip">
     <div class="wrap">
-      <div class="asi">
+      <div class="features-row">
+        <div class="feature-item"><span class="feature-check">✓</span>דיסקרטיות מלאה</div>
+        <div class="feature-item"><span class="feature-check">✓</span>יצירת כרטיס חינמית</div>
+        <div class="feature-item"><span class="feature-check">✓</span>תהליך פשוט וברור</div>
+        <div class="feature-item"><span class="feature-check">✓</span>מכובד ורציני</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WELCOME SECTION -->
+  <section class="welcome-section">
+    <div class="welcome-inner">
+      <div class="welcome-content-card">
+        <div class="hero-kicker" style="margin-bottom:16px">ברוכים הבאים</div>
         <h2>ברוכים הבאים לערוץ השידוכים ❤️</h2>
+        <div class="gold-divider"></div>
         <p>ערוץ זה נועד לפרסום הצעות שידוך בלבד, במטרה לעזור לגברים ונשים למצוא את הזיווג המתאים להם בעזרת ה'.</p>
-        <p>הערוץ מיועד לציבור רחב עם זיקה ליהדות: <strong>דתיים, מסורתיים, מתחזקים, חוזרים בתשובה, חרדים, חרדים מודרניים, ברסלב, חב"ד</strong>, וכל מי שמחפש קשר רציני שמוביל לנישואין כדת משה וישראל.</p>
-        <p style="color:var(--gold-l);font-weight:600;margin-top:6px">בשם ה' נעשה ונצליח 🙏</p>
+        <p>הערוץ מיועד לציבור רחב עם זיקה ליהדות: <strong style="color:#0D1B2A;font-weight:600">דתיים, מסורתיים, מתחזקים, חוזרים בתשובה, חרדים, חרדים מודרניים, ברסלב, חב"ד</strong>, וכל מי שמחפש קשר רציני שמוביל לנישואין כדת משה וישראל.</p>
+        <p class="gold-quote">בשם ה' נעשה ונצליח 🙏</p>
+      </div>
+      <div class="quick-card">
+        <div class="quick-card-header">יצירת כרטיס — <span>פשוט ומהיר</span></div>
+        <div class="quick-card-body">
+          <p>בנו כרטיס שידוך מקצועי תוך דקות — מודרך שלב אחר שלב</p>
+          <ul class="qc-list">
+            <li><span class="qc-check">✓</span>חינמי לחלוטין</li>
+            <li><span class="qc-check">✓</span>בנייה מודרכת שלב-שלב</li>
+            <li><span class="qc-check">✓</span>כרטיס מוכן לשיתוף</li>
+          </ul>
+          <button class="btn btn-gold btn-full" onclick="go('builder')">התחל עכשיו</button>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- QUOTE STRIP -->
+  <section class="quote-strip">
+    <div class="wrap">
+      <p>מציאת זיווג היא <em>שליחות</em>, בניית בית היא <em>אמונה</em></p>
+    </div>
+  </section>
+
 </div>
 
 <!-- ============================== ABOUT ============================== -->
 <div id="page-about" class="page pt">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="hero-kicker">על הערוץ</div>
+      <h1>ברוכים הבאים לערוץ <em>השידוכים</em></h1>
+      <div class="gold-divider"></div>
+      <p class="page-hero-sub">מי אנחנו, מה המטרה — ולמי הערוץ מיועד.</p>
+    </div>
+  </div>
   <div class="sec"><div class="wrap">
-    <div class="ey">על הערוץ</div>
-    <h1 class="st">ברוכים הבאים לערוץ השידוכים ❤️</h1>
-    <div class="div"></div>
     <div style="max-width:700px">
 
       <div class="card" style="margin-bottom:18px">
@@ -555,11 +623,15 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 
 <!-- ============================== RULES ============================== -->
 <div id="page-rules" class="page pt">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="hero-kicker">תקנון הערוץ</div>
+      <h1>תקנון <em>הערוץ</em></h1>
+      <div class="gold-divider"></div>
+      <p class="page-hero-sub">כדי לשמור על איכות המשתתפים, כבוד הדדי וסביבה נעימה – חובה לכבד את התקנון הבא.</p>
+    </div>
+  </div>
   <div class="sec"><div class="wrap">
-    <div class="ey">תקנון הערוץ</div>
-    <h1 class="st">תקנון הערוץ</h1>
-    <div class="div"></div>
-    <p style="font-size:15px;color:var(--is);max-width:680px;margin-bottom:32px;font-weight:300;line-height:1.9">כדי לשמור על איכות המשתתפים, כבוד הדדי וסביבה נעימה – חובה לכבד את התקנון הבא.</p>
     <div style="max-width:720px">
 
       <div class="rb"><div class="rbt"><div class="rn">1</div>מטרת הערוץ</div>
@@ -677,11 +749,15 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 
 <!-- ============================== BUILDER ============================== -->
 <div id="page-builder" class="page pt">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="hero-kicker">יצירת כרטיס שידוך</div>
+      <h1>בנו את <em>הכרטיס</em> שלכם</h1>
+      <div class="gold-divider"></div>
+      <p class="page-hero-sub">יצירת כרטיס היא <strong style="color:#0D1B2A;font-weight:700">חינמית לחלוטין</strong>. הכרטיס נבנה אוטומטית ומוכן לשיתוף. התשלום הוא רק על פרסום בערוץ.</p>
+    </div>
+  </div>
   <div class="sec"><div class="wrap">
-    <div class="ey">יצירת כרטיס</div>
-    <h1 class="st">בנו את הכרטיס שלכם 📝</h1>
-    <div class="div"></div>
-    <p style="font-size:15px;color:var(--is);max-width:560px;margin-bottom:28px;font-weight:300;line-height:1.8">יצירת כרטיס היא <strong style="color:var(--ink)">חינמית לחלוטין</strong>. הכרטיס נבנה אוטומטית ומוכן לשיתוף. התשלום הוא רק על פרסום בערוץ.</p>
     <div class="bl">
       <div>
         <div class="pt-tip">
@@ -813,11 +889,16 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 
 <!-- ============================== PUBLISH ============================== -->
 <div id="page-publish" class="page pt">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="hero-kicker">פרסום ותשלום</div>
+      <h1>תשלום עבור <em>פרסום</em></h1>
+      <div class="gold-divider"></div>
+      <p class="page-hero-sub">הפרטים הבאים נדרשים לצורך הפקת חשבונית/קבלה וזיהוי התשלום.</p>
+    </div>
+  </div>
   <div class="sec"><div class="wrap">
-    <div class="ey">תשלום</div>
-    <h1 class="st">תשלום עבור פרסום 💍</h1>
-    <div class="div"></div>
-    <p class="pay-sub">הפרטים הבאים נדרשים לצורך הפקת חשבונית/קבלה וזיהוי התשלום.</p>
+    <p class="pay-sub" style="display:none"></p>
 
     <!-- בחירת מסלול -->
     <div class="pay-section">
@@ -883,7 +964,7 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 <!-- ============================== LOGIN ============================== -->
 <div id="page-login" class="page">
   <div class="aw"><div class="abox">
-    <div class="alogo">💍 שידוכים <span class="g">באמונה</span></div>
+    <div class="alogo">שידוכים <span class="g">באמונה</span></div>
     <h2>כניסה לחשבון</h2>
     <p class="asub">ברוכים השבים! נעים לראות אתכם שוב.</p>
     <div id="l-alert" class="al" style="display:none"></div>
@@ -909,10 +990,14 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 
 <!-- ============================== ADMIN ============================== -->
 <div id="page-admin" class="page pt">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="hero-kicker">ניהול</div>
+      <h1>מערכת <em>ניהול</em></h1>
+      <div class="gold-divider"></div>
+    </div>
+  </div>
   <div class="sec"><div class="wrap">
-    <div class="ey">ניהול</div>
-    <h1 class="st">מערכת ניהול ⚙️</h1>
-    <div class="div"></div>
 
     <!-- סטטוס אתר -->
     <div class="admin-section">
@@ -1009,7 +1094,7 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 <footer>
   <div class="wrap">
     <div class="fi2">
-      <div class="flog">💍 שידוכים <span>באמונה</span></div>
+      <div class="flog">שידוכים <span>באמונה</span></div>
       <div class="flinks">
         <button onclick="go('about')">על הערוץ</button>
         <button onclick="go('rules')">תקנון הערוץ</button>
