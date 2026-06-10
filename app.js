@@ -57,6 +57,15 @@ async function loadPublicData() {
   siteSettings = settings;
   siteManagers = managers;
   sitePackages = packages;
+  updatePublishCard();
+}
+
+function updatePublishCard() {
+  const card   = document.getElementById('nc-publish');
+  const badge  = document.getElementById('nc-publish-badge');
+  const off    = siteSettings && siteSettings.publish_enabled === false;
+  if (card)  { card.classList.toggle('nc-disabled', off); }
+  if (badge) { badge.style.display = off ? 'inline-block' : 'none'; }
 }
 
 // ============================================================
@@ -210,10 +219,6 @@ function updatePayBtn() {
 }
 
 function submitPayment() {
-  if (siteSettings && siteSettings.payment_enabled === false) {
-    toast('התשלום אינו זמין כרגע');
-    return;
-  }
   const name  = document.getElementById('pay-name')?.value.trim();
   const email = document.getElementById('pay-email')?.value.trim();
   const phone = document.getElementById('pay-phone')?.value.trim();

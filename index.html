@@ -187,6 +187,8 @@ html,body{max-width:100%;overflow-x:hidden}
 .nc-icon{font-size:36px;margin-bottom:12px;display:block}
 .nc-title{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px}
 .nc-desc{font-size:13px;color:var(--is);line-height:1.55}
+.nc.nc-disabled{opacity:.45;pointer-events:none;filter:grayscale(1);position:relative}
+.nc-off-badge{display:inline-block;margin-top:10px;background:#888;color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;letter-spacing:.5px}
 @media(max-width:480px){.ncs{grid-template-columns:1fr;max-width:320px}}
 .tr{display:flex;gap:22px;justify-content:center;flex-wrap:wrap}
 .ti{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--is)}
@@ -386,7 +388,7 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
         <div class="nc" onclick="go('about')"><span class="nc-icon">📜</span><div class="nc-title">על הערוץ</div><div class="nc-desc">מי אנחנו, מה המטרה ולמי זה מיועד</div></div>
         <div class="nc" onclick="go('rules')"><span class="nc-icon">📋</span><div class="nc-title">תקנון הערוץ</div><div class="nc-desc">חוקי ההתנהלות ושמירת הדיסקרטיות</div></div>
         <div class="nc" onclick="go('builder')"><span class="nc-icon">📝</span><div class="nc-title">יצירת כרטיס שידוך</div><div class="nc-desc">בנו כרטיס מקצועי תוך דקה — חינם לחלוטין</div></div>
-        <div class="nc" onclick="go('publish')"><span class="nc-icon">💰</span><div class="nc-title">פרסום ותשלום</div><div class="nc-desc">איך מפרסמים ומהם מסלולי התשלום</div></div>
+        <div class="nc" id="nc-publish" onclick="go('publish')"><span class="nc-icon">💰</span><div class="nc-title">פרסום ותשלום</div><div class="nc-desc">איך מפרסמים ומהם מסלולי התשלום</div><span class="nc-off-badge" id="nc-publish-badge" style="display:none">כבוי</span></div>
       </div>
       <div class="tr">
         <div class="ti"><span class="td">✓</span>דיסקרטיות מלאה</div>
@@ -826,18 +828,11 @@ footer{background:var(--im);color:var(--cream);padding:32px 0 20px}
       <button id="admin-site-btn" class="btn btn-sm" onclick="adminToggleSite()">טוען...</button>
     </div>
 
-    <!-- פרסום toggle -->
+    <!-- פרסום ותשלום toggle -->
     <div class="admin-section">
-      <h3>📝 פרסום</h3>
+      <h3>💰 פרסום ותשלום</h3>
       <p id="admin-publish-status-txt" style="font-size:14px;margin-bottom:14px"></p>
       <button id="admin-publish-btn" class="btn btn-sm" onclick="adminTogglePublish()">טוען...</button>
-    </div>
-
-    <!-- תשלום toggle -->
-    <div class="admin-section">
-      <h3>💳 תשלום</h3>
-      <p id="admin-payment-status-txt" style="font-size:14px;margin-bottom:14px"></p>
-      <button id="admin-payment-btn" class="btn btn-sm" onclick="adminTogglePayment()">טוען...</button>
     </div>
 
     <!-- פרטי תשלום -->
