@@ -4,6 +4,8 @@
 
 let currentUser    = null;
 let currentProfile = null;
+let userCards      = [];
+let userBalance    = 0;
 let siteManagers   = [];
 let sitePackages   = [];
 let siteSettings   = {};
@@ -13,16 +15,21 @@ let siteSettings   = {};
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
 
-  // ניווט מיידי לפי hash — לא מחכים לטעינת נתונים
-  const hash = location.hash.replace('#', '') || 'home';
-  go(hash, false);
+  await loadPublicData();
 
-  // האזנה ל-auth state
+  if (siteSettings.site_enabled === false) {
+    showSiteClosed();
+    return;
+  }
+
+  // האזנה ל-auth state (כולל שחזור session אחרי רענון)
   sb.auth.onAuthStateChange(async (event, session) => {
     if (session?.user) {
       currentUser = session.user;
       const { data } = await getProfile(session.user.id);
       currentProfile = data;
+      // וודא profile + balance קיימים
+      if (!data) await ensureProfileAndBalance(session.user, null);
     } else {
       currentUser    = null;
       currentProfile = null;
@@ -30,22 +37,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateNav();
   });
 
-  initPills();
-  updatePreview();
-  showBuilderStep(1);
-
-  await loadPublicData();
-  renderWAFloat();
-
-  if (siteSettings.site_enabled === false) {
-    showSiteClosed();
-    return;
-  }
-
   if (siteSettings.announcement_enabled && siteSettings.announcement_text) {
     showAnnouncement(siteSettings.announcement_text);
   }
 
+  initPills();
+  updatePreview();
+  showBuilderStep(1);
+
+  const hash = location.hash.replace('#', '') || 'home';
+  go(hash, false);
 });
 
 async function loadPublicData() {
@@ -63,38 +64,56 @@ async function loadPublicData() {
 // NAV
 // ============================================================
 function updateNav() {
+  const navAuth  = document.getElementById('na');
   const navUser  = document.getElementById('nu');
   const navName  = document.getElementById('nname');
   const navAv    = document.getElementById('navi');
+  const mobAuth  = document.getElementById('ma');
   const mobUser  = document.getElementById('mur');
   const mobName  = document.getElementById('mun');
   const adminBtn = document.getElementById('admin-nav-btn');
+  const mobDash  = document.getElementById('mob-dash-btn');
   const mobAdmin = document.getElementById('mob-admin-btn');
 
   if (currentProfile) {
+    navAuth && (navAuth.style.display = 'none');
     navUser && (navUser.style.display = 'flex');
     navName && (navName.textContent = currentProfile.first_name);
     navAv   && (navAv.textContent   = currentProfile.first_name?.[0] || 'א');
+    mobAuth && (mobAuth.style.display = 'none');
     mobUser && (mobUser.style.display = 'block');
-    mobName && (mobName.textContent = currentProfile.first_name);
+    mobName && (mobName.textContent = currentProfile.first_name + ' ' + currentProfile.last_name);
+    mobDash && (mobDash.style.display = 'block');
     const isAdmin = currentProfile.role === 'admin';
     if (adminBtn) adminBtn.style.display = isAdmin ? 'inline-flex' : 'none';
     if (mobAdmin) mobAdmin.style.display = isAdmin ? 'block' : 'none';
   } else {
+    navAuth && (navAuth.style.display = 'flex');
     navUser && (navUser.style.display = 'none');
+    mobAuth && (mobAuth.style.display = 'flex');
     mobUser && (mobUser.style.display = 'none');
+    mobDash && (mobDash.style.display = 'none');
     if (adminBtn) adminBtn.style.display = 'none';
     if (mobAdmin) mobAdmin.style.display = 'none';
   }
+
+  const blp = document.getElementById('blp');
+  if (blp) blp.style.display = currentProfile ? 'none' : 'block';
 }
 
 // ============================================================
 // ניווט
 // ============================================================
 function go(name, pushState = true) {
+  if (name === 'dashboard' && !currentUser) { go('login'); return; }
   if (name === 'admin') {
     if (!currentUser || currentProfile?.role !== 'admin') { go('home'); return; }
     loadAdmin();
+  }
+  if (name === 'publish' && !currentUser) {
+    toast('יש להתחבר כדי לפרסם');
+    go('login');
+    return;
   }
 
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -103,7 +122,7 @@ function go(name, pushState = true) {
   else { go('home'); return; }
 
   document.querySelectorAll('.nl').forEach(l => l.classList.remove('active'));
-  const nlMap = { about: 'על הערוץ', rules: 'תקנון', builder: 'יצירת', publish: 'פרסום' };
+  const nlMap = { about: 'על הערוץ', rules: 'כללים', builder: 'יצירת', publish: 'פרסום' };
   if (nlMap[name]) {
     document.querySelectorAll('.nl').forEach(l => {
       if (l.textContent.includes(nlMap[name])) l.classList.add('active');
@@ -113,18 +132,111 @@ function go(name, pushState = true) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (pushState) { try { history.pushState({ page: name }, '', '#' + name); } catch(e) {} }
 
-  if (name === 'publish') initPublish();
-  if (name === 'login') {
-    if (typeof applyTermsUI === 'function') applyTermsUI();
-  }
+  if (name === 'dashboard') loadDashboard();
+  if (name === 'publish')   initPublish();
 
   document.getElementById('md')?.classList.remove('open');
 }
 
 window.addEventListener('popstate', e => go(e.state?.page || 'home', false));
 
-function startQuickCard(){go('builder');}
+// ============================================================
+// DASHBOARD
+// ============================================================
+async function loadDashboard() {
+  if (!currentUser) return;
 
+  const [cardsRes, balance] = await Promise.all([
+    getCards(currentUser.id),
+    getBalance(currentUser.id)
+  ]);
+
+  userCards   = cardsRes.data || [];
+  userBalance = balance;
+
+  const elName  = document.getElementById('dash-name');
+  const elBal   = document.getElementById('dash-balance');
+  const elCount = document.getElementById('dash-card-count');
+  if (elName)  elName.textContent  = currentProfile?.first_name || '';
+  if (elBal)   elBal.textContent   = userBalance;
+  if (elCount) elCount.textContent = userCards.length;
+
+  renderDashCards();
+  checkReminder();
+}
+
+function renderDashCards() {
+  const favEl  = document.getElementById('dash-favs');
+  const listEl = document.getElementById('dash-cards-list');
+  if (!listEl) return;
+
+  const favs    = userCards.filter(c => c.is_favorite);
+  const regular = userCards.filter(c => !c.is_favorite);
+
+  if (favEl) {
+    favEl.style.display = favs.length ? 'block' : 'none';
+    const inner = favEl.querySelector('.dash-cards-inner');
+    if (inner) inner.innerHTML = favs.map(cardRow).join('');
+  }
+
+  if (!userCards.length) {
+    listEl.innerHTML = `<div class="empty-state">
+      <div style="font-size:48px;margin-bottom:12px">📝</div>
+      <p>עדיין אין כרטיסים. <a onclick="go('builder')" style="color:var(--gold-d);font-weight:700;cursor:pointer">צור כרטיס ראשון ←</a></p>
+    </div>`;
+    return;
+  }
+  listEl.innerHTML = regular.map(cardRow).join('');
+}
+
+function cardRow(c) {
+  const name = [c.first_name, c.last_name].filter(Boolean).join(' ') || 'ללא שם';
+  return `<div class="dash-card-row">
+    <div class="dash-card-name">${esc(name)}</div>
+    <div class="dash-card-actions">
+      <button class="dash-action-btn ${c.is_favorite?'fav-active':''}" title="מועדף" onclick="toggleFav('${c.id}',${!c.is_favorite})">⭐</button>
+      <button class="dash-action-btn" title="ערוך" onclick="editCard('${c.id}')">✏️</button>
+      <button class="dash-action-btn" title="העתק" onclick="copyCard('${c.id}')">📋</button>
+      <button class="dash-action-btn" title="מחק" onclick="confirmDeleteCard('${c.id}')">🗑️</button>
+    </div>
+  </div>`;
+}
+
+async function toggleFav(cardId, isFav) {
+  const { error } = await toggleFavorite(currentUser.id, cardId, isFav);
+  if (error) { toast('שגיאה: ' + error.message); return; }
+  await loadDashboard();
+}
+
+async function copyCard(cardId) {
+  const card = userCards.find(c => c.id === cardId);
+  if (!card) return;
+  copyToClipboard(buildText(card), () => toast('הועתק! ✓'));
+}
+
+async function editCard(cardId) {
+  const card = userCards.find(c => c.id === cardId);
+  if (!card) return;
+  currentCardId = card.id;
+  loadCardToForm(card);
+  go('builder');
+}
+
+async function confirmDeleteCard(cardId) {
+  if (!confirm('למחוק כרטיס זה לצמיתות?')) return;
+  const { error } = await deleteCard(currentUser.id, cardId);
+  if (error) { toast('שגיאה במחיקה: ' + error.message); return; }
+  toast('כרטיס נמחק');
+  await loadDashboard();
+}
+
+function checkReminder() {
+  const rem = document.getElementById('dash-reminder');
+  if (!rem || !userCards.length) { if (rem) rem.style.display='none'; return; }
+  const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const hasOld = userCards.some(c => new Date(c.updated_at).getTime() < sevenDaysAgo);
+  rem.style.display = hasOld ? 'block' : 'none';
+}
 
 // ============================================================
 // PUBLISH
@@ -134,115 +246,105 @@ let selectedManager = null;
 
 async function initPublish() {
   await loadPublicData();
-  selectedPackage = null;
+  if (currentUser) {
+    const res = await getCards(currentUser.id);
+    userCards = res.data || [];
+  }
   renderPackages();
-  updatePayBtn();
+  renderManagersSelect();
+  goPayStep(1);
 }
 
 function renderPackages() {
   const el = document.getElementById('pkg-list');
   if (!el) return;
   if (!sitePackages.length) {
-    el.innerHTML = '<p style="color:var(--is)">לא נמצאו מסלולים — יש לוודא שהחבילות פעילות בפאנל הניהול</p>';
+    el.innerHTML = '<p style="color:var(--is)">אין מסלולים זמינים כרגע</p>';
     return;
   }
   el.innerHTML = sitePackages.map(p => `
-    <div class="pcard ${p.is_popular?'feat':''} ${selectedPackage?.id===p.id?'sel':''}" onclick="selectPackage('${p.id}')">
-      ${p.is_popular ? `<div class="pbadge">פופולרי</div>` : ''}
+    <div class="pcard ${p.is_popular?'feat':''}" onclick="selectPackage('${p.id}')">
+      ${p.marketing_label ? `<div class="pbadge">${esc(p.marketing_label)}</div>` : ''}
       <div class="pname">${esc(p.name)}</div>
+      <div class="pdesc">${esc(p.description)}</div>
       <div><span class="pcur">₪</span><span class="pamt">${p.price}</span></div>
       <ul class="pfeat">
         <li>${p.publications_count} פרסום${p.publications_count>1?'ים':''} בערוץ</li>
         <li>דיסקרטיות מלאה</li>
       </ul>
-      ${p.description ? `<div class="pinfo" onclick="event.stopPropagation()">${esc(p.description).replace('סעיף 16','<a onclick="event.stopPropagation();go(\'rules\');setTimeout(()=>{const el=document.getElementById(\'rule-16\');if(el)el.scrollIntoView({behavior:\'smooth\',block:\'start\'})},300)" class="pay-link">סעיף 16</a>')}</div>` : ''}
-      <button class="btn ${selectedPackage?.id===p.id?'btn-gold':'btn-out'} btn-full">${selectedPackage?.id===p.id?'✓ נבחר':'בחירה ←'}</button>
+      <button class="btn btn-gold btn-full">בחירה ←</button>
     </div>`).join('');
 }
 
 function selectPackage(pkgId) {
   selectedPackage = sitePackages.find(p => p.id === pkgId);
   if (!selectedPackage) return;
-  renderPackages();
-  const sumEl = document.getElementById('pay-summary');
-  if (sumEl) {
-    const p = selectedPackage;
-    document.getElementById('sum-name').textContent = p.name;
-    document.getElementById('sum-count').textContent = p.publications_count + (p.publications_count > 1 ? ' פרסומים' : ' פרסום');
-    document.getElementById('sum-price').textContent = '₪' + p.price;
-    let method = [];
-    if (p.payment_link) method.push('PayPal');
-    if (siteSettings?.bit_phone) method.push('ביט / PayBox');
-    document.getElementById('sum-method').textContent = method.length ? method.join(' / ') : 'העברה בנקאית';
-    const descRow = document.getElementById('sum-desc-row');
-    const descEl  = document.getElementById('sum-desc');
-    if (descRow && descEl) {
-      if (p.description) { descEl.textContent = p.description; descRow.style.display = 'block'; }
-      else                { descRow.style.display = 'none'; }
-    }
-    sumEl.style.display = 'block';
-  }
-  updatePayBtn();
+  const el = document.getElementById('selected-pkg-name');
+  if (el) el.textContent = `${selectedPackage.name} — ₪${selectedPackage.price}`;
+  goPayStep(2);
 }
 
-function updatePayBtn() {
-  const name   = document.getElementById('pay-name')?.value.trim();
-  const email  = document.getElementById('pay-email')?.value.trim();
-  const phone  = document.getElementById('pay-phone')?.value.trim();
-  const terms  = document.getElementById('pay-terms-cb')?.checked;
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || '');
-  const phoneOk = /^0\d{8,9}$/.test((phone || '').replace(/[-\s]/g, ''));
-  const missing = [];
-  if (!selectedPackage)      missing.push('לא נבחר מסלול פרסום ↑');
-  if (!name)                 missing.push('חסר שם');
-  if (!email || !emailOk)    missing.push('חסר אימייל תקין');
-  if (!phone || !phoneOk)    missing.push('חסר טלפון תקין');
-  if (!terms)                missing.push('יש לאשר את התקנון');
-  const hint = document.getElementById('pay-hint');
-  const btn  = document.getElementById('pay-submit-btn');
-  if (hint) { hint.textContent = missing.join(' · '); hint.style.display = missing.length ? 'block' : 'none'; }
-  if (btn)  btn.disabled = !!missing.length;
+function renderManagersSelect() {
+  const el = document.getElementById('managers-list');
+  if (!el) return;
+  if (!siteManagers.length) {
+    el.innerHTML = '<p style="color:var(--is)">אין מנהלים זמינים כרגע</p>';
+    return;
+  }
+  el.innerHTML = siteManagers.map(m => `
+    <button class="mgr-btn" onclick="selectManager('${m.id}')">
+      <div class="mgr-btn-av">${esc(m.initials || m.name?.[0] || 'מ')}</div>
+      <div>
+        <div class="mgr-btn-name">${esc(m.name)}</div>
+        <div class="mgr-btn-role">${esc(m.role_title || '')}</div>
+      </div>
+    </button>`).join('');
 }
 
 function selectManager(mgrId) {
   selectedManager = siteManagers.find(m => m.id === mgrId);
   if (!selectedManager) return;
-  const phone = selectedManager.phone.replace(/\D/g,'');
-  window.open('https://wa.me/' + phone, '_blank');
-}
-
-function submitPayment() {
-  const name  = document.getElementById('pay-name')?.value.trim();
-  const email = document.getElementById('pay-email')?.value.trim();
-  const phone = document.getElementById('pay-phone')?.value.trim();
-  const terms = document.getElementById('pay-terms-cb')?.checked;
-  ['name','email','phone'].forEach(f => {
-    document.getElementById('err-' + f).textContent = '';
-    document.getElementById('pay-' + f).classList.remove('perr');
-  });
-  let ok = true;
-  if (!name)                                           { _payErr('name',  'שדה חובה'); ok = false; }
-  if (!email)                                          { _payErr('email', 'שדה חובה'); ok = false; }
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { _payErr('email', 'כתובת אימייל לא תקינה'); ok = false; }
-  if (!phone)                                                            { _payErr('phone', 'שדה חובה'); ok = false; }
-  else if (!/^0\d{8,9}$/.test(phone.replace(/[-\s]/g,'')))              { _payErr('phone', 'מספר לא תקין (05XXXXXXXX)'); ok = false; }
-  if (!selectedPackage) { toast('יש לבחור מסלול פרסום'); ok = false; }
-  if (!terms)           { toast('יש לאשר את תקנון הערוץ'); ok = false; }
-  if (!ok) return;
-  if (selectedPackage?.payment_link) {
-    window.open(selectedPackage.payment_link, '_blank', 'noopener noreferrer');
-  } else if (siteSettings?.bit_phone) {
-    copyBit();
+  if (userCards.length > 0) {
+    openPickCardModal();
   } else {
-    toast('יש לשלם בהעברה בנקאית ולפנות למנהל');
+    // פתח WA ללא כרטיס — בלי טקסט אוטומטי
+    const phone = selectedManager.phone.replace(/\D/g,'');
+    window.open('https://wa.me/' + phone, '_blank');
   }
 }
 
-function _payErr(field, msg) {
-  document.getElementById('err-' + field).textContent = msg;
-  document.getElementById('pay-' + field).classList.add('perr');
+function goPayStep(n) {
+  [1,2,3].forEach(i => {
+    const el = document.getElementById('pay-step' + i);
+    if (el) el.style.display = i === n ? 'block' : 'none';
+  });
 }
 
+function openPickCardModal() {
+  const el   = document.getElementById('pick-card-modal');
+  const list = document.getElementById('pick-card-list');
+  if (!el || !list) return;
+  if (!userCards.length) {
+    list.innerHTML = `<p style="color:var(--is);padding:10px 0">עדיין אין כרטיסים שמורים. <a onclick="closeModal('pick-card-modal');go('builder')" style="color:var(--gold-d);font-weight:700;cursor:pointer">צור כרטיס ←</a></p>`;
+  } else {
+    list.innerHTML = userCards.map(c => {
+      const name = [c.first_name, c.last_name].filter(Boolean).join(' ') || 'ללא שם';
+      return `<button class="pick-card-btn" onclick="sendCardToManager('${c.id}')">${esc(name)}</button>`;
+    }).join('');
+  }
+  el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function sendCardToManager(cardId) {
+  const card = userCards.find(c => c.id === cardId);
+  if (!card || !selectedManager) return;
+  // שולח רק תוכן הכרטיס — ללא הודעת פתיחה אוטומטית
+  const txt = buildText(card);
+  const phone = selectedManager.phone.replace(/\D/g,'');
+  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(txt), '_blank');
+  closeModal('pick-card-modal');
+}
 
 // ============================================================
 // BUILDER
@@ -285,22 +387,33 @@ function validateStep1() {
   let ok = true;
   if (!v('fn').trim()) { se('en'); ok=false; } else { he('en'); }
   const age = parseInt(v('fa'));
-  if (!age || age < 18) { se('ea'); ok=false; } else { he('ea'); }
+  if (!age || age < 18 || age > 80) { se('ea'); ok=false; } else { he('ea'); }
   return ok;
 }
 
 function validateStep4() {
   let ok = true;
-  if (!v('fab').trim())  { se('eab'); ok=false; } else { he('eab'); }
-  if (!v('flk').trim())  { se('elk'); ok=false; } else { he('elk'); }
-  if (!v('fcn').trim())  { se('ecn'); ok=false; } else { he('ecn'); }
-  if (!v('fct2').trim()) { se('ect'); ok=false; } else { he('ect'); }
+  if (!v('fab').trim()) { se('eab'); ok=false; } else { he('eab'); }
+  if (!v('fcn').trim()) { se('ecn'); ok=false; } else { he('ecn'); }
+  if (!v('fct2').trim()){ se('ect'); ok=false; } else { he('ect'); }
   return ok;
 }
 
 async function finishCard() {
   if (!validateStep4()) return;
   const card = collectCard();
+
+  if (currentUser) {
+    const payload = currentCardId ? { ...card, id: currentCardId } : card;
+    const { data, error } = await saveCard(currentUser.id, payload);
+    if (error) { toast('שגיאה בשמירה: ' + error.message); return; }
+    if (data?.id) currentCardId = data.id;
+    const res = await getCards(currentUser.id);
+    userCards = res.data || [];
+    const scn = document.getElementById('scn');
+    if (scn) scn.style.display = 'block';
+  }
+
   const txt = buildText(card);
   window._card  = txt;
   window._cdata = card;
@@ -344,50 +457,6 @@ function collectCard() {
   };
 }
 
-// טוען select — אם הערך לא ברשימה, בוחר "אחר" ומציג שדה חופשי
-function loadSelectOrOther(selId, otherInputId, val, onchangeFn) {
-  if (!val) return;
-  const el = document.getElementById(selId);
-  if (!el) return;
-  const stdVals = Array.from(el.options).map(o => o.value || o.text).filter(Boolean);
-  if (stdVals.includes(val)) {
-    selOpt(selId, val);
-    onchangeFn(val);
-  } else {
-    selOpt(selId, 'אחר');
-    sv(otherInputId, val);
-    onchangeFn('אחר');
-  }
-}
-
-// טוען pill group — אם הערך לא ברשימה, בוחר "אחר" ומציג שדה חופשי
-function loadPillOrOther(grpId, hidId, otherInputId, val, stdOpts) {
-  if (!val) return;
-  const h = document.getElementById(hidId);
-  if (h) h.value = val;
-  if (stdOpts.includes(val)) {
-    const grp = document.getElementById(grpId);
-    if (grp) grp.querySelectorAll('.pill').forEach(p => {
-      const inp = p.querySelector('input');
-      if (inp && inp.value === val) {
-        p.classList.add('sel');
-        const entry = Object.entries(PGS).find(([id]) => id === grpId);
-        if (entry && entry[1].cb) entry[1].cb(val);
-      }
-    });
-  } else {
-    // ערך מותאם אישית — בחר "אחר" וצג שדה
-    const grp = document.getElementById(grpId);
-    if (grp) grp.querySelectorAll('.pill').forEach(p => {
-      const inp = p.querySelector('input');
-      if (inp && inp.value === 'אחר') p.classList.add('sel');
-    });
-    const other = document.getElementById(otherInputId);
-    if (other) { other.value = val; other.style.display = 'block'; }
-    if (h) h.value = val;
-  }
-}
-
 function loadCardToForm(c) {
   sv('fn',c.first_name); sv('fln',c.last_name);
   sv('fa',c.age); sv('fh',c.height);
@@ -397,20 +466,26 @@ function loadCardToForm(c) {
   sv('fcn',c.contact_name); sv('fct2',c.contact_phone);
   sv('fkd',c.kids_detail||'');
 
-  loadSelectOrOther('fb',  'fb-other',  c.build||'',  chkBuild);
-  loadSelectOrOther('fs',  'fs-other',  c.sector||'', chkSector);
-  loadSelectOrOther('fed', 'fed-other', c.edu||'',    chkEdu);
+  selOpt('fb',c.build); chkBuild(c.build||'');
+  selOpt('fs',c.sector); chkSector(c.sector||'');
+  selOpt('fed',c.edu); chkEdu(c.edu||'');
 
   sp2('fst',c.marital_status);
   sp2('fk',c.kids);
-  loadPillOrOther('pg-cv','fcv','fcv-other', c.cover||'',   ['מטפחת','פאה','אחר']);
-  loadPillOrOther('pg-se','fse','fse-other', c.service||'', ['צבאי','לאומי','ישיבה','כולל','פטור','לא רלוונטי','אחר']);
+  sp2('fcv',c.cover);
   sp2('ft',c.touch);
   sp2('fsm',c.smoke);
   sp2('fph',c.phone_type);
+  sp2('fse',c.service);
 
-  const fkd = document.getElementById('fkd');
+  const fkd  = document.getElementById('fkd');
   if (fkd) fkd.style.display = c.kids==='כן' ? 'block' : 'none';
+  const fcvO = document.getElementById('fcv-other');
+  if (fcvO) { fcvO.style.display = c.cover==='אחר' ? 'block' : 'none'; }
+  const fseO = document.getElementById('fse-other');
+  if (fseO) fseO.style.display = c.service==='אחר' ? 'block' : 'none';
+  const fbO  = document.getElementById('fb-other');
+  if (fbO)  fbO.style.display  = c.build==='אחר'  ? 'block' : 'none';
 
   showBuilderStep(1);
   updatePreview();
@@ -457,7 +532,7 @@ function buildText(d) {
     '💼 עיסוק: '  + (d.job||'–'),
     '',
     '👨‍👩‍👧 רקע משפחתי: '  + (d.family_bg||'–'),
-    '👑 כיסוי ראש: '   + (d.cover||'–'),
+    '🧕 כיסוי ראש: '   + (d.cover||'–'),
     '🤝 שומר/ת נגיעה: '+ (d.touch||'–'),
     '🚬 מעשן/ת: '       + (d.smoke||'–'),
     '📱 סוג טלפון: '   + (d.phone_type||'–'),
@@ -549,9 +624,9 @@ function chkSector(val) { const el=document.getElementById('fs-other');  if(el) 
 function chkEdu(val)    { const el=document.getElementById('fed-other'); if(el) el.style.display=val==='אחר'?'block':'none'; updatePreview(); }
 
 function updateProgressBar() {
-  const fills=[25,50,75,100,100];
+  const fills=[0,25,50,75,100];
   const pf=document.getElementById('prog-fill');
-  if(pf) pf.style.width=(fills[Math.min(cbStep-1,4)]||25)+'%';
+  if(pf) pf.style.width=(fills[Math.min(cbStep-1,4)]||0)+'%';
 }
 
 function copyToClipboard(txt,cb) {
@@ -592,29 +667,6 @@ function closeModal(id) {
 // ============================================================
 // WA FLOAT BUTTON
 // ============================================================
-function renderWAFloat() {
-  const panel = document.getElementById('waf-panel');
-  if (!panel) return;
-  const mgrBtns = siteManagers.map(m => `
-    <button class="waf-mgr-btn" onclick="openWA('${m.phone.replace(/\D/g,'')}')">
-      <div class="waf-mgr-av">${esc(m.initials || m.name?.[0] || 'מ')}</div>
-      <div><span class="waf-mgr-name">${esc(m.name)}</span><span class="waf-mgr-role">${esc(m.role_title||'מנהל')} · וואטסאפ</span></div>
-    </button>`).join('');
-  panel.innerHTML = `
-    <div class="waf-panel-hdr">💬 פנו אלינו</div>
-    ${mgrBtns}
-    <a href="mailto:s.b.0535345994@gmail.com" class="waf-mgr-btn" style="text-decoration:none">
-      <div class="waf-mgr-av" style="background:#fef3c7;border-color:#f59e0b;color:#d97706">✉️</div>
-      <div><span class="waf-mgr-name">מייל</span><span class="waf-mgr-role">s.b.0535345994@gmail.com</span></div>
-    </a>`;
-}
-
-function copyBit() {
-  const phone = siteSettings?.bit_phone;
-  if (!phone) return;
-  navigator.clipboard?.writeText(phone).then(() => toast('המספר הועתק בהצלחה ✓')).catch(() => toast(phone));
-}
-
 function openWA(phone) {
   const clean = String(phone).replace(/\D/g,'');
   window.open('https://wa.me/' + clean, '_blank');
