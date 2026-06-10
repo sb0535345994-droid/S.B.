@@ -176,25 +176,36 @@ html,body{max-width:100%;overflow-x:hidden}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:3px;transition:width .4s var(--ease)}
 
 /* HOME */
-.hero{padding:104px 0 76px;text-align:center;background:linear-gradient(165deg,var(--cream) 0%,var(--cm) 100%)}
-.hero-ring{font-size:56px;display:block;margin-bottom:22px}
-.ht{font-family:var(--fd);font-size:clamp(34px,5vw,58px);font-weight:900;color:var(--ink);line-height:1.14;margin-bottom:18px}
+.hero{min-height:84vh;padding:110px 0 70px;background:var(--ink);position:relative;overflow:hidden;display:flex;align-items:center}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 65% at 70% 35%,rgba(201,162,77,.12) 0%,transparent 65%),radial-gradient(ellipse 50% 50% at 12% 80%,rgba(201,162,77,.06) 0%,transparent 55%);pointer-events:none}
+.hero-ring{display:none}
+.hero-inner{display:grid;grid-template-columns:1fr 300px;gap:48px;align-items:center;width:100%}
+@media(max-width:860px){.hero-inner{grid-template-columns:1fr}}
+.ht{font-family:var(--fd);font-size:clamp(44px,6.5vw,76px);font-weight:900;color:#fff;line-height:1.06;margin-bottom:22px;letter-spacing:-.02em}
 .ht em{font-style:normal;color:var(--gold)}
-.hs{font-size:17px;color:var(--is);font-weight:300;max-width:520px;margin:0 auto 44px;line-height:1.9}
-.ncs{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:640px;margin:0 auto 48px}
-.nc{background:var(--white);border:1.5px solid var(--border);border-radius:var(--rl);padding:30px 20px;text-align:center;cursor:pointer;transition:all .28s var(--ease);box-shadow:var(--sh1)}
-.nc:hover{border-color:var(--gold);box-shadow:var(--sh2);transform:translateY(-4px)}
-.nc-icon{font-size:38px;margin-bottom:14px;display:block}
-.nc-title{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px}
-.nc-desc{font-size:13px;color:var(--is);line-height:1.6}
-@media(max-width:480px){.ncs{grid-template-columns:1fr;max-width:320px}}
-.tr{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
-.ti{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--is)}
-.td{color:var(--gold);font-size:16px;font-weight:700}
-.astrip{background:var(--ink);color:var(--cream);padding:60px 0}
+.hs{font-size:17px;color:rgba(247,244,239,.68);font-weight:300;max-width:500px;margin:0 0 34px;line-height:1.95}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.tr{display:flex;gap:16px;flex-wrap:wrap}
+.ti{display:flex;align-items:center;gap:7px;font-size:13px;color:rgba(247,244,239,.48)}
+.td{color:var(--gold);font-size:15px;font-weight:700}
+.hero-visual{background:rgba(255,255,255,.05);border:1px solid rgba(201,162,77,.22);border-radius:var(--rl);padding:28px 22px;backdrop-filter:blur(12px)}
+.hero-visual-title{font-family:var(--fd);font-size:15px;font-weight:700;color:#fff;margin-bottom:16px;text-align:center;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.1)}
+@media(max-width:860px){.hero-visual{display:none}}
+.hero-features{background:var(--white);padding:60px 0}
+.ncs{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:900px){.ncs{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.ncs{grid-template-columns:1fr}}
+.nc{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:32px 20px 26px;text-align:center;cursor:pointer;transition:all .28s var(--ease);box-shadow:var(--sh1);position:relative;overflow:hidden}
+.nc::after{content:'';position:absolute;bottom:0;right:0;left:0;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .3s var(--ease)}
+.nc:hover{border-color:var(--gold);box-shadow:var(--sh2);transform:translateY(-5px)}
+.nc:hover::after{transform:scaleX(1)}
+.nc-icon{font-size:36px;display:block;margin-bottom:14px}
+.nc-title{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:7px}
+.nc-desc{font-size:13px;color:var(--is);line-height:1.65}
+.astrip{background:var(--ink);color:var(--cream);padding:72px 0;border-top:1px solid rgba(201,162,77,.08)}
 .asi{max-width:700px;margin:0 auto;text-align:center}
-.asi h2{font-family:var(--fd);font-size:26px;font-weight:700;color:#fff;margin-bottom:20px}
-.asi p{font-size:15px;color:rgba(247,244,239,.68);line-height:2;margin-bottom:14px;font-weight:300}
+.asi h2{font-family:var(--fd);font-size:clamp(22px,3.5vw,30px);font-weight:700;color:#fff;margin-bottom:20px}
+.asi p{font-size:15px;color:rgba(247,244,239,.65);line-height:2;margin-bottom:14px;font-weight:300}
 .asi strong{color:var(--gold-l);font-weight:600}
 
 /* RULES */
@@ -380,25 +391,65 @@ footer{background:var(--ink);color:var(--cream);padding:40px 0 24px;border-top:1
 <div id="page-home" class="page active pt">
   <div class="hero">
     <div class="wrap">
-      <span class="hero-ring">💍</span>
-      <h1 class="ht">שידוכים <em>באמונה</em></h1>
-      <p class="hs">ערוץ שידוכים מכובד ודיסקרטי לגברים ונשים עם זיקה ליהדות.<br/>מכאן מתחיל הדרך למציאת הזיווג הנכון.</p>
+      <div class="hero-inner">
+        <div class="hero-text">
+          <div class="ey" style="margin-bottom:18px">ערוץ שידוכים מכובד</div>
+          <h1 class="ht">שידוכים <em>באמונה</em></h1>
+          <p class="hs">ערוץ שידוכים דיסקרטי ומכובד לגברים ונשים עם זיקה ליהדות.<br/>מכאן מתחיל הדרך למציאת הזיווג הנכון.</p>
+          <div class="hero-cta">
+            <button class="btn btn-gold" onclick="go('builder')">📝 יצירת כרטיס שידוך</button>
+            <a href="https://whatsapp.com/channel/0029VbCk83eHwXbIxQlo6s1f" target="_blank" rel="noopener noreferrer" class="btn btn-green">💬 הצטרף לערוץ</a>
+          </div>
+          <div class="tr">
+            <div class="ti"><span class="td">✓</span>דיסקרטיות מלאה</div>
+            <div class="ti"><span class="td">✓</span>יצירת כרטיס חינמית</div>
+            <div class="ti"><span class="td">✓</span>תהליך פשוט וברור</div>
+            <div class="ti"><span class="td">✓</span>מכובד ורציני</div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-visual-title">💍 שידוכים באמונה</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(201,162,77,.12)'" onmouseleave="this.style.background='rgba(255,255,255,.07)'" onclick="go('about')">
+              <span style="font-size:22px">📜</span>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px">על הערוץ</div>
+                <div style="font-size:12px;color:rgba(247,244,239,.5)">מי אנחנו ומה המטרה</div>
+              </div>
+            </div>
+            <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(201,162,77,.12)'" onmouseleave="this.style.background='rgba(255,255,255,.07)'" onclick="go('rules')">
+              <span style="font-size:22px">📋</span>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px">תקנון הערוץ</div>
+                <div style="font-size:12px;color:rgba(247,244,239,.5)">חוקי ההתנהלות</div>
+              </div>
+            </div>
+            <div style="background:rgba(201,162,77,.14);border:1px solid rgba(201,162,77,.3);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(201,162,77,.22)'" onmouseleave="this.style.background='rgba(201,162,77,.14)'" onclick="go('builder')">
+              <span style="font-size:22px">📝</span>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:2px">יצירת כרטיס שידוך</div>
+                <div style="font-size:12px;color:rgba(247,244,239,.5)">חינם לחלוטין</div>
+              </div>
+            </div>
+            <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s" onmouseenter="this.style.background='rgba(201,162,77,.12)'" onmouseleave="this.style.background='rgba(255,255,255,.07)'" onclick="go('publish')">
+              <span style="font-size:22px">💰</span>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:2px">פרסום ותשלום</div>
+                <div style="font-size:12px;color:rgba(247,244,239,.5)">מסלולי פרסום</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-features">
+    <div class="wrap">
       <div class="ncs">
         <div class="nc" onclick="go('about')"><span class="nc-icon">📜</span><div class="nc-title">על הערוץ</div><div class="nc-desc">מי אנחנו, מה המטרה ולמי זה מיועד</div></div>
         <div class="nc" onclick="go('rules')"><span class="nc-icon">📋</span><div class="nc-title">תקנון הערוץ</div><div class="nc-desc">חוקי ההתנהלות ושמירת הדיסקרטיות</div></div>
         <div class="nc" onclick="go('builder')"><span class="nc-icon">📝</span><div class="nc-title">יצירת כרטיס שידוך</div><div class="nc-desc">בנו כרטיס מקצועי תוך דקה — חינם לחלוטין</div></div>
         <div class="nc" onclick="go('publish')"><span class="nc-icon">💰</span><div class="nc-title">פרסום ותשלום</div><div class="nc-desc">איך מפרסמים ומהם מסלולי התשלום</div></div>
-      </div>
-      <div class="tr">
-        <div class="ti"><span class="td">✓</span>דיסקרטיות מלאה</div>
-        <div class="ti"><span class="td">✓</span>יצירת כרטיס חינמית</div>
-        <div class="ti"><span class="td">✓</span>תהליך פשוט וברור</div>
-        <div class="ti"><span class="td">✓</span>מכובד ורציני</div>
-      </div>
-      <div style="margin-top:32px">
-        <a href="https://whatsapp.com/channel/0029VbCk83eHwXbIxQlo6s1f" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:10px;background:var(--green);color:#fff;font-weight:700;font-size:16px;padding:14px 32px;border-radius:50px;text-decoration:none;box-shadow:0 4px 18px rgba(37,211,102,.4)">
-          💬 הצטרף לערוץ WhatsApp
-        </a>
       </div>
     </div>
   </div>

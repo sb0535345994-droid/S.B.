@@ -1,6 +1,6 @@
+node_modules/
 site_files.zip
 .claude/
-node_modules/
 package-lock.json
 package.json
 screenshot.js
