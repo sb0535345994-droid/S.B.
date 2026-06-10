@@ -123,6 +123,8 @@ function go(name, pushState = true) {
 
 window.addEventListener('popstate', e => go(e.state?.page || 'home', false));
 
+function startQuickCard(){go('builder');}
+
 
 // ============================================================
 // PUBLISH
