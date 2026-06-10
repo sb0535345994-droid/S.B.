@@ -30,16 +30,27 @@ async function loadAdmin() {
   }
   if (siteTxt) siteTxt.textContent = settings.site_enabled ? '✅ האתר פעיל' : '⚠️ האתר מושבת';
 
-  // פרסום ותשלום
+  // פרסום
   const pubBtn = document.getElementById('admin-publish-btn');
   const pubTxt = document.getElementById('admin-publish-status-txt');
   const pubEnabled = settings.publish_enabled !== false;
   if (pubBtn) {
-    pubBtn.textContent = pubEnabled ? 'כבה פרסום ותשלום' : 'הפעל פרסום ותשלום';
+    pubBtn.textContent = pubEnabled ? 'כבה פרסום' : 'הפעל פרסום';
     pubBtn.style.background = pubEnabled ? '#c0392b' : 'var(--green)';
     pubBtn.style.color = '#fff';
   }
-  if (pubTxt) pubTxt.textContent = pubEnabled ? '✅ פרסום ותשלום פעיל' : '⚠️ פרסום ותשלום מושבת';
+  if (pubTxt) pubTxt.textContent = pubEnabled ? '✅ פרסום פעיל' : '⚠️ פרסום מושבת';
+
+  // תשלום
+  const payBtn = document.getElementById('admin-payment-btn');
+  const payTxt = document.getElementById('admin-payment-status-txt');
+  const payEnabled = settings.payment_enabled !== false;
+  if (payBtn) {
+    payBtn.textContent = payEnabled ? 'כבה תשלום' : 'הפעל תשלום';
+    payBtn.style.background = payEnabled ? '#c0392b' : 'var(--green)';
+    payBtn.style.color = '#fff';
+  }
+  if (payTxt) payTxt.textContent = payEnabled ? '✅ תשלום פעיל' : '⚠️ תשלום מושבת';
 
   // הודעה כללית
   const annTxt = document.getElementById('admin-announce-txt');
@@ -70,7 +81,16 @@ async function adminTogglePublish() {
   const current = settings.publish_enabled !== false;
   const { error } = await adminSaveSiteSettings({ publish_enabled: !current });
   if (error) { toast('שגיאה: ' + error.message); return; }
-  toast(current ? '⚠️ פרסום ותשלום הושבת' : '✅ פרסום ותשלום הופעל');
+  toast(current ? '⚠️ פרסום הושבת' : '✅ פרסום הופעל');
+  await loadAdmin();
+}
+
+async function adminTogglePayment() {
+  const settings = await getSiteSettings();
+  const current = settings.payment_enabled !== false;
+  const { error } = await adminSaveSiteSettings({ payment_enabled: !current });
+  if (error) { toast('שגיאה: ' + error.message); return; }
+  toast(current ? '⚠️ תשלום הושבת' : '✅ תשלום הופעל');
   await loadAdmin();
 }
 
