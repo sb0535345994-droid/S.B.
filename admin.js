@@ -30,6 +30,17 @@ async function loadAdmin() {
   }
   if (siteTxt) siteTxt.textContent = settings.site_enabled ? '✅ האתר פעיל' : '⚠️ האתר מושבת';
 
+  // פרסום ותשלום
+  const pubBtn = document.getElementById('admin-publish-btn');
+  const pubTxt = document.getElementById('admin-publish-status-txt');
+  const pubEnabled = settings.publish_enabled !== false;
+  if (pubBtn) {
+    pubBtn.textContent = pubEnabled ? 'כבה פרסום ותשלום' : 'הפעל פרסום ותשלום';
+    pubBtn.style.background = pubEnabled ? '#c0392b' : 'var(--green)';
+    pubBtn.style.color = '#fff';
+  }
+  if (pubTxt) pubTxt.textContent = pubEnabled ? '✅ פרסום ותשלום פעיל' : '⚠️ פרסום ותשלום מושבת';
+
   // הודעה כללית
   const annTxt = document.getElementById('admin-announce-txt');
   if (annTxt) annTxt.value = settings.announcement_text || '';
@@ -51,6 +62,15 @@ async function adminToggleSite() {
   const { error } = await adminSaveSiteSettings({ site_enabled: !settings.site_enabled });
   if (error) { toast('שגיאה: ' + error.message); return; }
   toast(settings.site_enabled ? '⚠️ האתר הושבת' : '✅ האתר הופעל');
+  await loadAdmin();
+}
+
+async function adminTogglePublish() {
+  const settings = await getSiteSettings();
+  const current = settings.publish_enabled !== false;
+  const { error } = await adminSaveSiteSettings({ publish_enabled: !current });
+  if (error) { toast('שגיאה: ' + error.message); return; }
+  toast(current ? '⚠️ פרסום ותשלום הושבת' : '✅ פרסום ותשלום הופעל');
   await loadAdmin();
 }
 
