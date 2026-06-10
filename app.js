@@ -110,10 +110,16 @@ function go(name, pushState = true) {
     if (!currentUser || currentProfile?.role !== 'admin') { go('home'); return; }
     loadAdmin();
   }
-  if (name === 'publish' && !currentUser) {
-    toast('יש להתחבר כדי לפרסם');
-    go('login');
-    return;
+  if (name === 'publish') {
+    if (siteSettings && siteSettings.publish_enabled === false) {
+      toast('פרסום ותשלום אינו זמין כרגע');
+      return;
+    }
+    if (!currentUser) {
+      toast('יש להתחבר כדי לפרסם');
+      go('login');
+      return;
+    }
   }
 
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));

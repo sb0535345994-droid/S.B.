@@ -106,6 +106,8 @@ CREATE TABLE IF NOT EXISTS site_settings (
 
 -- מיגרציה: הוספת עמודת bit_phone אם הטבלה כבר קיימת
 ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS bit_phone TEXT DEFAULT '';
+-- מיגרציה: הוספת עמודת publish_enabled
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS publish_enabled BOOLEAN DEFAULT TRUE;
 
 -- 8. user_publication_balances
 CREATE TABLE IF NOT EXISTS user_publication_balances (

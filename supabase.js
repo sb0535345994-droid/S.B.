@@ -77,8 +77,8 @@ async function getPackages() {
 async function getSiteSettings() {
   try {
     const { data } = await sb.from('site_settings').select('*').limit(1).single();
-    return data || { site_enabled: true, announcement_enabled: false };
-  } catch { return { site_enabled: true, announcement_enabled: false }; }
+    return data || { site_enabled: true, announcement_enabled: false, publish_enabled: true };
+  } catch { return { site_enabled: true, announcement_enabled: false, publish_enabled: true }; }
 }
 
 async function getVipSettings() {
